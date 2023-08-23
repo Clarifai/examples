@@ -1,4 +1,4 @@
-This is a collection of examples for Modal. Use these examples to learn Clarifai and build your own robust and scalable applications.
+This is a collection of examples for Clarifai-python. Use these examples to learn Clarifai and build your own robust and scalable applications.
 
 Usage
 First, sign up for a free account at clarifai.com/explore and set your API key.
