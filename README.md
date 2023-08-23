@@ -1,4 +1,6 @@
-This is a collection of examples for Clarifai-python. Use these examples to learn Clarifai and build your own robust and scalable applications.
+This is a collection of examples for Clarifai-python. Use these examples to learn Clarifai and build your own robust and scalable AI applications.
+
+Experience the power of Clarifai in building Computer Vision , Natual Language processsing , Generative AI applications.
 
 Usage
 First, sign up for a free account at clarifai.com/explore and set your API key.
