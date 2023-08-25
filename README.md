@@ -6,7 +6,7 @@ This is a collection of examples for Clarifai-python. Use these examples to lear
 Experience the power of Clarifai in building Computer Vision , Natual Language processsing , Generative AI applications.
 
 ## Setup
-* Sign up for a free account at [clarifai](https://clarifai.com/signup) and set your API key.
+* Sign up for a free account at [clarifai](https://clarifai.com/signup) and set your PAT key.
 
 * Install the [Clarifai python sdk.](https://github.com/Clarifai/clarifai-python/tree/master)
 
@@ -19,7 +19,7 @@ Experience the power of Clarifai in building Computer Vision , Natual Language p
 
 ## Usage
 
-The examples are organized into several folders based on their category. You can generally run the files in any folder as ordinary Python programs, with a command like:
+The examples are organized into several folders based on their category. A quick example below,
 
 ```python
 from clarifai.client.dataset import Dataset
