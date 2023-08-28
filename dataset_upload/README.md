@@ -34,3 +34,17 @@ from clarifai.client.dataset import Dataset
 dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
 dataset.upload_dataset(task="text_clf", split="train", module_dir="path_to_imdb_reviews_module")
 ```
+
+## Object Detection - VOC - 2012
+```python
+from clarifai.client.dataset import Dataset
+dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
+dataset.upload_dataset(task="visual_detection", split="train", module_dir="path_to_voc_module")
+```
+
+## Image Segmentation - COCO
+```python
+from clarifai.client.dataset import Dataset
+dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
+dataset.upload_dataset(task="visual_segmentation", split="train", module_dir="path_to_coco_module")
+```
