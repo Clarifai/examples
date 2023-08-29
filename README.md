@@ -28,6 +28,11 @@ dataset.upload_dataset(task="text_clf", split="train", module_dir="path_to_imdb_
 ```
 
 
+## Notebooks
+
+ - [Dataset Upload](datasets/upload/dataset_upload.ipynb)
+
+
 ## Note
 
 Although these scripts are run on your local machine, they'll communicate with Clarifai and run in our cloud on demand.
