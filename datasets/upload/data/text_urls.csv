@@ -1,0 +1,5 @@
+text,labels
+https://samples.clarifai.com/featured-models/Llama2_Conversational-agent.txt,llm
+https://samples.clarifai.com/featured-models/claude-instant-1.2-bio.txt,llm
+https://samples.clarifai.com/featured-models/claude-instant-1.2-code.txt,llm
+https://samples.clarifai.com/featured-models/claude-instant-1.2-math.txt,claude
