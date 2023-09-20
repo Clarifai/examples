@@ -7,23 +7,10 @@ Before running this script, please make sure the following has been completed:
 2. An API KEY for the app has been generated.
 """
 
-import requests
-
-from clarifai.datasets.export.dataset_inputs import DatasetExportReader, InputDownloader
-
-API_KEY = "" # Fill in your API_KEY
-local_archive_path = "" # Fill in the full path to the zip file
-save_path = "output.zip"
+from clarifai.client.dataset import Dataset
 
 def main():
-    metadata = f'Key {API_KEY}'
-    # Create a session object and set auth header
-    session = requests.Session()
-    session.headers.update({'Authorization': metadata})
-
-    # If the dataset export is created via API, the URL can be passed into DatasetExportReader (instead of the local archive path) via the `archive_url` parameter.
-    with DatasetExportReader(session=session, local_archive_path=local_archive_path) as reader:
-        InputDownloader(session, reader).download_input_archive(save_path=save_path)
+    Dataset().export(save_path='output.zip', local_archive_path='clarifai-data-protobuf.zip')
 
 
 if __name__ == '__main__':
