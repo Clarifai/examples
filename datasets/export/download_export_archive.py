@@ -4,7 +4,7 @@ the images from the hosted URLs and produce a directory that contains all image 
 
 Before running this script, please make sure the following has been completed:
 1. A dataset version export (currently only supports protobuf) has been created
-2. An API KEY for the app has been generated.
+2. `CLARIFAI_PAT` should be set as an environment variable
 """
 
 from clarifai.client.dataset import Dataset
