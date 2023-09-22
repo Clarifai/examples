@@ -30,6 +30,7 @@ dataset.upload_dataset(task="text_clf", split="train", module_dir="path_to_imdb_
 
 ## Notebooks
 
+ - [Basics](basics/basics.ipynb)
  - [Dataset Upload](datasets/upload/dataset_upload.ipynb)
 
 
