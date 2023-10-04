@@ -9,9 +9,10 @@ Before running this script, please make sure the following has been completed:
 
 from clarifai.client.dataset import Dataset
 
+
 def main():
-    Dataset().export(save_path='output.zip', local_archive_path='clarifai-data-protobuf.zip')
+  Dataset().export(save_path='output.zip', local_archive_path='clarifai-data-protobuf.zip')
 
 
 if __name__ == '__main__':
-    main()
+  main()
