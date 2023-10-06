@@ -32,6 +32,8 @@ dataset.upload_dataset(task="text_clf", split="train", module_dir="path_to_imdb_
 
  - [Basics](basics/basics.ipynb)
  - [Dataset Upload](datasets/upload/dataset_upload.ipynb)
+ - [Create Workflow](workflows/create_workflow.ipynb)
+ - [Export Workflow](workflows/export_workflow.ipynb)
 
 
 ## Note
