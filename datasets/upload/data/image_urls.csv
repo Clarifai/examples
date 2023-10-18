@@ -1,4 +1,4 @@
 inputid,input,concepts,metadata,geopoints
 image01,https://samples.clarifai.com/featured-models/color-colored-houses-boats-on-canal.jpg,image,"{'filename': 'canal.jpg', 'split': 'train'}","102,70"
-image02,https://samples.clarifai.com/metro-north.jpg,image,,,"101,82"
+image02,https://samples.clarifai.com/metro-north.jpg,image,,"101,82"
 image03,https://samples.clarifai.com/featured-models/color-grafitti-on-garage-door.jpg,image,"{'filename': 'door.jpg', 'split': 'train'}","104,74"
