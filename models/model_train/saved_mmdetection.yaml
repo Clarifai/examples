@@ -1,0 +1,20 @@
+dataset_id: 'train_dataset'
+dataset_version_id: ''
+concepts: ['id-cow',
+ 'id-horse',
+ 'id-bottle',
+ 'id-sofa',
+ 'id-bird',
+ 'id-cat',
+ 'id-dog',
+ 'id-person']
+train_params:
+  invalid_data_tolerance_percent: 5.0
+  template: MMDetection
+  seed: -1.0
+  custom_config: saved_MMDetection.py
+  num_gpus: 1.0
+  image_size:
+  - 320.0
+inference_params:
+  detection_threshold: 0.0
