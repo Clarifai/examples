@@ -23,35 +23,39 @@ pip install -U clarifai
 ```python
 from clarifai.client.dataset import Dataset
 dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
-dataset.upload_dataset(task="visual_classification", split="train", module_dir="path_to_cifar10_module")
-```
 
-#### Image Classification - [Food-101](https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/)
-```python
-from clarifai.client.dataset import Dataset
-dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
-dataset.upload_dataset(task="visual_classification", split="train", module_dir="path_to_food-101_module")
+from image_classification.cifar10.dataset import Cifar10DataLoader
+cifar_dataloader = Cifar10DataLoader()
+dataset.upload_dataset(dataloader=cifar_dataloader)
 ```
 
 #### Text Classification - IMDB Reviews
 ```python
 from clarifai.client.dataset import Dataset
 dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
-dataset.upload_dataset(task="text_clf", split="train", module_dir="path_to_imdb_reviews_module")
+
+#create a custom dataloader for the dataset and pass it in this function.
+dataset.upload_dataset(dataloader=imdb_dataloader)
 ```
 
 #### Object Detection - VOC - 2012
 ```python
 from clarifai.client.dataset import Dataset
 dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
-dataset.upload_dataset(task="visual_detection", split="train", module_dir="path_to_voc_module")
+
+from image_detection.voc.dataset import VOCDetectionDataLoader
+voc_dataloader = VOCDetectionDataLoader()
+dataset.upload_dataset(dataloader=voc_dataloader)
 ```
 
 #### Image Segmentation - COCO
 ```python
 from clarifai.client.dataset import Dataset
 dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
-dataset.upload_dataset(task="visual_segmentation", split="train", module_dir="path_to_coco_module")
+
+from image_segmentation.coco.dataset import COCOSegmentationDataLoader
+coco_dataloader = COCOSegmentationDataLoader()
+dataset.upload_dataset(dataloader=coco_dataloader)
 ```
 
 ## upload_from_folder

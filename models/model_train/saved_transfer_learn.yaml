@@ -1,0 +1,8 @@
+dataset_id: 'image_dataset'
+dataset_version_id: ''
+concepts: ['id-ramen', 'id-prime_rib', 'id-hamburger', 'id-beignets']
+train_params:
+  base_embed_model: null
+  enrich_dataset: Automatic
+inference_params:
+  min_value: 0.0
