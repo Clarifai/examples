@@ -22,36 +22,40 @@ pip install -U clarifai
 #### Image Classification - Cifar10
 ```python
 from clarifai.client.dataset import Dataset
+from clarifai.datasets.upload.utils import load_module_dataloader
 dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
-dataset.upload_dataset(task="visual_classification", split="train", module_dir="path_to_cifar10_module")
-```
 
-#### Image Classification - [Food-101](https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/)
-```python
-from clarifai.client.dataset import Dataset
-dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
-dataset.upload_dataset(task="visual_classification", split="train", module_dir="path_to_food-101_module")
+cifar_dataloader = load_module_dataloader('./image_classification/cifar10')
+dataset.upload_dataset(dataloader=cifar_dataloader)
 ```
 
 #### Text Classification - IMDB Reviews
 ```python
 from clarifai.client.dataset import Dataset
 dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
-dataset.upload_dataset(task="text_clf", split="train", module_dir="path_to_imdb_reviews_module")
+
+#create a custom dataloader for the dataset and pass it in this function.
+dataset.upload_dataset(dataloader=imdb_dataloader, get_upload_status=True)
 ```
 
 #### Object Detection - VOC - 2012
 ```python
 from clarifai.client.dataset import Dataset
+from clarifai.datasets.upload.utils import load_module_dataloader
 dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
-dataset.upload_dataset(task="visual_detection", split="train", module_dir="path_to_voc_module")
+
+voc_dataloader = load_module_dataloader('./image_detection/voc')
+dataset.upload_dataset(dataloader=voc_dataloader, get_upload_status=True)
 ```
 
 #### Image Segmentation - COCO
 ```python
 from clarifai.client.dataset import Dataset
+from clarifai.datasets.upload.utils import load_module_dataloader
 dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
-dataset.upload_dataset(task="visual_segmentation", split="train", module_dir="path_to_coco_module")
+
+coco_dataloader = load_module_dataloader('./image_segmentation/coco')
+dataset.upload_dataset(dataloader=coco_dataloader, get_upload_status=True)
 ```
 
 ## upload_from_folder

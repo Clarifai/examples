@@ -30,6 +30,10 @@ class COCOSegmentationDataLoader(ClarifaiDataLoader):
 
     self.load_data()
 
+  @property
+  def task(self):
+    return "visual_segmentation"
+
   def load_data(self):
     self.coco = COCO(self.annotations_file[self.split])
     categories = self.coco.loadCats(self.coco.getCatIds())

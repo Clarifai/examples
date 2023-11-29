@@ -16,6 +16,10 @@ class Food101DataLoader(ClarifaiDataLoader):
     self.image_dir = {"train": os.path.join(os.path.dirname(__file__), "images")}
     self.load_data()
 
+  @property
+  def task(self):
+    return "visual_classification"
+
   def load_data(self):
     """Load data for the food-101 dataset."""
     self.data = []
@@ -33,7 +37,7 @@ class Food101DataLoader(ClarifaiDataLoader):
     image_path = data_item["image_path"]
     class_name = data_item["class_name"]
     return VisualClassificationFeatures(
-        image_path=image_path, label=class_name, id=os.path.basename(image_path).split(".")[0])
+        image_path=image_path, labels=[class_name], id=os.path.basename(image_path).split(".")[0])
 
   def __len__(self):
     return len(self.data)
