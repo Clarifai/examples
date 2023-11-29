@@ -39,7 +39,7 @@ class Cifar10DataLoader(ClarifaiDataLoader):
     item = self.data[index]
     return VisualClassificationFeatures(
         image_path=os.path.join(os.path.dirname(__file__), item[0]),
-        labels=item[1],
+        labels=[item[1]],
         id=os.path.basename(item[0]).split(".")[0])
 
   def __len__(self):

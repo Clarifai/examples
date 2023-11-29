@@ -22,10 +22,10 @@ pip install -U clarifai
 #### Image Classification - Cifar10
 ```python
 from clarifai.client.dataset import Dataset
+from clarifai.datasets.upload.utils import load_module_dataloader
 dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
 
-from image_classification.cifar10.dataset import Cifar10DataLoader
-cifar_dataloader = Cifar10DataLoader()
+cifar_dataloader = load_module_dataloader('./image_classification/cifar10')
 dataset.upload_dataset(dataloader=cifar_dataloader)
 ```
 
@@ -35,27 +35,27 @@ from clarifai.client.dataset import Dataset
 dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
 
 #create a custom dataloader for the dataset and pass it in this function.
-dataset.upload_dataset(dataloader=imdb_dataloader)
+dataset.upload_dataset(dataloader=imdb_dataloader, get_upload_status=True)
 ```
 
 #### Object Detection - VOC - 2012
 ```python
 from clarifai.client.dataset import Dataset
+from clarifai.datasets.upload.utils import load_module_dataloader
 dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
 
-from image_detection.voc.dataset import VOCDetectionDataLoader
-voc_dataloader = VOCDetectionDataLoader()
-dataset.upload_dataset(dataloader=voc_dataloader)
+voc_dataloader = load_module_dataloader('./image_detection/voc')
+dataset.upload_dataset(dataloader=voc_dataloader, get_upload_status=True)
 ```
 
 #### Image Segmentation - COCO
 ```python
 from clarifai.client.dataset import Dataset
+from clarifai.datasets.upload.utils import load_module_dataloader
 dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
 
-from image_segmentation.coco.dataset import COCOSegmentationDataLoader
-coco_dataloader = COCOSegmentationDataLoader()
-dataset.upload_dataset(dataloader=coco_dataloader)
+coco_dataloader = load_module_dataloader('./image_segmentation/coco')
+dataset.upload_dataset(dataloader=coco_dataloader, get_upload_status=True)
 ```
 
 ## upload_from_folder
