@@ -1,7 +1,7 @@
 # Clarifai Python SDK Examples
 
 
-This is a collection of examples for Clarifai-python. Use these examples to learn Clarifai and build your own robust and scalable AI applications.
+This is a collection of examples for the [clarifai-python](https://github.com/Clarifai/clarifai-python) SDK. Use these examples to learn Clarifai and build your own robust and scalable AI applications.
 
 Experience the power of Clarifai in building Computer Vision , Natual Language processsing , Generative AI applications.
 
@@ -37,8 +37,8 @@ dataset.upload_dataset(task="text_clf", split="train", module_dir="path_to_imdb_
 |   Workflows   | [Create Workflow](workflows/create_workflow.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/workflows/create_workflow.ipynb) |
 |             | [Export Workflow](workflows/export_workflow.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/workflows/export_workflow.ipynb) |
 | Model Predict  | [Model Predict](models/model_predict.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/models/model_predict.ipynb) |
-| Model Training  | [Image Classificaion Training](models/model_train/image-classification_training.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/models/model_train/image-classification_training.ipynb) |
-|             | [Text Classificaion Training](models/model_train/text-classification_training.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/models/model_train/text-classification_training.ipynb) |
+| Model Training  | [Image Classification Training](models/model_train/image-classification_training.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/models/model_train/image-classification_training.ipynb) |
+|             | [Text Classification Training](models/model_train/text-classification_training.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/models/model_train/text-classification_training.ipynb) |
 |             | [Image Detection Training](models/model_train/image-detection_training.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/models/model_train/image-detection_training.ipynb) |
 |             | [Image Segmentation Training](models/model_train/image-segmentation_training.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/models/model_train/image-segmentation_training.ipynb) |
 |             | [Transfer Learn Training](models/model_train/transfer-learn.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/models/model_train/transfer-learn.ipynb) |
