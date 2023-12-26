@@ -1,22 +1,10 @@
-[![](https://upload.wikimedia.org/wikipedia/commons/b/bc/Clarifai_Logo_FC_Web.png)](https://www.clarifai.com/)
 
 # Langchain Chains
 
 This folder showcases the LangChain [Chains](https://python.langchain.com/docs/modules/chains/) framework through various implementations and configurations in examples notebook.
 Explore different chains to understand how LangChain can be utilized for building powerful and flexible LLM driven AI apps whilst leveraging the [Clarifai-Langchain](https://python.langchain.com/docs/integrations/llms/clarifai) integration.
 
-```
-Langchain/
-├──   Chains/
-│          ├── Prompt_templates_and Chains
-│          ├── Retrieval_QA_chain_with_Clarifai_Vectorstore
-│          └── Router_chain_examples_with_Clarifai_SDK
-│ 
-├──   Dataset/
-│          └── rule_book.txt
-│ 
-└── README.md
-```
+
 ## Contents
 ### 1. Prompt Templates and Chains
 File Name: Prompt_templates and chains.ipynb
