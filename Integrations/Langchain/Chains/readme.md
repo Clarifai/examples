@@ -7,11 +7,14 @@ Explore different chains to understand how LangChain can be utilized for buildin
 
 ```
 Langchain/
-├── chains/
-│   ├── Prompt_templates_and Chains
-│   ├── Retrieval_QA_chain_with_Clarifai_Vectorstore
-│   └── Router_chain_examples_with_Clarifai_SDK
-│  
+├──   Chains/
+│          ├── Prompt_templates_and Chains
+│          ├── Retrieval_QA_chain_with_Clarifai_Vectorstore
+│          └── Router_chain_examples_with_Clarifai_SDK
+│ 
+├──   Dataset/
+│          └── rule_book.txt
+│ 
 └── README.md
 ```
 ## Contents
