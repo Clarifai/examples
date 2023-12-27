@@ -27,7 +27,7 @@ LangChain empowers developers to build advanced language-driven applications wit
  |             | [Retrieval QA Chain](Chains/Retrieval_QA_chain_with_Clarifai_Vectorstore.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/Integrations/Langchain/Chains/Retrieval_QA_chain_with_Clarifai_Vectorstore.ipynb) |
 |             | [Router Chain](Chains/Router_chain_examples_with_Clarifai_SDK.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/Integrations/Langchain/Chains/Router_chain_examples_with_Clarifai_SDK.ipynb) |
 | Agents       | [Conversational Agent](Agents/Retrieval_QA_with_Conversation_memory.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/Integrations/Langchain/Agents/Retrieval_QA_with_Conversation_memory.ipynb) |
-|             | [React Docstore Agent](Agents/Doc-retrieve_using_Langchain-ReAct_Agent.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/Integrations/Langchain/Agents/Doc-retrieve_using_Langchain-ReAct_Agent.ipynb) |
+|             | [ReAct Docstore Agent](Agents/Doc-retrieve_using_Langchain-ReAct_Agent.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/Integrations/Langchain/Agents/Doc-retrieve_using_Langchain-ReAct_Agent.ipynb) |
 
 
 
