@@ -12,9 +12,9 @@ workflow:
 
     - id: llm
       model:
-          user_id: openai
-          model_id: GPT-3_5-turbo
-          app_id: chat-completion
+          user_id: mistralai
+          model_id: mistral-7B-Instruct
+          app_id: completion
 
       node_inputs:
         - node_id: prompter
