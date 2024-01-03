@@ -5,6 +5,9 @@ This is a collection of examples for the [clarifai-python](https://github.com/Cl
 
 Experience the power of Clarifai in building Computer Vision , Natual Language processsing , Generative AI applications.
 
+[Website](https://www.clarifai.com/) | [Demo](https://www.clarifai.com/company/schedule-demo) | [Signup for a Free Account](https://clarifai.com/signup) | [API Docs](https://docs.clarifai.com/) | [Clarifai Community](https://clarifai.com/explore) | [Python SDK Docs](https://docs.clarifai.com/python-sdk/api-reference) | [Examples](https://github.com/Clarifai/examples) | [Colab Notebooks](https://github.com/Clarifai/colab-notebooks) | [Discord](https://discord.gg/XAPE3Vtg)
+
+
 ## Setup
 * Sign up for a free account at [clarifai](https://clarifai.com/signup) and set your PAT key.
 
