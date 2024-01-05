@@ -61,6 +61,9 @@ dataset.upload_dataset(task="text_clf", split="train", module_dir="path_to_imdb_
 
 
 ## Model upload examples
+### How to start
+Please refer to this [doc](https://github.com/Clarifai/clarifai-python/tree/master/clarifai/models/model_serving)
+### Examples
 | Model type  |  Example    |
 | ----------- | ----------- |
 | [multimodal-embedder](./model_upload/multimodal_embedder/) | [CLIP](./model_upload/multimodal_embedder/clip/) |
