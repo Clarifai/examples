@@ -63,6 +63,23 @@ dataset.upload_dataset(task="text_clf", split="train", module_dir="path_to_imdb_
 |             |             | [ReAct Docstore Agent](Integrations/Langchain/Agents/Doc-retrieve_using_Langchain-ReAct_Agent.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/Integrations/Langchain/Agents/Doc-retrieve_using_Langchain-ReAct_Agent.ipynb) |
 
 
+## Model upload examples
+### How to start
+Please refer to this [doc](https://github.com/Clarifai/clarifai-python/tree/master/clarifai/models/model_serving)
+### Examples
+| Model type  |  Example    |
+| ----------- | ----------- |
+| [multimodal-embedder](./model_upload/multimodal_embedder/) | [CLIP](./model_upload/multimodal_embedder/clip/) |
+| [text-classifier](./model_upload/text_classifier) | [xlm-roberta](./model_upload/text_classifier/xlm-roberta/) |
+| [text-embedder](./model_upload/text_embedder/) | [instructor-xl](./model_upload/text_embedder/instructor-xl/) |
+| [text-to-image](./model_upload/text_to_image/) | [sd-v1.5](./model_upload/text_to_image/sd-v1.5/) |
+| [text-to-text](./model_upload/text_to_text/) | [bart-summarize](./model_upload/text_to_text/bart-summarize/), [vllm model](./model_upload/vllm_text_to_text/example/) |
+| [visual_classsifier](./model_upload/visual_classsifier/) | [age_vit](./model_upload/visual_classsifier/age_vit/) |
+| [visual_detector](./model_upload/visual_detector/) | [yolof](./model_upload/visual_detector/yolof/), [faster-rcnn_torchserve](./model_upload/visual_detector/faster-rcnn_torchserve/) |
+| [visual_embedder](./model_upload/visual_embedder) | [vit-base](./model_upload/visual_embedder/vit-base/) |
+| [visual_segmenter](./model_upload/visual_segmenter) | [segformer-b2](./model_upload/visual_segmenter/segformer-b2/) |
+
+
 ## Note
 
 Although these scripts are run on your local machine, they'll communicate with Clarifai and run in our cloud on demand.
