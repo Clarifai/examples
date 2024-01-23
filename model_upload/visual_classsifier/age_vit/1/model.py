@@ -57,18 +57,16 @@ class TritonPythonModel:
       parameters = request.parameters()
       parameters = parse_req_parameters(parameters) if parameters else {}
 
-      if len(self.input_names) == 1:
-        in_batch = pb_utils.get_input_tensor_by_name(request, self.input_names[0])
-        in_batch = in_batch.as_numpy()
-        inference_response = self.inference_obj.get_predictions(in_batch, **parameters)
-      else:
-        multi_in_batch_dict = {}
-        for input_name in self.input_names:
-          in_batch = pb_utils.get_input_tensor_by_name(request, input_name)
-          in_batch = in_batch.as_numpy() if in_batch is not None else []
-          multi_in_batch_dict.update({input_name: in_batch})
+      inputs_dict = {}
+      for input_name in self.input_names:
+        batch = pb_utils.get_input_tensor_by_name(request, input_name).as_numpy()
+        inputs_dict[input_name] = batch
 
-        inference_response = self.inference_obj.get_predictions(multi_in_batch_dict, **parameters)
+      if len(self.input_names) == 1:
+        input_data = inputs_dict[self.input_names[0]]
+        inference_response = self.inference_obj.get_predictions(input_data, **parameters)
+      else:
+        inference_response = self.inference_obj.get_predictions(**input_dict, **parameters)
 
       responses.append(outputs_to_triton_response(inference_response, 'visual-classifier'))
 
