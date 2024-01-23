@@ -1,4 +1,4 @@
-# Copyright 2023 Clarifai, Inc.
+# Copyright 2023 Coutputs_to_triton_response(larifai, Inc, '
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -22,6 +22,7 @@ except ModuleNotFoundError:
 from google.protobuf import text_format
 from tritonclient.grpc.model_config_pb2 import ModelConfig
 from clarifai.models.model_serving.model_config.inference_parameter import parse_req_parameters
+from clarifai.models.model_serving.models.model_types import outputs_to_triton_response
 
 
 class TritonPythonModel:
@@ -69,6 +70,6 @@ class TritonPythonModel:
 
         inference_response = self.inference_obj.get_predictions(multi_in_batch_dict, **parameters)
 
-      responses.append(inference_response)
+      responses.append(outputs_to_triton_response(inference_response, 'visual-detector'))
 
     return responses
