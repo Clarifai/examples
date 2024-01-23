@@ -15,13 +15,11 @@ import torch
 from mmdet.apis import inference_detector, init_detector
 from mmdet.utils import register_all_modules
 
-from clarifai.models.model_serving.model_config import ModelTypes, get_model_config
 from clarifai.models.model_serving.models.output import VisualDetectorOutput
 
 # Initialize the DetInferencer
 register_all_modules()
 
-config = get_model_config(ModelTypes.visual_detector)
 
 
 class InferenceModel:
@@ -39,7 +37,6 @@ class InferenceModel:
     self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
     self.model = init_detector(self.config_path, self.checkpoint, device=self.device)
 
-  @config.inference.wrap_func
   def get_predictions(self, input_data: list, **kwargs) -> list:
     """
     Main model inference method.
@@ -53,7 +50,7 @@ class InferenceModel:
 
     Returns:
     --------
-      List of one of the `clarifai.models.model_serving.models.output types` or `config.inference.return_type(your_output)`. Refer to the README/docs
+      List of VisualDetectorOutput
     """
     max_bbox_count = 500  # max allowed detected bounding boxes per image
     outputs = []

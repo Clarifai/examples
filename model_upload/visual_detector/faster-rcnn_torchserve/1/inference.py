@@ -18,10 +18,7 @@ import torch  # noqa: E402
 from PIL import Image  # noqa: E402
 from torchvision import models, transforms  # noqa: E402
 
-from clarifai.models.model_serving.model_config import ModelTypes, get_model_config  # noqa: E402
 from clarifai.models.model_serving.models.output import VisualDetectorOutput  # noqa: E402
-
-config = get_model_config(ModelTypes.visual_detector)
 
 
 class InferenceModel:
@@ -43,7 +40,6 @@ class InferenceModel:
     self.model = self.model.to(self.device)
     self.model.eval()
 
-  @config.inference.wrap_func
   def get_predictions(self, input_data: list, **kwargs) -> list:
     """
     Main model inference method.
@@ -57,7 +53,7 @@ class InferenceModel:
 
     Returns:
     --------
-      List of one of the `clarifai.models.model_serving.models.output types` or `config.inference.return_type(your_output)`. Refer to the README/docs
+      List of VisualDetectorOutput
     """
     max_bbox_count = 300  # max allowed detected bounding boxes per image
     outputs = []

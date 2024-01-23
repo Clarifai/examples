@@ -14,10 +14,7 @@ import numpy as np
 import torch
 from diffusers import StableDiffusionPipeline
 
-from clarifai.models.model_serving.model_config import ModelTypes, get_model_config
 from clarifai.models.model_serving.models.output import ImageOutput
-
-config = get_model_config(ModelTypes.text_to_image)
 
 
 class InferenceModel:
@@ -35,7 +32,6 @@ class InferenceModel:
         self.huggingface_model_path, torch_dtype=torch.float16)
     self.pipeline = self.pipeline.to(self.device)
 
-  @config.inference.wrap_func
   def get_predictions(self, input_data: list, **kwargs):
     """
     Main model inference method.
@@ -47,7 +43,7 @@ class InferenceModel:
 
     Returns:
     --------
-      One of the clarifai.models.model_serving.models.output types. Refer to the README/docs
+      List of ImageOutput
     """
     outputs = []
     for inp in input_data:

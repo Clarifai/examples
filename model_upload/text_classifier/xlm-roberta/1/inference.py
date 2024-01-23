@@ -18,8 +18,6 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from clarifai.models.model_serving.model_config import ModelTypes, get_model_config
 from clarifai.models.model_serving.models.output import ClassifierOutput
 
-config = get_model_config(ModelTypes.text_classifier)
-
 
 class InferenceModel:
   """User model inference class."""
@@ -35,8 +33,7 @@ class InferenceModel:
     self.tokenizer: Callable = AutoTokenizer.from_pretrained(self.checkpoint_path)
     self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
-  @config.inference.wrap_func
-  def get_predictions(self, input_data: list, **kwargs) -> list:
+  def infer(self, input_data: list, **kwargs) -> list:
     """
     Main model inference method.
 
@@ -49,7 +46,7 @@ class InferenceModel:
 
     Returns:
     --------
-      List of one of the `clarifai.models.model_serving.models.output types` or `config.inference.return_type(your_output)`. Refer to the README/docs
+      List of ClassifierOutput
     """
     outputs = []
     for inp in input_data:

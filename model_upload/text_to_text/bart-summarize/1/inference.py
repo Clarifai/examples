@@ -12,10 +12,7 @@ from pathlib import Path
 
 from transformers import pipeline
 
-from clarifai.models.model_serving.model_config import ModelTypes, get_model_config
 from clarifai.models.model_serving.models.output import TextOutput
-
-config = get_model_config(ModelTypes.text_to_text)
 
 
 class InferenceModel:
@@ -30,7 +27,6 @@ class InferenceModel:
     self.huggingface_model_path = os.path.join(self.base_path, "checkpoint")
     self.pipeline = pipeline("summarization", model=self.huggingface_model_path)
 
-  @config.inference.wrap_func
   def get_predictions(self, input_data: list, **kwargs) -> list:
     """
     Main model inference method.
@@ -44,7 +40,7 @@ class InferenceModel:
 
     Returns:
     --------
-      List of one of the `clarifai.models.model_serving.models.output types` or `config.inference.return_type(your_output)`. Refer to the README/docs
+      List of TextOutput
     """
     # convert to top_k to int
     outputs = []

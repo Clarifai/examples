@@ -21,10 +21,7 @@ os.environ['TORCH_HOME'] = PIPELINE_PATH
 import torch  # noqa
 from InstructorEmbedding import INSTRUCTOR  # noqa
 
-from clarifai.models.model_serving.model_config import (  # noqa # pylint: disable=unused-import
-    ModelTypes, get_model_config)
-
-config = get_model_config("text-embedder")
+from clarifai.models.model_serving.model_types.output import EmbeddingOutput
 
 
 class InferenceModel:
@@ -42,7 +39,6 @@ class InferenceModel:
     self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
     self.model = INSTRUCTOR('hkunlp/instructor-xl')
 
-  @config.inference.wrap_func
   def get_predictions(self, input_data: list, **kwargs) -> list:
     """
     Main model inference method.
@@ -56,8 +52,8 @@ class InferenceModel:
 
     Returns:
     --------
-      List of one of the `clarifai.models.model_serving.models.output types` or `config.inference.return_type(your_output)`. Refer to the README/docs
+      List of EmbeddingOutput
     """
     batch_preds = self.model.encode(input_data, device=self.device)
 
-    return [config.inference.return_type(each) for each in batch_preds]
+    return [EmbeddingOutput(x) for x in batch_preds]

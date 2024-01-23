@@ -12,10 +12,7 @@ from pathlib import Path
 
 from vllm import LLM, SamplingParams
 
-from clarifai.models.model_serving.model_config import ModelTypes, get_model_config
-
-config = get_model_config(ModelTypes.text_to_text)
-
+from clarifai.models.model_serving.models.output import TextOutput
 
 class InferenceModel:
   """User model inference class."""
@@ -35,7 +32,6 @@ class InferenceModel:
         #quantization="awq"
     )
 
-  @config.inference.wrap_func
   def get_predictions(self, input_data: list, **kwargs):
     """
     Main model inference method.
@@ -47,10 +43,10 @@ class InferenceModel:
 
     Returns:
     --------
-      List of one of the `clarifai.models.model_serving.models.output types` or `config.inference.return_type(your_output)`. Refer to the README/docs
+      List of TextOutput
     """
     sampling_params = SamplingParams(**kwargs)
     preds = self.model.generate(input_data, sampling_params)
-    outputs = [config.inference.return_type(each.outputs[0].text) for each in preds]
+    outputs = [TextOutput(each.outputs[0].text) for each in preds]
 
     return outputs

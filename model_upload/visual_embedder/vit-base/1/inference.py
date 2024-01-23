@@ -13,10 +13,7 @@ from pathlib import Path
 import torch
 from transformers import AutoModel, ViTImageProcessor
 
-from clarifai.models.model_serving.model_config import ModelTypes, get_model_config
 from clarifai.models.model_serving.models.output import EmbeddingOutput
-
-config = get_model_config(ModelTypes.visual_embedder)
 
 
 class InferenceModel:
@@ -32,7 +29,6 @@ class InferenceModel:
     self.processor = ViTImageProcessor.from_pretrained(self.huggingface_model_path)
     self.model = AutoModel.from_pretrained(self.huggingface_model_path)
 
-  @config.inference.wrap_func
   def get_predictions(self, input_data):
     """
     Main model inference method.
@@ -44,7 +40,7 @@ class InferenceModel:
 
     Returns:
     --------
-      One of the clarifai.models.model_serving.models.output types. Refer to the README/docs
+      List of EmbeddingOutput
     """
     outputs = []
     inputs = self.processor(images=input_data, return_tensors="pt")

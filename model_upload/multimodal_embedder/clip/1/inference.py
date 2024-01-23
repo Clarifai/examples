@@ -12,9 +12,8 @@ from pathlib import Path
 
 import torch
 from transformers import CLIPModel, CLIPProcessor
-from clarifai.models.model_serving.model_config import ModelTypes, get_model_config
 
-config = get_model_config(ModelTypes.multimodal_embedder)
+from clarifai.models.model_serving.models.output import EmbeddingOutput
 
 
 class InferenceModel:
@@ -34,8 +33,6 @@ class InferenceModel:
     #self.text_model = CLIPTextModel.from_pretrained(os.path.join(self.base_path, "openai/clip-vit-base-patch32"))
     self.processor = CLIPProcessor.from_pretrained(os.path.join(self.base_path, "checkpoint"))
 
-  #Add relevant model type decorator to the method below (see docs/model_types for ref.)
-  @config.inference.wrap_func
   def get_predictions(self, input_data, **kwargs):
     """
     Main model inference method.
@@ -47,7 +44,7 @@ class InferenceModel:
 
     Returns:
     --------
-      One of the clarifai.models.model_serving.models.output types. Refer to the README/docs
+      List of EmbeddingOutput
     """
     outputs = []
     for inp in input_data:
@@ -61,6 +58,6 @@ class InferenceModel:
           inputs = self.processor(images=image, return_tensors="pt", padding=True)
           embeddings = self.model.get_image_features(**inputs)
       embeddings = embeddings.squeeze().cpu().numpy()
-      outputs.append(config.inference.return_type(embedding_vector=embeddings))
+      outputs.append(EmbeddingOutput(embedding_vector=embeddings))
 
     return outputs

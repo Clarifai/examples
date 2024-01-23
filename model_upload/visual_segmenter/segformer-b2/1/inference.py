@@ -13,10 +13,7 @@ from pathlib import Path
 import torch
 from transformers import AutoModelForSemanticSegmentation, SegformerImageProcessor
 
-from clarifai.models.model_serving.model_config import ModelTypes, get_model_config
 from clarifai.models.model_serving.models.output import MasksOutput
-
-config = get_model_config(ModelTypes.visual_segmenter)
 
 
 class InferenceModel:
@@ -33,7 +30,6 @@ class InferenceModel:
     self.processor = SegformerImageProcessor.from_pretrained(self.huggingface_model_path)
     self.model = AutoModelForSemanticSegmentation.from_pretrained(self.huggingface_model_path)
 
-  @config.inference.wrap_func
   def get_predictions(self, input_data: list, **kwargs) -> list:
     """
     Main model inference method.
@@ -47,7 +43,7 @@ class InferenceModel:
 
     Returns:
     --------
-      List of one of the `clarifai.models.model_serving.models.output types` or `config.inference.return_type(your_output)`. Refer to the README/docs
+      List of MasksOutput
     """
     outputs = []
 

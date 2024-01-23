@@ -18,8 +18,6 @@ from transformers import AutoImageProcessor, ViTForImageClassification
 from clarifai.models.model_serving.model_config import ModelTypes, get_model_config
 from clarifai.models.model_serving.models.output import ClassifierOutput
 
-config = get_model_config(ModelTypes.visual_classifier)
-
 
 class InferenceModel:
   """User model inference class."""
@@ -35,7 +33,6 @@ class InferenceModel:
     self.model: Callable = ViTForImageClassification.from_pretrained(self.huggingface_model_path)
     self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
-  @config.inference.wrap_func
   def get_predictions(self, input_data: list, **kwargs) -> list:
     """
     Main model inference method.
@@ -49,7 +46,7 @@ class InferenceModel:
 
     Returns:
     --------
-      List of one of the `clarifai.models.model_serving.models.output types` or `config.inference.return_type(your_output)`. Refer to the README/docs
+      List of ClassifierOutput
     """
     # Transform image and pass it to the model
     inputs = self.transforms(input_data, return_tensors='pt')
