@@ -1,0 +1,10 @@
+data/obj_val2017_subset_data/000000424349.jpg
+data/obj_val2017_subset_data/000000086956.jpg
+data/obj_val2017_subset_data/000000176857.jpg
+data/obj_val2017_subset_data/000000193245.jpg
+data/obj_val2017_subset_data/000000573008.jpg
+data/obj_val2017_subset_data/000000384850.jpg
+data/obj_val2017_subset_data/000000182202.jpg
+data/obj_val2017_subset_data/000000074646.jpg
+data/obj_val2017_subset_data/000000409630.jpg
+data/obj_val2017_subset_data/000000166563.jpg
