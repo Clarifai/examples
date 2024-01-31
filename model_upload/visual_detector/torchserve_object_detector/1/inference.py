@@ -11,6 +11,7 @@ import os
 import sys
 import io
 from PIL import Image
+from collections import namedtuple
 
 from pathlib import Path  # noqa: E402
 import json
@@ -21,8 +22,6 @@ import zipfile
 from ts.model_loader import ModelLoaderFactory
 from ts.context import Context
 from ts.service import Service
-
-from clarifai.models.model_serving.models.output import VisualDetectorOutput  # noqa: E402
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_DIR = os.path.join(ROOT_DIR, "model")
@@ -39,6 +38,9 @@ def _np_to_img_bytes(inp_data: np.ndarray, format='tiff') -> bytes:
 class _MetricsCacheNoop:
     def __getattr__(self, attr):
         return lambda *args, **kwargs: None
+
+VisualDetectorOutput = namedtuple('VisualDetectorOutput',
+                                  ['predicted_bboxes', 'predicted_labels', 'predicted_scores'])
 
 
 class InferenceModel:

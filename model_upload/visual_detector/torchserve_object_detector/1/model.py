@@ -15,14 +15,25 @@
 import os
 import sys
 import numpy as np
+import json
 
 try:
   import triton_python_backend_utils as pb_utils
 except ModuleNotFoundError:
   pass
-from google.protobuf import text_format
-from tritonclient.grpc.model_config_pb2 import ModelConfig
-from clarifai.models.model_serving.model_config.inference_parameter import parse_req_parameters
+
+
+def parse_req_parameters(req_params: str):
+  req_params = json.loads(req_params)
+  for k, v in req_params.items():
+    if isinstance(v, str):
+      for t in (int, float):
+        try:
+          v = t(v)
+        except ValueError:
+          pass
+    req_params.update({k: v})
+  return req_params
 
 
 class TritonPythonModel:
@@ -40,14 +51,6 @@ class TritonPythonModel:
 
     self.inference_model = InferenceModel()
 
-    # Read input_name from config file
-    self.config_msg = ModelConfig()
-    with open(os.path.join(args["model_repository"], "config.pbtxt"), "r") as f:
-      cfg = f.read()
-    text_format.Merge(cfg, self.config_msg)
-    self.input_names = [inp.name for inp in self.config_msg.input]
-    assert len(self.input_names) == 1, "Only one input is supported"
-
   def execute(self, requests):
     """
     Serve model inference requests.
@@ -58,7 +61,7 @@ class TritonPythonModel:
       parameters = request.parameters()
       parameters = parse_req_parameters(parameters) if parameters else {}
 
-      in_batch = pb_utils.get_input_tensor_by_name(request, self.input_names[0])
+      in_batch = pb_utils.get_input_tensor_by_name(request, 'image')
       in_batch = in_batch.as_numpy()
       outputs = self.inference_model.predict(in_batch, **parameters)
 
