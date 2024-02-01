@@ -1,0 +1,4 @@
+classes = 80
+val2017_subset = data/val2017_subset.txt
+names = data/obj.names
+backup = backup/
