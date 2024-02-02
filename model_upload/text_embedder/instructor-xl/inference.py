@@ -3,13 +3,21 @@
 import os
 from pathlib import Path
 from typing import Dict, Union
+
+# Set up env for huggingface
+ROOT_PATH = os.path.join(os.path.dirname(__file__))
+PIPELINE_PATH = os.path.join(ROOT_PATH, 'checkpoint')
+
+os.environ['TORCH_HOME'] = PIPELINE_PATH
+os.environ['TRANSFORMERS_CACHE'] = PIPELINE_PATH  # noqa
+#os.environ["TRANSFORMERS_OFFLINE"] = "1"  # noqa
+
+import torch  # noqa
+from InstructorEmbedding import INSTRUCTOR  # noqa
 from clarifai.models.model_serving.model_config import *  # noqa
 
-import torch
-from scipy.special import softmax
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
-class InferenceModel(TextClassifier):
+class InferenceModel(TextEmbedder):
   """User model inference class."""
 
   def __init__(self) -> None:
@@ -19,32 +27,25 @@ class InferenceModel(TextClassifier):
     """
     # current directory
     self.base_path: Path = os.path.dirname(__file__)
-    self.checkpoint_path: Path = os.path.join(self.base_path, "checkpoint")
-    self.model = AutoModelForSequenceClassification.from_pretrained(self.checkpoint_path)
-    self.tokenizer = AutoTokenizer.from_pretrained(self.checkpoint_path)
+    self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
+    self.model = INSTRUCTOR('hkunlp/instructor-xl')
 
   def predict(self, input_data: list,
               inference_parameters: Dict[str, Union[str, float, int]]) -> list:
-    """ Custom prediction function for `text-classifier` model.
+    """ Custom prediction function for `text-embedder` model.
 
     Args:
       input_data (List[str]): List of text
       inference_parameters (Dict[str, Union[str, float, int]]): your inference parameters
 
     Returns:
-      list of ClassifierOutput
+      list of EmbeddingOutput
     
     """
 
-    outputs = []
-    for inp in input_data:
-      encoded_input = self.tokenizer(inp, return_tensors='pt')
-      output = self.model(**encoded_input)
-      scores = output[0][0].detach().numpy()
-      scores = softmax(scores)
-      outputs.append(ClassifierOutput(predicted_scores=scores))
+    batch_preds = self.model.encode(input_data, device=self.device)
 
-    return outputs
+    return [EmbeddingOutput(each) for each in batch_preds]
 
 if __name__ == "__main__":
   
