@@ -1,12 +1,41 @@
-## Text-to-Text Triton Model Examples
+## Text-to-Text Model Examples
 
 These can be used on the fly with minimal or no changes to test deploy all models that take a text input and yield a text output prediction e.g. text generation, summarization and translation models to the Clarifai platform. See the required files section for each model below.
 
-* ### [Bart-paper2slides-summarizer](https://huggingface.co/com3dian/Bart-large-paper2slides-summarizer)
+## [hf-model](./hf-model/)
 
-	Requirements to run tests locally:
+The `hf-model` folder contains code to deploy any `text-generation` of hf.
 
-	* Download/Clone the [huggingface model](https://huggingface.co/com3dian/Bart-large-paper2slides-summarizer) and store it under the **bart-summarize/1/checkpoint** directory.
-		```
-		huggingface-cli download com3dian/Bart-large-paper2slides-summarizer --local-dir bart-summarize/1/checkpoint --local-dir-use-symlinks False --exclude *.safetensors
-		```
+For instance, suppose you want to deploy [meta-llama/Llama-2-7b-chat-hf](https://huggingface.co/meta-llama/Llama-2-7b-chat-hf)
+
+Fist of all, download/Clone the checkpoints and store it under the **hf-model/checkpoint** directory.
+
+```bash
+$ pip install huggingface-hub
+$ huggingface-cli download meta-llama/Llama-2-7b-chat-hf --local-dir hf-model/checkpoint --local-dir-use-symlinksFalse --exclude {EXCLUDED FILE TYPES}
+```
+
+Install dependencies to test locally:
+
+```bash
+$ pip install -r hf-model/requirements.txt
+```
+
+>Note: Package versions may vary for certain models.
+
+Deploy the model to Clarifai:
+	
+>Note: you can skip testing by setting `--no-test` flag for `build` and `upload` command
+
+1. Build
+
+```bash
+$ clarifai build model <path/to/folder>
+```
+upload `*.clarifai` file to storage to obtain direct download url
+
+2. Upload
+
+```bash
+$ clarifai upload model <path/to/folder> --url <your_url> 
+```
