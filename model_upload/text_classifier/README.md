@@ -1,4 +1,4 @@
-## Text Classification Triton Model Examples
+## Text Classification Model Examples
 
 These can be used on the fly with minimal or no changes to test deploy text classification models to the Clarifai platform. See the required files section for each model below.
 

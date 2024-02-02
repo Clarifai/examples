@@ -1,4 +1,4 @@
-## Multimodal Embedder Triton Model Examples
+## Multimodal Embedder Model Examples
 
 These can be used on the fly with minimal or no changes to test deploy image classification models to the Clarifai platform. See the required files section for each model below.
 
