@@ -6,7 +6,7 @@ These can be used on the fly with minimal or no changes to test deploy image cla
 
 	Required files to run tests locally:
 
-	* Download the [model checkpoint from huggingface](https://huggingface.co/openai/clip-vit-base-patch32) and store it under `clip/1/checkpoint/`
+	* Download the [model checkpoint from huggingface](https://huggingface.co/openai/clip-vit-base-patch32) and store it under `clip/checkpoint/`
 
 
 	```
