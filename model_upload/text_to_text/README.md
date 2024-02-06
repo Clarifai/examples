@@ -23,7 +23,6 @@ $ pip install -r hf-model/requirements.txt
 
 >Note: Package versions may vary for certain models.
 
-
 ### [vLLM](./vllm-model/)
 
 The `vllm-model` folder contains code to deploy `text-generation` using high performance framework `vLLM`.
@@ -40,6 +39,12 @@ $ huggingface-cli download meta-llama/Llama-2-7b-chat-hf --local-dir vllm-model/
 ```
 
 Then in `inference.py`, you may want to update some config of vllm parameters in LLM(). It is recommended to use `gpu_memory_utilization=0.7`.
+
+Install dependencies to test locally:
+
+```bash
+$ pip install -r vllm-model/requirements.txt
+```
 
 ## Finally Deploy the model to Clarifai
 	

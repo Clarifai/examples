@@ -6,11 +6,17 @@ These can be used on the fly with minimal or no changes to test deploy visual em
 
 	Requirements to run tests locally:
 
-	* Download the [model checkpoint & sentencepiece bpe model from huggingface](https://huggingface.co/google/vit-base-patch16-224/tree/main) and store it under `vit-base/checkpoint`
+	Download the [model checkpoint & sentencepiece bpe model from huggingface](https://huggingface.co/google/vit-base-patch16-224/tree/main) and store it under `vit-base/checkpoint`
 	```
 	huggingface-cli download google/vit-base-patch16-224 --local-dir vit-base/checkpoint --local-dir-use-symlinks False --exclude *.msgpack *.h5 *.safetensors
 	```
+	
+	Install dependecies to test locally
 
+	```bash
+	$ pip install -r vit-base/requirements.txt
+	```
+	
 	Deploy the model to Clarifai:
 	
 	>Note: set `--no-test` flag for `build` and `upload` command to disable testing

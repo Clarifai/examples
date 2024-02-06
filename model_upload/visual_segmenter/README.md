@@ -6,9 +6,15 @@ These can be used on the fly with minimal or no changes to test deploy visual se
 
 	Requirements to run tests locally:
 
-	* Download/Clone the [huggingface model](https://huggingface.co/mattmdjaga/segformer_b2_clothes) into the **segformer-b2/checkpoint** directory.
+	Download/Clone the [huggingface model](https://huggingface.co/mattmdjaga/segformer_b2_clothes) into the **segformer-b2/checkpoint** directory.
 	```
 	$ huggingface-cli download mattmdjaga/segformer_b2_clothes --local-dir segformer-b2/checkpoint --local-dir-use-symlinks False --exclude *.safetensors optimizer.pt
+	```
+	
+	Install dependecies to test locally
+
+	```bash
+	$ pip install -r segformer-b2/requirements.txt
 	```
 	
 	Deploy the model to Clarifai:

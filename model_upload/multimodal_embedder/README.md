@@ -6,14 +6,20 @@ These can be used on the fly with minimal or no changes to test deploy image cla
 
 	Required files to run tests locally:
 
-	* Download the [model checkpoint from huggingface](https://huggingface.co/openai/clip-vit-base-patch32) and store it under `clip/checkpoint/`
+	Download the [model checkpoint from huggingface](https://huggingface.co/openai/clip-vit-base-patch32) and store it under `clip/checkpoint/`
 
 
 	```
 	$ pip install huggingface-hub
 	$ huggingface-cli download openai/clip-vit-base-patch32 --local-dir clip/checkpoint/ --local-dir-use-symlinks False --exclude *.msgpack *.h5
 	```
+	
+	Install dependecies to test locally
 
+	```bash
+	$ pip install -r clip/requirements.txt
+	```
+	
 	Deploy the model to Clarifai:
 	
 	>Note: set `--no-test` flag for `build` and `upload` command to disable testing

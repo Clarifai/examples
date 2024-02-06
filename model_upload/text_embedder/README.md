@@ -6,9 +6,15 @@ These can be used on the fly with minimal or no changes to test deploy text embe
 
 	Requirements to run tests locally:
 
-	* Download/Clone the [huggingface model](https://huggingface.co/hkunlp/instructor-xl) into the **instructor-xl/checkpoint** directory.
+	Download/Clone the [huggingface model](https://huggingface.co/hkunlp/instructor-xl) into the **instructor-xl/checkpoint** directory.
 	```
 	huggingface-cli download hkunlp/instructor-xl --local-dir instructor-xl/checkpoint/sentence_transformers/hkunlp_instructor-xl --local-dir-use-symlinks False
+	```
+	
+	Install dependecies to test locally
+
+	```bash
+	$ pip install -r instructor-xl/requirements.txt
 	```
 
 	Deploy the model to Clarifai:
