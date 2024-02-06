@@ -6,13 +6,19 @@ These can be used on the fly with minimal or no changes to test deploy text clas
 
 	Required files to run tests locally:
 
-	* Download the [model checkpoint](https://huggingface.co/cardiffnlp/twitter-xlm-roberta-base-sentiment/tree/main) and store it under `xlm-roberta/checkpoint/`
+	Download the [model checkpoint](https://huggingface.co/cardiffnlp/twitter-xlm-roberta-base-sentiment/tree/main) and store it under `xlm-roberta/checkpoint/`
 
 	```
 	$ pip install huggingface-hub
 	$ huggingface-cli download cardiffnlp/twitter-xlm-roberta-base-sentiment --local-dir xlm-roberta/checkpoint/ --local-dir-use-symlinks False --exclude *.msgpack *.h5
 	```
+	
+	Install dependecies to test locally
 
+	```bash
+	$ pip install -r xlm-roberta/requirements.txt
+	```
+	
 	Deploy the model to Clarifai:
 	
 	>Note: set `--no-test` flag for `build` and `upload` command to disable testing
