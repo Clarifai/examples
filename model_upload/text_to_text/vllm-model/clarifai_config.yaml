@@ -1,0 +1,26 @@
+clarifai_model:
+  clarifai_model_id: ''
+  clarifai_user_app_id: ''
+  description: ''
+  inference_parameters:
+  - default_value: 0.95
+    description: top_p
+    field_type: 3
+    path: top_p
+  - default_value: 50
+    description: top_k
+    field_type: 3
+    path: top_k
+  - default_value: 256
+    description: max_tokens
+    field_type: 3
+    path: max_tokens
+  - default_value: 0.8
+    description: temperature
+    field_type: 3
+    path: temperature
+  labels: []
+  type: text-to-text
+serving_backend:
+  triton:
+    max_batch_size: 4
