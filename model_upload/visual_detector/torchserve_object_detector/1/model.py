@@ -69,7 +69,7 @@ class TritonPythonModel:
 
     return responses
 
-def _visual_detector_reponse(self, outputs):
+def _visual_detector_reponse(outputs):
   """
   Visual detector type output parser.
   """

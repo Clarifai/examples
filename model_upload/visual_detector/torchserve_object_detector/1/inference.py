@@ -106,7 +106,14 @@ class InferenceModel:
       h, w, _ = inp_data.shape  # input image shape
       bboxes = [[x[1] / h, x[0] / w, x[3] / h, x[2] / w]
                 for x in bboxes]  # normalize the bboxes to [0,1]
+      bboxes = np.asarray(bboxes).astype(np.float32)
       bboxes = np.clip(bboxes, 0, 1)
+      scores = np.asarray(scores).astype(np.float32)
+      if scores.ndim == 1:
+        scores = scores[:, np.newaxis]
+      labels = np.asarray(labels).astype(np.int32)
+      if labels.ndim == 1:
+        labels = labels[:, np.newaxis]
       if len(bboxes) != 0:
         bboxes = np.concatenate((bboxes, np.zeros((max_bbox_count - len(bboxes), 4))))
         scores = np.concatenate((scores, np.zeros((max_bbox_count - len(scores), 1))))
