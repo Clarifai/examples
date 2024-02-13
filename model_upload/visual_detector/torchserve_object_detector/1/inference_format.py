@@ -9,7 +9,6 @@ class TorchserveDataConverter:
     img = Image.fromarray(image_array)
     buf = io.BytesIO()
     img.save(buf, format='tiff')
-    assert not parameters
     return [{
         "name": "data",
         "contentType": "image/tiff",
