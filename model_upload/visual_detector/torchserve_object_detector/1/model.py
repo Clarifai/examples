@@ -61,11 +61,18 @@ class TritonPythonModel:
       parameters = request.parameters()
       parameters = parse_req_parameters(parameters) if parameters else {}
 
-      in_batch = pb_utils.get_input_tensor_by_name(request, 'image')
-      in_batch = in_batch.as_numpy()
-      outputs = self.inference_model.predict(in_batch, **parameters)
-
-      responses.append(_visual_detector_reponse(outputs))
+      try:
+        in_batch = pb_utils.get_input_tensor_by_name(request, 'image')
+        in_batch = in_batch.as_numpy()
+        outputs = self.inference_model.predict(in_batch, **parameters)
+        responses.append(_visual_detector_reponse(outputs))
+      except Exception as ex:
+        responses.append(
+            output_tensors=[],
+            error=pb_utils.TritonError(
+                f"{type(ex)}: {getattr(ex, 'message', str(ex))}"
+            ),
+        )
 
     return responses
 

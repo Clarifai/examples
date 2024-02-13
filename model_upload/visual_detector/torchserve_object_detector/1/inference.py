@@ -23,17 +23,13 @@ from ts.model_loader import ModelLoaderFactory
 from ts.context import Context
 from ts.service import Service
 
+from inference_format import TorchserveDataConverter
+
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_DIR = os.path.join(ROOT_DIR, "model")
 MODEL_MAR = os.path.join(ROOT_DIR, "model.mar")
 # insert the path to the model code to the sys.path
 sys.path.insert(0, MODEL_DIR)
-
-def _np_to_img_bytes(inp_data: np.ndarray, format='tiff') -> bytes:
-   img = Image.fromarray(inp_data)
-   buf = io.BytesIO()
-   img.save(buf, format=format)
-   return buf.getvalue()
 
 class _MetricsCacheNoop:
     def __getattr__(self, attr):
@@ -51,6 +47,8 @@ class InferenceModel:
     Load inference time artifacts that are called frequently .e.g. models, tokenizers, etc.
     in this method so they are loaded only once for faster inference.
     """
+
+    self.ts_converter = TorchserveDataConverter()
 
     manifest_file = os.path.join(MODEL_DIR, "MAR-INF", "MANIFEST.json")
 
@@ -97,15 +95,16 @@ class InferenceModel:
     if isinstance(input_data, np.ndarray) and len(input_data.shape) == 4:
       input_data = list(input_data)
 
-    predictions = self.ts_predict(input_data)
+    predictions = self.ts_predict(input_data, kwargs)
 
     for inp_data, preds in zip(input_data, predictions):
-      bboxes = [result['bbox'] for result in preds]
-      labels = [result['class_label'] for result in preds]
-      scores = [result['score'] for result in preds]
+      preds_dicts = [self.ts_converter.from_torchserve_output(pred) for pred in preds]
+      bboxes = [result['bbox'] for result in preds_dicts]
+      labels = [result['label'] for result in preds_dicts]
+      scores = [result['score'] for result in preds_dicts]
       h, w, _ = inp_data.shape  # input image shape
       bboxes = [[x[1] / h, x[0] / w, x[3] / h, x[2] / w]
-                for x in bboxes]  # normalize the bboxes to [0,1]
+                for x in bboxes]  # normalize the bboxes to yxyx relative
       bboxes = np.asarray(bboxes).astype(np.float32)
       bboxes = np.clip(bboxes, 0, 1)
       scores = np.asarray(scores).astype(np.float32)
@@ -130,16 +129,12 @@ class InferenceModel:
 
     return outputs
 
-  def ts_predict(self, input_data):
+  def ts_predict(self, input_data, kwargs):
     batch = []
     for i, inp_data in enumerate(input_data):
       request_input = {
           "requestId": str(i).encode(),
-          "parameters": [{
-              "name": "data",
-              "contentType": "image/tiff",
-              "value": _np_to_img_bytes(inp_data),
-          }],
+          "parameters": self.ts_converter.to_torchserve_input_parameters(inp_data, kwargs),
       }
       batch.append(request_input)
 
