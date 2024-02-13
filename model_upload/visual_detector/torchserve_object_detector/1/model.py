@@ -68,10 +68,11 @@ class TritonPythonModel:
         responses.append(_visual_detector_reponse(outputs))
       except Exception as ex:
         responses.append(
-            output_tensors=[],
-            error=pb_utils.TritonError(
-                f"{type(ex)}: {getattr(ex, 'message', str(ex))}"
-            ),
+            pb_utils.InferenceResponse(
+              output_tensors=[],
+              error=pb_utils.TritonError(
+                  f"{ex.__class__.__name__}: {str(ex)}"
+              )),
         )
 
     return responses
