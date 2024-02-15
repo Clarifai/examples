@@ -74,7 +74,7 @@ class InferenceModel:
     )
     
 
-  def predict(self, input_data: list, **kwargs) -> list:
+  def predict(self, input_data: list, max_boxes=1000, **kwargs) -> list:
     """
     Main model inference method.
 
@@ -89,7 +89,6 @@ class InferenceModel:
     --------
       List of one of the `clarifai.models.model_serving.models.output types` or `config.inference.return_type(your_output)`. Refer to the README/docs
     """
-    max_bbox_count = 300  # max allowed detected bounding boxes per image
     outputs = []
 
     if isinstance(input_data, np.ndarray) and len(input_data.shape) == 4:
@@ -114,14 +113,14 @@ class InferenceModel:
       if labels.ndim == 1:
         labels = labels[:, np.newaxis]
       if len(bboxes) != 0:
-        bboxes = np.concatenate((bboxes, np.zeros((max_bbox_count - len(bboxes), 4))))
-        scores = np.concatenate((scores, np.zeros((max_bbox_count - len(scores), 1))))
+        bboxes = np.concatenate((bboxes, np.zeros((max_boxes - len(bboxes), 4))))
+        scores = np.concatenate((scores, np.zeros((max_boxes - len(scores), 1))))
         labels = np.concatenate((labels, np.zeros(
-            (max_bbox_count - len(labels), 1), dtype=np.int32)))
+            (max_boxes - len(labels), 1), dtype=np.int32)))
       else:
-        bboxes = np.zeros((max_bbox_count, 4), dtype=np.float32)
-        scores = np.zeros((max_bbox_count, 1), dtype=np.float32)
-        labels = np.zeros((max_bbox_count, 1), dtype=np.int32)
+        bboxes = np.zeros((max_boxes, 4), dtype=np.float32)
+        scores = np.zeros((max_boxes, 1), dtype=np.float32)
+        labels = np.zeros((max_boxes, 1), dtype=np.int32)
 
       outputs.append(
           VisualDetectorOutput(
