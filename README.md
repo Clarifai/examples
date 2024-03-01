@@ -46,6 +46,7 @@ dataset.upload_dataset(task="text_clf", split="train", module_dir="path_to_imdb_
 |             | [Image Segmentation Training](models/model_train/image-segmentation_training.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/models/model_train/image-segmentation_training.ipynb) |
 |             | [Transfer Learn Training](models/model_train/transfer-learn.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/models/model_train/transfer-learn.ipynb) |
 | Search      | [Vector Search](search/cross_modal_search.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/search/cross_modal_search.ipynb) |
+| RAG      | [RAG](RAG/RAG.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/RAG/RAG.ipynb) |
 
 
 
