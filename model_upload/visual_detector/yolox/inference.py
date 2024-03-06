@@ -25,8 +25,8 @@ class InferenceModel(VisualDetector):
     # current directory
     self.base_path: Path = os.path.dirname(__file__)
     self.checkpoint = os.path.join(self.base_path,
-                                   "configs/yolox/yolox_s_8x8_300e_coco_20211121_095711-4592a793.pth")
-    self.config_path = os.path.join(self.base_path, "configs/yolox/yolox_s_8xb8-300e_coco.py")
+                                   "configs/yolox/yolox_x_8x8_300e_coco_20211126_140254-1ef88d67.pth")
+    self.config_path = os.path.join(self.base_path, "configs/yolox/yolox_x_8xb8-300e_coco.py")
     self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
     self.model = init_detector(self.config_path, self.checkpoint, device=self.device)
 
