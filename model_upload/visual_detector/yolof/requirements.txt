@@ -6,3 +6,4 @@ clarifai
 tritonclient[all]
 torch==1.13.1
 numpy==1.23.1
+opencv-python-headless
