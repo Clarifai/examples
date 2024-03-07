@@ -48,6 +48,23 @@ Install dependecies to test locally
 $ pip install -r faster-rcnn_torchserve/requirements.txt
 ```
 
+## [YOLOX](./yolox/)
+
+[YOLOX](https://github.com/open-mmlab/mmdetection/tree/v3.0.0rc3/configs/yolox) Requirements to run tests locally:
+
+Download checkpoint and save it in `yolox/configs/yolox/`, e.g download `x` type of model:
+
+```bash
+$ wget -P yolox/configs/yolox/ https://download.openmmlab.com/mmdetection/v2.0/yolox/yolox_x_8x8_300e_coco/yolox_x_8x8_300e_coco_20211126_140254-1ef88d67.pth
+```
+>Note: If you want to use a different model type or checkpoint, remember to update the `checkpoint` and `config_path` in the `inference.py` file accordingly.
+
+Install dependecies to test locally
+
+```bash
+$ pip install -r yolox/requirements.txt
+```
+
 
 ## Deploy the model to Clarifai
 
@@ -58,7 +75,7 @@ Steps to deploy one of above examples after downloading weights and testing to t
 1. Build
 
 ```bash
-$ clarifai build model <path/to/folder> # either `faster-rcnn_torchserve` or `yolof`
+$ clarifai build model <path/to/folder> # either `faster-rcnn_torchserve` or `yolof` or `yolox`
 ```
 
 upload `*.clarifai` file to storage to obtain direct download url
