@@ -52,10 +52,10 @@ $ pip install -r faster-rcnn_torchserve/requirements.txt
 
 [YOLOX](https://github.com/open-mmlab/mmdetection/tree/v3.0.0rc3/configs/yolox) Requirements to run tests locally:
 
-Download checkpoint and save it in `yolofx/configs/yolox/`, e.g download `x` type of model:
+Download checkpoint and save it in `yolox/configs/yolox/`, e.g download `x` type of model:
 
 ```bash
-$ wget -P yolofx/configs/yolox/ https://download.openmmlab.com/mmdetection/v2.0/yolox/yolox_x_8x8_300e_coco/yolox_x_8x8_300e_coco_20211126_140254-1ef88d67.pth
+$ wget -P yolox/configs/yolox/ https://download.openmmlab.com/mmdetection/v2.0/yolox/yolox_x_8x8_300e_coco/yolox_x_8x8_300e_coco_20211126_140254-1ef88d67.pth
 ```
 >Note: If you want to use a different model type or checkpoint, remember to update the `checkpoint` and `config_path` in the `inference.py` file accordingly.
 
