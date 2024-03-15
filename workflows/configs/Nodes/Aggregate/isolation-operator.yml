@@ -1,0 +1,9 @@
+workflow:
+  id: isolation-operator
+  nodes:
+  - id: 0db1f3c578d4406fa229d3734b27a381
+    model:
+      app_id: image-tes
+      model_id: workflow-model-2001-ffd810831788
+      model_version_id: 195893ef5f064a3da7c10a163760c796
+      user_id: USER_ID

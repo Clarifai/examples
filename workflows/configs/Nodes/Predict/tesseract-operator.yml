@@ -1,0 +1,9 @@
+workflow:
+  id: tesseract-operator
+  nodes:
+  - id: 39be46620d894086ba8534342b2835dd
+    model:
+      app_id: image-tes
+      model_id: workflow-model-4424-50db835f01cb
+      model_version_id: bc95faf7a53d474fb8e61aade34dfe9f
+      user_id: USER_ID

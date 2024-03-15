@@ -1,0 +1,7 @@
+workflow:
+  id: visual-keypointer
+  nodes:
+  - id: d8fc9a32f9564a79b3c45ea1e8cac43d
+    model:
+      model_id: face-landmarks
+      model_version_id: 98ace9ca45e64339be94b06011557e2a

@@ -1,0 +1,9 @@
+workflow:
+  id: input-searcher
+  nodes:
+  - id: 8716a59a76a04c6592337e03ff467ddd
+    model:
+      app_id: image-tes
+      model_id: workflow-model-1ad3-dc1f963583e1
+      model_version_id: d9aea66fb2f546cfad2caa123061769a
+      user_id: USER_ID

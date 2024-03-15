@@ -1,0 +1,9 @@
+workflow:
+  id: text-embedder
+  nodes:
+  - id: 6930a0e9b5ea46cf1b2d1d8830cc194f
+    model:
+      app_id: embed
+      model_id: text-embedding-3-small
+      model_version_id: 1cf9181bf25f4a36aac7445ba8707f39
+      user_id: openai

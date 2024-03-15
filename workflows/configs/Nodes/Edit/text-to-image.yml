@@ -1,0 +1,9 @@
+workflow:
+  id: text-to-image
+  nodes:
+  - id: 48b22381df5640190a84647033df42c4
+    model:
+      app_id: stable-diffusion-2
+      model_id: stable-diffusion-xl-beta
+      model_version_id: 1c7531ddae654dd58de8a8e93271484e
+      user_id: stability-ai

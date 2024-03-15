@@ -1,0 +1,9 @@
+workflow:
+  id: object-counter
+  nodes:
+  - id: 19d9c27330844892bdadae9fe67fb310
+    model:
+      app_id: image-tes
+      model_id: workflow-model-9cd6-33d3dbd26d9d
+      model_version_id: 16255ac674324a4ebeaf446fe1c2d2e8
+      user_id: USER_ID

@@ -1,0 +1,9 @@
+workflow:
+  id: input-filter
+  nodes:
+  - id: 728558e8190946443331294b40d2312e
+    model:
+      app_id: image-tes
+      model_id: workflow-model-e965-c5a606fd791d
+      model_version_id: dde05e26e2334834ab0faa732d9ddf4c
+      user_id: USER_ID

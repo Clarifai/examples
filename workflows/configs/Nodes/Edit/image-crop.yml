@@ -1,0 +1,9 @@
+workflow:
+  id: image-crop
+  nodes:
+  - id: a7c01d357373481b384281ce2a1186ae
+    model:
+      app_id: image-tes
+      model_id: workflow-model-8abd-15e5ad31875b
+      model_version_id: f132fc4efbb9421c94286522caaa8be2
+      user_id: USER_ID

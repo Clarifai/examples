@@ -1,0 +1,9 @@
+workflow:
+  id: email
+  nodes:
+  - id: 701351332ed44380960b79b8eb31bf28
+    model:
+      app_id: image-tes
+      model_id: workflow-model-63ce-d8f5c5bb4794
+      model_version_id: 3ba832909ffb4a8dba906fdf18130851
+      user_id: USER_ID

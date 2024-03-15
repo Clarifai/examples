@@ -1,0 +1,9 @@
+workflow:
+  id: tiling-region-aggregator-operator
+  nodes:
+  - id: 4b2bb34113e34acab2b2a60caee993c4
+    model:
+      app_id: image-tes
+      model_id: workflow-model-801f-1c95a536d4a7
+      model_version_id: dcc40c27222045d58688cca295864dbd
+      user_id: USER_ID

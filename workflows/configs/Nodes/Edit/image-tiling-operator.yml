@@ -1,0 +1,9 @@
+workflow:
+  id: image-tiling-operator
+  nodes:
+  - id: 8e9d5f4af43a450732d0890a8a3eb823
+    model:
+      app_id: image-tes
+      model_id: workflow-model-bc0c-397a72042bbc
+      model_version_id: 6605dbe60e0c4b17ba83c21526d24ba0
+      user_id: USER_ID

@@ -1,0 +1,9 @@
+workflow:
+  id: neural-lite-tracker
+  nodes:
+  - id: 05a30fe8cc22423a21ea57e87e297994
+    model:
+      app_id: image-tes
+      model_id: workflow-model-2145-c1aa74795ad8
+      model_version_id: cc8b1926bc984a08a3fd6797a8d0dd64
+      user_id: USER_ID

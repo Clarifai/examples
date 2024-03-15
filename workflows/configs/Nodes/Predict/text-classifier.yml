@@ -1,0 +1,7 @@
+workflow:
+  id: text-classifier
+  nodes:
+  - id: 94e357d86d82434c0238e7dc359bdb44
+    model:
+      model_id: moderation-multilingual-text-classification
+      model_version_id: 79c2248564b0465bb96265e0c239352b

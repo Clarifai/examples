@@ -1,0 +1,9 @@
+workflow:
+  id: multimodal-to-text
+  nodes:
+  - id: 50c746694ab0467d33e7571ea4608fb1
+    model:
+      app_id: chat-completion
+      model_id: openai-gpt-4-vision
+      model_version_id: 266df29bc09843e0aee9b7bf723c03c2
+      user_id: openai

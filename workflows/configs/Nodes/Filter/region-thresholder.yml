@@ -1,0 +1,9 @@
+workflow:
+  id: region-thresholder
+  nodes:
+  - id: 8032cfbbbdbb4695066444c8496f749f
+    model:
+      app_id: image-tes
+      model_id: workflow-model-0b8b-c5917339041b
+      model_version_id: db217898bb184bff915bc96905fa2d7a
+      user_id: USER_ID

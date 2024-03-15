@@ -1,0 +1,9 @@
+workflow:
+  id: centroid
+  nodes:
+  - id: b1a9995e76814159adaaf2e3a4b29950
+    model:
+      app_id: APP_ID
+      model_id: workflow-model-01ba-68d724ae4a7b
+      model_version_id: 62872d36657647a599075d7bf3569f2f
+      user_id: USER_ID

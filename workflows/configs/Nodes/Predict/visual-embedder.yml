@@ -1,0 +1,7 @@
+workflow:
+  id: visual-embedder
+  nodes:
+  - id: bc224ef76a264c8f9f3e2aae98fec945
+    model:
+      model_id: face-identification-transfer-learn
+      model_version_id: fc3b8814fbe54533a3d80a1896dc9884

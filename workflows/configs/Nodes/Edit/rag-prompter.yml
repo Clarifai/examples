@@ -1,0 +1,9 @@
+workflow:
+  id: rag-prompter
+  nodes:
+  - id: e5af9a4b4cd846e42b11617655ff0856
+    model:
+      app_id: image-tes
+      model_id: workflow-model-4d93-51484d06ea81
+      model_version_id: d158f52a20a642ab8cbf8f371fb8d06b
+      user_id: USER_ID
