@@ -1,0 +1,7 @@
+workflow:
+  id: multimodal-embedder
+  nodes:
+  - id: 344abd329d0c487e869479c1d7f2bf14
+    model:
+      model_id: CLIP-ViT-L-14-DataComp-XL-s13B-b90K
+      model_version_id: 54772a548e6f42509cb1fd9fc43762bb

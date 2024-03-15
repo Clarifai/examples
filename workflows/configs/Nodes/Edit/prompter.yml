@@ -1,0 +1,9 @@
+workflow:
+  id: prompter
+  nodes:
+  - id: 38c96e2c6bbb4b7eac589c513498b1cc
+    model:
+      app_id: image-tes
+      model_id: workflow-model-f512-a6c91749ab6f
+      model_version_id: a60ce2d150664ec297460dbdd2cc2fd8
+      user_id: USER_ID

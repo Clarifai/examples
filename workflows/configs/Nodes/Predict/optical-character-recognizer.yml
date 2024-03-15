@@ -1,0 +1,9 @@
+workflow:
+  id: optical-character-recognizer
+  nodes:
+  - id: 5c844d16eff0478cab1b621ac04c2c99
+    model:
+      app_id: ocr
+      model_id: paddle_easy_ocr
+      model_version_id: 066f4b509d394a50897f4690bd388ce8
+      user_id: phatvo

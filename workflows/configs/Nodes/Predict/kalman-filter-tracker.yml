@@ -1,0 +1,9 @@
+workflow:
+  id: kalman-filter-tracker
+  nodes:
+  - id: e7bbb9bb243d495293300268839f5fe1
+    model:
+      app_id: image-tes
+      model_id: workflow-model-62c7-cac62a61edc9
+      model_version_id: be7b787927e74410b38723813151be9d
+      user_id: USER_ID

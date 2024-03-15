@@ -1,0 +1,9 @@
+workflow:
+  id: image-to-text
+  nodes:
+  - id: e856c22c087d4a4c200c45113a036ae7
+    model:
+      app_id: nougat
+      model_id: nougat-base
+      model_version_id: c7c1393511d24e008d0dde5a044b8513
+      user_id: facebook

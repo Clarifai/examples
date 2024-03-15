@@ -1,0 +1,9 @@
+workflow:
+  id: sms
+  nodes:
+  - id: bb7036dd55464ec180d1f29edff6a05e
+    model:
+      app_id: image-tes
+      model_id: workflow-model-7559-277d95fd087a
+      model_version_id: 10c3ec04d93e420991d32577f6dd84fb
+      user_id: USER_ID

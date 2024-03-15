@@ -1,0 +1,9 @@
+workflow:
+  id: aws-lambda
+  nodes:
+  - id: 0f216ce56324434a2ed47c576e3d3d23
+    model:
+      app_id: image-tes
+      model_id: workflow-model-ce21-14459aa359df
+      model_version_id: 68f5c4e67c1943528297ccbc712e34a7
+      user_id: USER_ID

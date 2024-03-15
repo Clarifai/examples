@@ -1,0 +1,7 @@
+workflow:
+  id: image-color-recognizer
+  nodes:
+  - id: 2755115d61f947ad8586535c16fcb6f7
+    model:
+      model_id: color-recognition
+      model_version_id: b31bf8b3e8ba4af48ef7b67b6a1873d6

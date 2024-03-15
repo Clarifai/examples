@@ -1,0 +1,9 @@
+workflow:
+  id: text-to-audio
+  nodes:
+  - id: a660c037c7794a111e1da7ce92c5f93b
+    model:
+      app_id: tts
+      model_id: openai-tts-1-hd
+      model_version_id: 3bf4a913cf0b48ee88c954bd151b2920
+      user_id: openai

@@ -1,0 +1,9 @@
+workflow:
+  id: neural-tracker
+  nodes:
+  - id: 2ece7c9594ec43e78e086f3f5e40ac87
+    model:
+      app_id: image-tes
+      model_id: workflow-model-7a9f-3129823b3515
+      model_version_id: fe4c044b0b864f7d892e8f4c5e0b0ca4
+      user_id: USER_ID

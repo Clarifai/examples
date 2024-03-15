@@ -1,0 +1,9 @@
+workflow:
+  id: visual-detector
+  nodes:
+  - id: b804f0052e9c48b485af2334b80f0047
+    model:
+      app_id: my-first-application-g1geru
+      model_id: casw2
+      model_version_id: 7633e642360d464bbc9cd933c754eee0
+      user_id: ne3pwsqy4va6ddad

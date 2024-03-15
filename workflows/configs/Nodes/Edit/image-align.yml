@@ -1,0 +1,9 @@
+workflow:
+  id: image-align
+  nodes:
+  - id: f9c544cc5589478330dc136372a34a2f
+    model:
+      app_id: image-tes
+      model_id: workflow-model-d97d-c8716df365b3
+      model_version_id: e9f11f965fae4e8e8bbd67c3604aef9a
+      user_id: USER_ID

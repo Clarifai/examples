@@ -1,0 +1,9 @@
+workflow:
+  id: barcode-op
+  nodes:
+  - id: 37ca7208d995427a9b488b2370d0fa19
+    model:
+      app_id: APP_ID
+      model_id: workflow-model-ceef-8206c697f9eb
+      model_version_id: 34d762a33d784948844a1036ca33b349
+      user_id: USER_ID
