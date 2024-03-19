@@ -30,6 +30,7 @@ A framework to load, export and analyze different annotated datasets.
 | [Kitti](http://www.cvlibs.net/datasets/kitti/index.php)                                          | kitti     | detection  |
 | [LabelMe](http://labelme.csail.mit.edu/Release3.0)                                               | label_me     | detection  |
 | [Open Images](https://storage.googleapis.com/openimages/web/download.html)                       | open_images     | detection  |
+| [Clarifai](https://github.com/Clarifai/examples/tree/main/Data_Utils)                       | clarifai     | detection  |
 | [COCO(segmentation)](http://cocodataset.org/#format-data)                                     | coco_segmentation     | segmentation  |
 | [Cityscapes](https://www.cityscapes-dataset.com/)                                                | cityscapes     | segmentation  |
 | [ADE](https://www.cityscapes-dataset.com/)                                                       | ade20k2017     | segmentation  |
