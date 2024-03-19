@@ -1,0 +1,9 @@
+workflow:
+  id: concept-synonym-mapper
+  nodes:
+  - id: aba76c40c6164d15b7a4d428cfb8cdb0
+    model:
+      app_id: image-tes
+      model_id: workflow-model-2d81-2461f3996bbf
+      model_version_id: d4f282413b854767914c0cf84d84dd5c
+      user_id: USER_ID

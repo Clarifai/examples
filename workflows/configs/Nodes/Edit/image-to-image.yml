@@ -1,0 +1,9 @@
+workflow:
+  id: image-to-image
+  nodes:
+  - id: b139197c0e5541d8b04ac059dab6358b
+    model:
+      app_id: Upscale
+      model_id: stabilityai-upscale
+      model_version_id: 5a392185b8154c31a8cad88f531a1de0
+      user_id: stability-ai

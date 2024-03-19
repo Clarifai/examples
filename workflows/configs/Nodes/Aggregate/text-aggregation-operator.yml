@@ -1,0 +1,9 @@
+workflow:
+  id: text-aggregation-operator
+  nodes:
+  - id: 92fee36c9c6047fe323598c55662a5ab
+    model:
+      app_id: image-tes
+      model_id: workflow-model-4352-b0dbb6fac611
+      model_version_id: 78def6f2745746e69987e230d69ec783
+      user_id: USER_ID

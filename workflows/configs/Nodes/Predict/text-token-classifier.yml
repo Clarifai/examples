@@ -1,0 +1,9 @@
+workflow:
+  id: text-token-classifier
+  nodes:
+  - id: 12ecd3f74ca742d590405d6b54ce3a43
+    model:
+      app_id: generate
+      model_id: gemini-pro
+      model_version_id: f0bba7ad9c3c486e8853e82bd66304bf
+      user_id: gcp

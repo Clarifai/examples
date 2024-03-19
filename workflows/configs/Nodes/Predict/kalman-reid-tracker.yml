@@ -1,0 +1,9 @@
+workflow:
+  id: kalman-reid-tracker
+  nodes:
+  - id: 1db081cbbb0a46fcbef2cf85f750bf86
+    model:
+      app_id: image-tes
+      model_id: workflow-model-3be9-a4e66d752fc7
+      model_version_id: 201d3a9578324cb08f67e833971dccea
+      user_id: USER_ID

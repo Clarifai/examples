@@ -1,0 +1,9 @@
+workflow:
+  id: keyword-filter-operator
+  nodes:
+  - id: 429f2f792b294b0e9f212148a2ee8b94
+    model:
+      app_id: image-tes
+      model_id: workflow-model-5f91-9a536f9839d2
+      model_version_id: 7e901957f2e1461198dae3ec53bd3829
+      user_id: USER_ID

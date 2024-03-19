@@ -1,0 +1,13 @@
+workflow:
+  id: Universal
+  nodes:
+  - id: clip-embed
+    model:
+      model_id: CLIP-ViT-L-14-DataComp-XL-s13B-b90K
+      model_version_id: 54772a548e6f42509cb1fd9fc43762bb
+  - id: clip-cluster
+    model:
+      model_id: datacomp-L14-lopq-1
+      model_version_id: 05cb975ed2954a11aafbbd9702b8a2bb
+    node_inputs:
+    - node_id: clip-embed

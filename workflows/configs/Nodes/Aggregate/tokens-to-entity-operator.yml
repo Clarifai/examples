@@ -1,0 +1,9 @@
+workflow:
+  id: tokens-to-entity-operator
+  nodes:
+  - id: 3eaa0c28919e43e59b10f3e8707c5c97
+    model:
+      app_id: image-tes
+      model_id: workflow-model-d112-b10de4a496d5
+      model_version_id: 1f8e5224e0af46b48102d74bcad3c57d
+      user_id: USER_ID

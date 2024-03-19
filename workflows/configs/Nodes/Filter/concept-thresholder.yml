@@ -1,0 +1,9 @@
+workflow:
+  id: concept-thresholder
+  nodes:
+  - id: 4296c6be979b4adfb4fe6c74cf9285af
+    model:
+      app_id: image-tes
+      model_id: workflow-model-5bc8-ed53d1514b99
+      model_version_id: 3c3f7bb112144755b3916cc0f5d6ece0
+      user_id: USER_ID

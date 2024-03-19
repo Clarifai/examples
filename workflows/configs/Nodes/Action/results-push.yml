@@ -1,0 +1,9 @@
+workflow:
+  id: results-push
+  nodes:
+  - id: f9da74298a024e60bcebb6a9aa75e006
+    model:
+      app_id: image-tes
+      model_id: workflow-model-1f6e-6fe50ab50ed7
+      model_version_id: 056a6d64067a4d5b928e7a43fb2779b0
+      user_id: USER_ID

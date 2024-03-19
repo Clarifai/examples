@@ -1,0 +1,9 @@
+workflow:
+  id: byte-tracker
+  nodes:
+  - id: 57bf36845f2b423d34a793481133bfef
+    model:
+      app_id: image-tes
+      model_id: workflow-model-ea65-80c93b63b50d
+      model_version_id: 1673cfe420e34594b76ee4617f7355f3
+      user_id: USER_ID

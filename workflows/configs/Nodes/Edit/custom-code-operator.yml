@@ -1,0 +1,9 @@
+workflow:
+  id: custom-code-operator
+  nodes:
+  - id: c3d623da1d3049fa989810fb596794d2
+    model:
+      app_id: image-tes
+      model_id: workflow-model-11f7-d98439d133c4
+      model_version_id: b928ad1bbc134dca96896ca1a55d390f
+      user_id: USER_ID

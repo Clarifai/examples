@@ -1,0 +1,9 @@
+workflow:
+  id: regex-based-classifier
+  nodes:
+  - id: 6331435d1dba429338c028df4d417955
+    model:
+      app_id: image-tes
+      model_id: workflow-model-9e4c-8b34982b238e
+      model_version_id: ef957006a4d049a691f4f6ce53ee4458
+      user_id: USER_ID

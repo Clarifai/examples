@@ -1,0 +1,7 @@
+workflow:
+  id: visual-segmenter
+  nodes:
+  - id: 9ea3f288bb264a162ccf8808c6057c54
+    model:
+      model_id: image-general-segmentation
+      model_version_id: 1581820110264581908ce024b12b4bfb

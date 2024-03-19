@@ -1,0 +1,9 @@
+workflow:
+  id: annotation-writer
+  nodes:
+  - id: a8b3bf86e2954b750eda4cd91101ee5b
+    model:
+      app_id: image-tes
+      model_id: workflow-model-fd05-ea5357732085
+      model_version_id: 3b17b59bc9d04fbfafd76ecb0ce24c5a
+      user_id: USER_ID

@@ -1,0 +1,9 @@
+workflow:
+  id: random-sample
+  nodes:
+  - id: 51825dc0c45b43c50325017af033b3a3
+    model:
+      app_id: image-tes
+      model_id: workflow-model-c4ad-0f023f420a17
+      model_version_id: 6f0ba081b31e490db2a6b6537b198dc9
+      user_id: USER_ID

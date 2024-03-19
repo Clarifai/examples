@@ -1,0 +1,9 @@
+workflow:
+  id: audio-to-text
+  nodes:
+  - id: 9ae159669037490a96b67e8931e60c73
+    model:
+      app_id: whisper
+      model_id: whisper-large-v2
+      model_version_id: 9a0a49440f3e48afb5ddb8882f3cde7f
+      user_id: openai

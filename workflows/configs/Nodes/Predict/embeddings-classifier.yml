@@ -1,0 +1,13 @@
+workflow:
+  id: embeddings-classifier
+  nodes:
+  - id: d64472fe14e94baf21aeddafeb9316b9
+    model:
+      model_id: general-image-embedding
+      model_version_id: bb186755eda04f9cbb6fe32e816be104
+  - id: 046cef6b9fbd4787a964257df0e92821
+    model:
+      model_id: room-types-transfer-learn
+      model_version_id: 3867629b155b4d3ca852e20083d30788
+    node_inputs:
+    - node_id: d64472fe14e94baf21aeddafeb9316b9

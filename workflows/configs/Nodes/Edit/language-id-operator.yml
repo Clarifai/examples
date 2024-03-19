@@ -1,0 +1,9 @@
+workflow:
+  id: language-id-operator
+  nodes:
+  - id: a1e86c29dd6a4a911a1e565c569334e4
+    model:
+      app_id: image-tes
+      model_id: workflow-model-28f6-6b1e801399c4
+      model_version_id: 97616a1c0fbd41278fee28acc22f1604
+      user_id: USER_ID
