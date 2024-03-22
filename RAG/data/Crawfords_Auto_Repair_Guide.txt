@@ -1,0 +1,2268 @@
+Th e
+
+Guide to
+
+Beginner s Auto
+Maintenance & Repair
+Jeff Crawford
+
+Presented by:
+
+About the Author: Jeff Crawford has over 20 years of experience as a mechanic and
+auto technician. He has seen all aspects of the auto repair industry from small shops to
+large dealerships. He is the co-owner of Crawford s Auto Repair in Mesa, Arizona
+85210. www.CrawfordsAutoService.com.
+
+The Crawford s Auto Repair Guide to Beginner s Auto Maintenance & Repair
+By Jeff Crawford, Crawford s Auto Repair
+Contributing Author: Rex Kimball, Mirex Marketing
+
+Text copyright © Jeff Crawford, Rex Kimball
+All rights reserved for printed and all digital formats. The following license is granted in
+PDF:
+This book is available in PDF for free, and it can be reproduced, shared and sold for
+profit royalty-free in PDF, but it a cannot be changed or adapted in content or format
+without the authors consent. Go go http://www.crawfordsautoservice.com/crawfordsauto-repair-guide-free-ebook/ to download for free.
+Many of the images in this book are protected by copyright as cited. Some images are
+in the creative commons with free use licenses. Some are in the public domain or
+presumed to be in the public domain. Claims of any inaccuracies should be brought to
+the authors attention to have the images in question removed from this book.
+Crawford s Auto, Crawford s Automotive, Crawfords Auto Service, Crawford s Auto
+Repair, CrawfordsAutoService.com, and the Crawford s Auto Repair log are trademarks
+of Crawford s Auto Repair in Mesa, AZ 85210
+Mirex Marketing and MirexMarketing.com are trademarks of Mirex, LLC in Arizona.
+All other copyrights and trademarks are property of their respective owners.
+This book is for informational purposes only. The authors are not liable for any accident
+or injury that may occur when working with motor vehicles. By proceeding to read this
+book, you agree to these terms.
+
+This book is intended for a general audience. Also, Boy Scouts will find it useful for
+completing the Automotive Maintenance merit badge. Boy Scouts are welcome to come
+to the shop for assistance. This is not an official publication of the Boy Scouts of
+America.
+The content in this book is also taught as live lessons to the local community in Mesa,
+AZ. Go to http://crawfordsautoservice.com/free-automotive-classes/ for details.
+
+Contents:
+Chapter 1: Safety Rules & Introduction to Tools . . . . . . . . . . . . 2
+Chapter 2: General Maintenance . . . . . . . . . . . . . . . . . . . . . . .15
+Chapter 3: Dashboard Indicator Lights . . . . . . . . . . . . . . . . . . 27
+Chapter 4: Tires . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+Chapter 5: The Internal Combustion Engine & Engine Oil . . . . .43
+Chapter 6: Cooling System . . . . . . . . . . . . . . . . . . . . . . . . . . . 46
+Chapter 7: Fuel System . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .49
+Chapter 8: Electrical System . . . . . . . . . . . . . . . . . . . . . . . . . .52
+Chapter 9: Drive Train . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 56
+Chapter 10: Brakes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .64
+Chapter 11: The Auto Repair Industry . . . . . . . . . . . . . . . . . . .67
+Chapter 12: How to Buy a Car . . . . . . . . . . . . . . . . . . . . . . . . .71
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Chapter 1: Safety Rules & Introduction to Tools
+Automotive Maintenance Safety:
+Automobiles are big and heavy with lots of mechanical moving parts. In the right
+environment a vehicle can be maintained and repaired safely and effectively. However,
+in the wrong environment repairing a vehicle can be dangerous. Follow the tips in this
+chapter to stay safe.
+Basic Shop Rules:
+ Never work alone
+ Wear eye protection
+ Avoid loose clothing or hair
+ Stay clear of moving parts of a running vehicle
+ Be aware of hazardous chemicals and keep a flushing station nearby for eyes
+and skin (at home this could be a bathroom sink or shower).
+ Keep proper clean up materials in case of an accidental spill (see below)
+ Don t mix your work space with other cluttering materials such as home storage,
+garden tools and other items.
+ Never go under a vehicle that is elevated improperly (the jack to change the tire
+is NOT sufficient, see more details below)
+ Know where the fire extinguisher is and have a planned exit route. The fire
+extinguisher should be kept in working order and in a place with easy access.
+ Keep an emergency response number handy and posted clearly where others
+can see it.
+ Keep an emergency kit in your vehicle for roadside emergencies or repairs.
+ Consult your vehicle owner s manual for specific safety rules regarding your
+vehicle
+Proper Clothing and Hair:
+Always wear safety goggles for eye protection. Vehicle repair involves the use of many
+types of fluids which can splatter and eye contact should be avoided.
+
+Eye protection
+Image credit: CC-BY-Glenn McKechnie
+
+2
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+One of my first bosses didn't have any feeling sensation in his right hand. He couldn t
+feel touch or pain in that hand. He was working alone one night and his hand got caught
+in the fan belt while the engine was running. He was conscious long enough to get the
+engine to stop running with his other hand, but his right was stuck and he couldn t get
+out on his own. He eventually lost consciousness and lay there bleeding for three hours
+by himself. Bleeding this long could easily have resulted in death. Luckily he only lost
+his fingers. While it was his hand and not a piece of clothing that got caught, the same
+principle applies. If a piece of clothing or hair gets caught it won t be long before a hand
+or face gets dragged in with it.
+Do not wear ties or any loose, hanging clothing. Do not let pony tails down or leave any
+loose strands of hair. Bundle your hair up if it s long. Do not wear necklaces, rings or
+other jewelry. Some may remember Mr. T, the Mohawk-bearing muscle man from the
+1980s sitcom The A-Team. He often wore about 50 lbs. of jewelry and frequently
+worked on motor vehicles. This was a blatant violation of mechanic safety rules. Only a
+person who can get thrown out of an airplane, flip a jeep, and come out of machine gun
+fire without a scratch can work on engines that way.
+Ideally the best clothing for performing automotive maintenance and repairs is a
+mechanic s jumpsuit. It s durable, comfortable, there are pockets for tools, and there is
+nothing loose that can get caught and pulled into moving parts.
+Avoid slips, falls and hazardous chemicals:
+Hazardous chemicals can include gasoline, oil, coolant, and other vehicle fluids. Avoid
+contact with eyes and mouth. If you ever have contact with eyes then flush with cool
+water for several minutes. Some car fluids can be acidic, such as battery fluid. If you
+ever start to feel burning, then flush with cool water for several minutes. If burning
+continues then seek medical attention.
+Proper clean up materials include shop rags and oil dri , which is simply kitty litter
+without the fragrance. When a spill occurs you should spread enough oil dri over the
+spill to absorb the entire spill. Then sweep it up with a broom and dustpan and throw it
+away.
+
+3
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Oil Dri
+
+Avoid clutter in your workspace that can act as fall hazards. Keep storage and nonautomotive tools in other areas. Also, clean up tools after you re finished.
+Proper Lifting Points:
+A motor vehicle is a 4,000+ pound piece of machinery that could fall on top of you.
+Never go under a vehicle that is not elevated properly. If the vehicle is elevated properly
+then there should not be any problem.
+Vehicles should only be lifted at their proper lifting points. The proper lifting points on a
+vehicle are the locations on the vehicle where you place the jack to lift the vehicle and
+where the jack stands are placed to keep the vehicle elevated. Lifting points are
+different on every vehicle. The owner s manual will specify where the lifting points are
+for your specific vehicle. Often vehicles have lift points marked on the running board or
+rocker panel. There are a couple of disastrous events that can happen during an
+attempt to raise a vehicle without using the proper lifting points. The weight of the car
+pressing down and the jack pressing up can damage the body of the vehicle. Or worse,
+the jack could tip or slide while a person is underneath the vehicle.
+
+4
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+An illustration which demonstrates vehicle lift points for a sample vehicle; consult the owner s manual for
+the lift points of a specific vehicle.
+
+Any vehicle that has a frame can be lifted by the frame. When the front is lifted the jack
+is usually placed under the suspension cross member. When lifting the rear the jack is
+placed under the axle if it has a solid axle. If it doesn t have a solid axle then it should
+be lifted by the factory recommended lift points.
+Vehicles should always be on firm, level ground. If the ground is not level then the car
+may roll and tip the jack. A jack or a jack stand can also slip out or fail to hold the
+vehicle in an elevated position when the ground is not firm, such as on a dirt road or
+when there is ice or snow.
+There are different types of jacks and jack stands. A jack is used to raise the vehicle
+either by hydraulic pumping or hand cranking. A jack stand is used to keep the vehicle
+elevated and has a firm square base. One type of jack that people are most familiar with
+is the one that is included with the spare tire kit. This is to be used only for changing the
+tire and it is not sufficient for keeping a vehicle elevated when working under the
+vehicle. The jack used for changing tires often has a four point rectangular base. This is
+not as stable as a square base.
+
+Hydraulic jack with hand-pump mechanism
+
+5
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+When minor repairs are being performed, such as changing a tire, it is permissible to
+raise just one corner of the vehicle, or the front or the rear. The vehicle is first raised
+with a jack and then placed on jack stands. (Do not go under the vehicle while it is
+elevated by a jack). The vehicle should be equally balanced on the jack stands.
+A mechanic s shop may have industry jacks or hydraulic lifts. These can be used to
+raise the vehicle and keep it elevated. These lifts can raise the entire vehicle at the
+same time. When lifting the entire vehicle the center of gravity should be positioned
+evenly with the lifting hoist arms. This is evident when the vehicle is raised and all tires
+lift off the ground at the same time. Most vehicles are front-heavy due to the engine
+block. However, many work trucks are balanced to have the center of gravity in the
+middle.
+
+Hydraulic lift with hoist arms that raise the vehicle on its lifting points. The lift consists of two vertical blue
+beams and four white hoist arms. Two white hoist arms on the other side of the vehicle are not seen in
+the pictures.
+Image credit: CC-BY-ANT Berezhnyi on Wikipedia
+
+Another hydraulic lift that raises the car on its tires
+
+More instructions will be given for lifting a corner of the vehicle to replace a spare tire in
+Chapter 4. The owner s manual should be consulted any time when lifting the vehicle.
+6
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Emergency Preparedness and Response:
+In an emergency, preparedness and a quick response can save a life. Although it is
+relatively rare, a fire can occur when working on motor vehicles. Some vehicle fluids are
+flammable. They can combust with excess heat or when a faulty electrical wire creates
+a spark. Keep a working fire extinguisher in an accessible place. All shop workers
+should know where the fire extinguisher is. An ABC or tri-class fire extinguisher is
+appropriate for auto repair shops. Also, have a plan for an emergency escape if a fire
+becomes uncontrollable.
+Keep an emergency response number posted clearly where everyone can see it.
+Keep a first aid kit handy for minor injuries, like superficial cuts and scratches.
+Have a flushing station nearby for any vehicle fluid contact with eyes and mouth, or with
+skin if the fluid is acidic.
+
+Introduction to Tools Used by Mechanics:
+A commercial mechanic s shop will usually have industry-standard tools, such as a
+torque wrench, hydraulic lifts, pneumatic (air-operated) tools, and electronic devices that
+connect with the vehicle s computer to receive diagnostics. However, a startup repair
+shop or a highly proficient mechanic at home could get most jobs done with a $200 set
+of tools if needed.
+The most common tools in a mechanic s set include the following:
+Flashlight. A flashlight is one of the most-used tools in an auto repair shop. It helps the
+mechanic see anywhere for visual inspections, maintenance and repairs.
+
+Flashlight
+
+Socket sets and wrenches. These have two different measurement systems. One is
+metric and one SAE (or standard). The metric system has measurements in millimeters
+(mm). SAE has measurements in inches or fractions of inches (1/4, 5/16, etc.).
+Wrenches often have an open end and an opposite box end.
+7
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Socket Ratchet Wrench
+Image credit: CC-BY-SA-Heron2 on Wikipedia
+
+Wrench set
+These wrenches have an open end and a box end
+Image credit: CC-BY-SA-Ildar Sagdejev on Wikipedia
+
+Pneumatic (air-powered) wrench
+Image credit: CC-BY-SA-Bushytails on Wikipedia
+
+8
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Oil Filter Wrench
+Has a prying mechanism like other wrenches but one end has a belt that wraps around the object being
+unscrewed, which is much bigger in diameter than the regular bolts and hex-head screws that other
+wrenches are used for.
+Image credit: CC-BY-SA-Three-quarter-ten on Wikipedia
+
+4-way lug wrench
+Image credit: CC-BY-SA-Steffen Heinz Caronna
+
+Screwdrivers, both Philips head (the cross-section looks like a cross or plus sign) and
+flat tipped (or slotted). When using screwdrivers, try to match the size of the screwdriver
+head with the screw. Also try to avoid stripping the head of the screw (this has occurred
+when you can firmly turn the screwdriver against the head of the screw continually and
+the screw never rotates).
+
+Screwdriver set
+
+9
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Screwdriver tips showing Philips (left) and flat or slotted (right)
+
+Jacks. These are used to lift the vehicle. Some are rotated by hand. Other higher-end
+jacks are pumped. Some are hydraulic.
+
+Hydraulic jack
+Image credit: CC-BY-SA-Nerijp on Wikipedia
+
+Spare tire kit with a spare tire, lug wrench and tire jack. The tire jack is already placed under the lifting
+point and partially cranked.
+Image credit: CC-BY-Kurt Nordstrom
+
+10
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Jack Stands. These are used to keep the vehicle elevated after it has been raised with
+the jack. They have a wide square base and come to an apex where the car rests on
+them.
+
+Two jack stands, the lever shown on these stands is not used to raise the vehicle but to adjust the height
+of the stands to keep the vehicle raised.
+
+Pry bar. This can occasionally be used to tension a belt.
+
+Two pry bars, different sizes
+
+Hammer. This can be any type of hammer and it is used on occasion, such as when
+freeing a stuck drum or rotor from its hub.
+
+Hammer
+
+11
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Test Light. This used to test fuses (see Chapter 2).
+
+Test light
+
+Funnel. Used to fill vehicle fluids.
+
+Funnel (yellow) for car fluids
+Image credit: CC-BY-SA-Dvortygirl on Wikipedia
+
+12
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Drain Pan. Used to collect vehicle fluids when changing fluids and filters or flushing
+systems.
+
+Draining oil
+
+Tire Pressure Gauge. Used to measure tire pressure.
+
+Tire pressure gauge.
+
+Battery Tester. Used to check the battery to see if it is charged.
+
+Battery tester
+
+13
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Computer Scanner. Connects to the vehicle computer to receive diagnostic trouble
+codes (DTCs)
+
+Auto scanner which receives DTCs from the vehicle s computer
+Image credit: CC-BY-SA-Florian Schaffer
+
+There are many other tools that can be used. But these are the most basic.
+Now that we ve reviewed safety rules and gone over the tools used in a mechanic s
+shop, you re ready to continue to the next chapter -- General Maintenance.
+
+14
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Chapter 2: General Maintenance
+This chapter on general maintenance may be one of the most applicable for the
+average person to care for his or her own vehicle. We ll discuss the vehicle owner s
+manual, vehicle fluids, fuses, belts and hoses, vehicle lighting, and the air filter.
+Vehicle Owner s Manual
+All vehicles are different and the owner s manual for each make and model is the most
+useful reference for maintenance and repair of that specific vehicle. Despite the fact that
+it can often look thick, complicated, and boring on the surface, vehicle owners should
+become familiar and comfortable with the owner s manual. They re not so bad once
+they re finally opened. Almost any topic regarding your vehicle s maintenance can be
+found in the index.
+
+Owner s Manual
+
+The owner s manual will have a maintenance chart. The chart will include such
+information as when to change the oil, rotate tires, replace the air filter, inspect fuel cap
+and lines, change other fluids (transmission fluid, etc.) and other maintenance issues.
+Your vehicle may have different maintenance requirements at 30,000 miles, 90,000
+miles, 150,000 miles and at other intervals as indicated specifically in your owner s
+manual.
+Being familiar with the maintenance chart in your owner s manual can help you save
+money when taking your car to the mechanic for maintenance checks. Sometimes the
+repair shop will suggest additional services that aren t necessary.
+15
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+If you don t have the owner s manual for your car then you may be able to find one
+online by using Google or another search engine. Search the website for the make of
+the vehicle. You could also try your local library.
+Vehicle Fluids:
+Vehicle fluids include brake fluid, engine oil, coolant, power steering fluid, windshield
+washer fluid, transmission fluid and battery fluid. Fluid level information and the location
+of each fluid reservoir can be found in the owner s manual for your particular vehicle.
+(Any images in this chapter are illustrative of one example and your vehicle may look
+different).
+Brake Fluid: On most vehicles the reservoir for brake fluid is clear. You can check the
+fluid without removing the cap. There will be a marking on the reservoir that indicates
+minimum and maximum level. You ll want to make sure that the level is between those
+two marks. This fluid should never need to be topped off during maintenance. Low fluid
+is an indication of a problem. If the fluid is low then you may want to bring it to a
+mechanic, depending on your own skill level. Most vehicles have a dashboard light that
+illuminates when the brake fluid is low. (In Chapter 3 we ll go over all the dashboard
+lights, and in Chapter 10 we ll go over brakes).
+
+A brake fluid reservoir. Notice the MAX and MIN markings.
+Image credit: CC-BY-Frettie on Wikipedia
+
+16
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Engine Oil. Engine oil should be checked each time the vehicle is refueled (i.e. each
+time you go to the gas station). Most engines, but not all, have a dipstick to indicate the
+oil level. Typically the handle is yellow. Follow these steps to check the oil:
+ Turn the engine off.
+ Remove the dipstick.
+ Wipe off the end of the dipstick with a rag or paper towel.
+ Put the dipstick back in.
+ Take it out to look at the level at the tip
+The stick will have marks on it. The add mark typically indicates one quart low. If an
+engine is leaking oil then the price of repairs can vary depending on which repair is
+needed and the make and model of the vehicle.
+
+Oil dipstick (above) and oil level on a dipstick (below)
+Image credits: both CC-BY-SA-Dvortygirl on Wikipedia
+
+17
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Coolant: Never open the cooling system if the engine is hot. If you ve just been
+driving then don t open it. After you think the engine has cooled then you can lightly
+touch the radiator cap to test it. If it s still hot, then don t open it. Opening the radiator
+cap while the engine is still hot can shoot a six-foot geyser into the air and burn any skin
+it contacts. The best time to check the coolant is in the morning before the car is driven.
+
+Coolant. Notice the green color; coolant can actually be any color (pink, orange, transparent, red, etc.)
+Image credit: CC-BY-EvelynGiggles on Wikipedia
+
+A low coolant level indicates a possible leak which should be investigated. A very small
+amount of evaporation of coolant can occur over time. As a rule, if you need more than
+one quart of coolant, that indicates a problem.
+If the coolant is low then it needs to be replenished with the proper type of coolant and
+mixture. Consult the owner s manual for the proper type of coolant. The proper mixture
+is a 50/50 ratio of coolant and distilled water. It is important to use distilled water
+because the impurities in other water would circulate through the system and ruin the
+system over time. Coolant can be purchased pre-mixed in a 50/50 solution if desired.
+
+18
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+50/50 pre-diluted coolant. Image credit: CC-BY-dno1967 on Wikipedia
+
+Power Steering Fluid: There may be a clear reservoir for power steering fluid. If there
+is, then it can be checked the same way as the brake fluid described above. If the
+power steering fluid is not in a clear reservoir then it will have a dipstick. Refer to the
+owner s manual for the location of the reservoir and the type of fluid that should be
+used. Low power steering fluid is an indication of a leak and it should be investigated. At
+that point the driver may also notice changes in steering performance.
+
+Power steering reservoir (black tank). Notice how the cap is labeled.
+
+19
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Windshield Washer Fluid. There may be a clear reservoir or a dipstick for windshield
+washer fluid. Refer to the owner s manual for the location. If you live or travel in cold
+climates, below 32 degrees, you need to make sure that you use washer fluid with
+antifreeze.
+
+Windshield washer fluid
+Image credit: CC-BY-SA-Hamedog on Wikipedia
+
+Transmission Fluid. Refer to the owner s manual for the location of the transmission
+fluid. Some vehicles have a dipstick but many new vehicles do not have one. In some
+vehicles you have to go underneath the vehicle to check this fluid. If the fluid is low, then
+there is a leak and it should be investigated. The fluid should also be red. If it is black
+and/or has a burnt smell then there is a problem with the transmission.
+
+New transmission fluid, red in color
+
+20
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Battery Fluid and Terminals: If the battery is clear then you can look at the level of the
+fluid. Most modern vehicles do not have clear batteries. Any corrosion or signs of leaks
+around the battery are indications of a problem. Corrosion can be a green or white
+powdery substance. Don t ever allow corrosion to come in contact with the skin or eyes
+because this is an acid and it will burn. If corrosion is present at all, the battery may
+need to be replaced or there could be a problem with the charging system. Excessive
+discharging of the battery without the engine running (i.e. listening to the radio, keeping
+the cab lights on or using any accessory with the engine off) can cause the battery to
+overheat, which leads to early battery failure and leakage of battery acid. If the battery
+fluid is low, only use distilled water to refill it. Never add acid to a battery.
+The presence of corrosion indicates a problem that should be addressed. However, as
+a temporary fix, you can clean off the corrosion to get the car started. Start by rinsing off
+the corrosion with the garden hose. Then disconnect the terminals starting with the
+negative terminal first, then the positive terminal. Use a mixture of baking soda and
+water or battery terminal cleaner to rinse off the terminals and battery posts. You ll see
+the baking soda reacting with the corrosion to form fizz and bubbles. Use a wire brush
+or scraper (depending on the type of terminal) to clean the inside of the terminal and
+battery posts. Then rinse again with more water. Once the terminals and battery posts
+are clean, reattach the terminals starting with the positive terminal first, then the
+negative terminal. It is not sufficient just to clean off the corrosion. Again, the presence
+of corrosion indicates a problem that should be addressed.
+
+Car battery
+
+21
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Fuses
+Consult the owner s manual to locate the fuse boxes in your vehicle. They can be
+anywhere in the vehicle. Modern vehicles use blade type fuses. The part of the fuse that
+you ll see initially is plastic and color-coded. When the fuse is removed it can have a
+similar shape to a square letter C with the arms of the C being metal and the back of
+the C being the color-coded plastic. The color coding system for fuses has been used
+since the early 1980s. Older fuses are made of glass tubes. The color coding for
+modern fuses is universal and indicates the amperage of the fuse.
+Violet 3 Amp
+Pink 4 Amp
+Orange - 5 Amp
+Red - 10 Amp
+Blue - 15 Amp
+Yellow - 20 Amp
+Clear - 25 Amp
+Green - 30 Amp
+Orange 40 Amp
+(and many others)
+
+Blade type fuses used in modern vehicles. Most of them have a C shape (or E shape, facing down in
+the image). In a blown fuse, the S or upside down V s in the middle will be broken (called the element).
+The image shows the top view of each fuse just above each side view; notice that each top has metal
+contacts that are not covered by colored plastic.
+Image credit: CC-BY-SA-Havarhen on Wikipedia.
+
+Glass tube fuse used in older vehicles
+Image credit: CC-BY-SA-Aka on Wikipedia
+
+22
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+There are two ways to test the fuse: one is by removing the fuse to look at it and the
+other is to use a test light.
+When testing it by removing it, simply pull it directly out and look through the colorcoded plastic to see if the element (connection in the center) is intact. If it s open, then
+the fuse is burnt out. Sometimes you ll also see a black singe that makes the
+transparent plastic more opaque. Never remove more than one fuse at a time. This
+helps to keep track of where the fuse was pulled from and permits easy replacement of
+the fuse in the correct place. If multiple fuses happen to get pulled at the same time
+then the size and placement of each fuse can be found in the owner s manual.
+An easier and faster way to test the fuses is with a testing light since the fuses don t
+have to be removed. The testing light looks like an electric screwdriver with a pointed
+tip. The wire end, or black end of the testing light must be grounded to a clean,
+unpainted metal surface of the vehicle. If you can t find a place on the body of the
+vehicle, then you can always ground it to the negative terminal of the battery. The point
+of the testing light is placed on the metal contacts of the fuse. There is a metal contact
+on each side of the fuse s color-coded plastic (on the back of the C ). Upon contact the
+display will indicate if the fuse is still good.
+
+Test light
+
+Not all fuses have power all the time. So the test should be performed with the key
+turned to the on position in the ignition and the headlights turned on (the engine does
+not need to be running). Even with the key and headlights turned on, there is one other
+fuse that will not have power, which is the crank fuse. The crank fuse only has power
+when the key is turned to the crank position while starting the engine. This particular
+fuse does not need to be tested unless the vehicle won t crank.
+
+23
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Belts & Hoses
+
+Two hoses and a belt are seen in this image
+Image credit: CC-BY-SA-Kolossos on Wikipedia
+
+If a belt squeals after starting the engine or while driving then this indicates a problem
+with belt tension. Most modern vehicles have automatic belt tensioners which keep the
+belt at the appropriate tension. Checking the belt tension varies by make and model.
+Modern vehicles only have one belt, but older vehicles have an individual belt for each
+accessory of the engine (i.e. power steering, air conditioning, and alternator). Consult a
+workshop manual for the proper methods for checking belt tension. (The workshop
+manual or service manual is different from the owner s manual and may be found at the
+local public library or ordered online). Belts can also be checked by visual inspection
+and touch for signs of cracking, fraying, or glazing. Glazing means the drive surface of
+the belt will be shiny.
+Hoses can be checked visually and by touch for signs of cracking, swelling, or leaks. If
+the engine is cool, then squeeze the hose to check for softness. If there is any variation
+from hose to hose within the same vehicle then that could indicate a problem.
+A cooling system pressure tester can be a useful tool to pressurize the cooling system
+and check for leaks or swollen hoses. This tool be rented from an auto parts store and
+should come with instructions for use. You ll attach it in place of the radiator cap and
+hand-pump it as you watch the gauge. Never exceed the indicated pressure that is
+written on the top of the radiator cap. Most modern cars have a limit of 16 psi. Again, do
+not open the radiator cap if the engine is still hot. (See also Chapter 6 for more
+information on the cooling system).
+Vehicle Lighting
+Vehicle lighting includes instrument panel lighting, warning indicator lights, left and right
+turn signals, brake lights, hazard lights (which have a distinct circuit from the turn
+signals even though the display is in the same place), headlights and tail lights, front
+marker lights, the license plate light, and lights for the cab and trunk. Checking vehicle
+lighting goes quicker and smoother with two people, and in the case of the brake lights
+two people are required.
+
+24
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+The instrument lighting is all of the backlighting for the instrument cluster (all the
+gauges, speedometer, fuel gauge and others). The instrument lighting can be checked
+by turning on the headlights at night or in a dim garage. Check to see that all the
+gauges are clearly visible. There should not be any dark spots on the cluster.
+
+Dashboard showing gauges and warning indicator lights
+Image credit: CC-BY-SA-Tagaz Vega
+
+The warning indicator lights on the dashboard include the brake light, oil light, check
+engine light, anti-lock brake (ABS) light, airbag light, tire pressure monitor, engine
+temperature light, and others -- all of which can be found in the owner s manual. All of
+the warning indicator lights will turn on for a set amount of time (about a minute, but
+varies per vehicle) when you turn the key to the on position without cranking the
+engine. Once the engine is running, none of these lights should be on (even the seat
+belt light should be off, indicating that you re wearing your seat belt). If one is on, then it
+indicates a problem with its correlating system. The number of lights and types of lights
+will vary by make and model. Some vehicles have features that others don t, such as
+traction control. (We ll discuss indicator lights in detail in Chapter 3).
+Exterior lighting is checked with the key turned to the on position in the ignition (or with
+the engine running, but it s not necessary to have the engine running just to check the
+lights). Turn on the headlights. Check all four corners of the vehicle. On both sides (right
+and left, or driver side and passenger side) the same number of bulbs should be
+illuminated. There should be two front marker lights that are orange, two tail lights, and
+a license plate light.
+
+Rear lights of a vehicle with the brake lights illuminated.
+Image credit: CC-BY-SA-Paultantk on Wikipedia
+
+25
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Turn the left turn signal on. Check the left front and left rear of the vehicle for blinking
+lights. Some vehicles have more than one bulb for the turn signal and some even
+include a signal in the side rearview mirrors. Be sure every applicable bulb is
+illuminating. Some vehicles have a cornering lamp, which is a clear lamp on the front of
+the vehicle which illuminates corners while turning. This should be illuminated but it will
+not blink.
+Turn the right turn signal on. Check the right front and right rear of the vehicle for
+blinking lights. Be sure all applicable bulbs are illuminating. Check the cornering lamp if
+applicable.
+When the turn signal is on and the indicator is blinking fast or not blinking at all, these
+are indicators of a failed bulb.
+Brake lights require two people for inspection. One person presses the brake pedal
+while the other person checks the rear of the vehicle to make sure all the brake lights
+are illuminating, including the high mount brake light in the rear window if the vehicle is
+equipped with one.
+Activate the hazard switch. Check to make sure that there are flashing lights with an
+equal number of bulbs on all four corners. The hazard lights are wired separately from
+the turn signals, so it is important to check the hazard lights even if the turn signals have
+been checked.
+Air Filter
+Consult the owner s manual for the location of the air filter. Remove the air filter. Inspect
+for visual signs of dirt and debris. Hold the filter up to a fluorescent light; you should be
+able to see light coming through the filter. If there is any doubt then change it. It s cheap
+preventative maintenance and it helps preserve fuel economy. (The air filter is
+discussed more in Chapter 7).
+
+Various air filters.
+Image credit: CC-BY-SA- Maly LOLek on Wikipedia
+
+26
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Chapter 3: Dashboard Indicator Lights
+The instrument panel on your dashboard has multiple gauges and indicators. These
+may include the fuel gauge, speedometer, tachometer, oil pressure, and engine
+temperature. Most are self-explanatory-- the speedometer measures your speed, etc.
+The one that may not be self-explanatory is the tachometer, which indicates engine
+speed in revolutions per minute (RPM). It often has a red zone which you should never
+exceed.
+In the previous chapter we checked all the vehicle lighting which included the
+dashboard symbols. Now we ll discuss what these symbols mean. As always, a better
+resource to learn the meaning of each dashboard symbol for a specific vehicle is the
+owner s manual for that vehicle. The ones that are included in each vehicle will vary by
+make and model.
+Dashboard lights can be red, orange (or yellow) and blue. Generally when a red light
+comes on while driving, it means you should immediately pull over safely and call a tow
+truck. However there are some exceptions some lights which are generally red can be
+yellow or orange, and some red lights can be fixed immediately (seat belt light put
+your seat belt on, door ajar light close all the doors). Orange or yellow lights generally
+indicate that there is a problem with your vehicle, but it is safe to drive to a repair facility
+or your home residence to investigate further. This also has some exceptions. It is
+always best to consult the owner s manual for a particular vehicle.
+The following are the general symbols:
+
+Airbag Light or Supplemental Restraint Warning Light: Red, Orange or Yellow.
+Whenever this light illuminates the air bag system senses a problem, which could be a
+safety issue. It doesn t necessarily mean that the airbags will not work. The airbags
+might or might not still deploy during an accident. The light means that there is a part of
+the airbag system that may not work.
+
+Anti-Lock Brakes Light: Orange or yellow light. This indicates a failure in the anti-lock
+brake (ABS) system and anti-lock brakes are disabled. The purpose of the ABS is to
+allow steering control of a vehicle while braking and to avoid skidding during a panic
+stop. If this light is on, then normal conventional brake function will continue. If it s on in
+the event of a panic stop then the vehicle will skid. Have the vehicle serviced.
+
+27
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Brake Light: Red light, immediately pull over safely and have the vehicle towed (or
+disengage the parking brake if applicable). This light indicates that there is something
+wrong with the brakes. There could be a low brake fluid level, there could be a hydraulic
+brake failure, or the parking brake is engaged.
+
+Change Oil Soon. Orange or yellow light. This light indicates that routine oil change and
+maintenance is due. It s based on revolutions of the crankshaft, which is even more
+accurate than basing routine oil changes on mileage.
+
+Check Engine Light: Red or yellow light. There is a problem with the vehicle emissions
+and the vehicle s computer will have diagnostic trouble codes (DTCs) which will be
+retrieved when the vehicle is inspected. The light may come on and then off. If there are
+any performance issues with the way the vehicle is driving, then pull over and have it
+towed. If the light comes on and stays on, or comes on and then flashes during
+acceleration, then immediately pull over safely and have it towed to a shop. Don t
+confuse the check engine light with the service vehicle soon light below.
+
+Door Ajar Indicator Light: Red light. One of the vehicle doors is open. Close the open
+door before proceeding to drive. There may also be a separate light for the trunk.
+
+Glowplug Indicator Light: This light is only seen in vehicles with diesel engines. The
+glow plug is a device that is used to help get the diesel engine started.
+
+High Beam Indicator or Brights. Usually blue, but can be red on older vehicles. This
+indicates that your brights are on.
+
+28
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Low Coolant Level Light: Red, Orange or yellow light. This light indicates that the engine
+coolant level is low, which could be due to a leak. It is still safe to drive as long as the
+engine temperature light is not on. In some vehicles the first symbol above, the
+thermometer symbol, can also be a temperature light. (Remember from Chapter 2 that
+the coolant level should not be checked while the engine is hot). Some vehicles can
+have a blue thermometer symbol. Consult the owner s manual for its description.
+
+Low Fuel Light: Yellow or Orange. This light indicates that fuel is low. It could also be a
+simple round light that illuminates when the fuel gauge is nearing empty.
+
+Low Oil Level Light: Yellow or Orange. The oil level is low. Refill the oil as soon as
+possible and bring the vehicle to a shop to see why it was low.
+
+Low Oil Pressure or Engine Oil Pressure Light: Red light (immediately pull over safely).
+Once you pull over you could check your oil level and add oil if it s low. If the light
+continues illuminated then you should have your vehicle towed to a facility. Catastrophic
+engine failure will occur if the oil pressure is low. Repairs for these damages can be
+very expensive.
+
+Parking Brake Light: Red light. The parking brake is engaged or not fully released.
+Release it completely before driving.
+
+Service Vehicle Soon: Yellow light. This light may be used in conjunction with other
+lights. Depending on which other lights are illuminated, there may be a problem with the
+anti-lock brakes (ABS), brake hydraulic system, traction control system (TCS), or the
+29
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+electronic suspension system. Don t confuse with the Service Engine Soon light, which
+is one of the possible check engine lights shown above.
+
+Temperature Light (or Hot Light). Red light (immediately pull over safely, turn off the
+engine, and have it towed). This light means engine temperature has exceeded
+maximum parameters. Severe engine failure will result if you continue to drive. For a
+few extra moments while you re finding a safe place to pull over, you can turn on the
+heater to high, which dissipates heat from the engine. If the heater does not work, it is
+an indication that the coolant level is low, and that the vehicle should not be driven. The
+dashboard may also have a temperature gauge which has a thermometer symbol.
+
+Throttle Control Warning Light: Yellow or orange. In some vehicles the throttle has an
+electronic control system. These lights indicate that there is a problem with the system.
+Have the vehicle serviced as soon as possible. In some makes and models the wrench
+light can be for other purposes. Be sure to consult the owner s manual.
+
+Tire Pressure Warning Light: Yellow or orange. This light indicates that one or more of
+the tires has fallen below 25% of the recommended pressure. Have the tires checked
+soon.
+
+Turn Signals and Hazard Light Display: These will only illuminate when a turn signal
+(left or right) or the hazard lights (both simultaneously) are turned on. If one stays on
+instead of blinking in rhythm or blinks slower or quicker than usual then there is a
+problem. One of the bulbs may need to be replaced or there is something wrong with
+the circuit.
+
+Voltage Light. Red Light (pull over safely and get it towed). If this particular light
+illuminates while you re on the freeway then you may be able to proceed to the next
+30
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+exit. This light indicates that voltage is below the minimum specification and your
+vehicle will stop running once the battery dies. Safely pulling over and having the
+vehicle towed is even more important at night since you ll lose the use of your
+headlights, which tend to drain the battery even quicker. Some of the samples are
+yellow; in this case you should still treat it as a red light.
+
+Security Light. Red, Orange or Yellow. This indicates that there is a problem in the theft
+deterrent system. Sometimes the vehicle will not run if this light illuminates or blinks.
+
+Seat Belt Light. Red light. This means that the driver and/or passenger do not have their
+seat belts fastened. Put on your seatbelts before continuing to drive. There is a reason
+why they show videos of people in car accidents to Driver s Ed students. They want you
+to understand that when you get behind the wheel you re potentially putting people in
+danger. Ideally, seat belts would be more like the harnesses used in roller coasters,
+which include two shoulder straps and a middle fastening device at the chest. The
+cross-over shoulder strap isn t very effective in comparison. It is designed that way for
+commercial purposes and to account for common human behavior. It s easier and
+quicker to have one buckle where the belt can be pulled over and fastened in one quick
+motion while the person is just getting into the car. While the conventional seat belt isn t
+100% efficient, it is potentially the most important safety feature of the vehicle because
+it keeps the body harnessed and kept in the seat. Wear your seat belt!
+
+Traction Control Light or Low Track Light: Yellow, orange or blue light. This indicates
+drive wheel speed is higher than the coasting wheel speed. For example, if you have
+front wheel drive, then the front wheel speed is higher than the rear wheel speed. This
+can be useful on ice, dirt or any low-traction condition. Be careful while driving in these
+conditions, especially when turning.
+Once again, this is just a sample list. Your particular make and model could have other
+lights and/or it won t include all the lights listed above. Consult the owner s manual.
+More detailed information on warning indicator lights can be found at http://repairpal.com/warning-lightschart. Most of the images/symbols in this chapter were taken from this web page and are believed to be
+in the public domain due to the universality of these symbols. Some were taken from
+http://commons.wikimedia.org/wiki/Category:Dashboard_icons and other pages of Wikipedia.
+
+31
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Chapter 4: Tires
+This chapter is all about tires. There may be more to these rubber doughnuts than many
+people realize. In this chapter we ll discuss tire specifications, how to check tire
+pressure, wheel alignment, the wear bar, how to change a tire, and old tire disposal.
+Tire Specifications
+There are two specification sets for tires including the tire manufacturer specifications
+and the vehicle manufacturer specifications. Whenever you take your car to a tire shop
+to get the tires changed, they have to meet these specifications by law. You can get a
+tire that goes above these specifications, but never below.
+The vehicle manufacturer s specifications include speed rating, load and size. It is
+located on a sticker in the driver s door jamb of the vehicle and in the vehicle owner s
+manual. When buying a new tire you ll want to stick with a tire that meets the
+manufacturer s specifications because that s the kind of tire that the vehicle was built to
+use.
+
+Vehicle Manufacturer specifications in the driver s door jamb of a vehicle. This indicates that the tires for
+this vehicle should be inflated to 30 PSI, except the spare which is 60 PSI.
+
+32
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+The tire manufacturer specifications include the tire size, load, pressure, temperature,
+speed rating and tread wear. The tire manufacturer specifications indicate what the tire
+is made to withstand. These specifications can be found on the wall of the tire itself.
+
+Tire manufacturer specifications on the tire wall which include various tire codes.
+Image credit: CC-BY-Flanker on Wikipedia
+
+Unless you become a tire technician, you don t have to know all the numbers on the tire
+or on the sticker/owner s manual because every time you get your tires replaced, the
+tire shop will make sure you at least have a tire that meets the required specifications.
+Probably the most important number for the common person to recognize is the
+recommended tire pressure on the vehicle manufacturer s specifications on the driver s
+door jamb sticker. (The tire manufacturer s specifications on the tire itself include the
+maximum pressure that the tire can have, yet the maximum pressure isn t necessarily
+the best pressure for the vehicle).
+
+33
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+How to Check the Tire Pressure
+In order to check tire pressure you ll need a tire pressure gauge. Gauges can be
+purchased at auto parts stores and service stations (sometimes a little as $1, but could
+be $3-$7). They re usually about the size of a large pen, but can come in other forms.
+Sometimes a gauge is included with the air hose of the air dispensing stand at the gas
+station.
+
+Pen-sized tire pressure gauge
+
+Air dispensing hose at a gas station with built-in pressure gauge
+Round tire pressure gauge and hose
+
+Follow these steps to check and correct the tire pressure:
+ Remove the valve cap of each tire
+ Align the gauge up to the valve
+ Press the gauge onto the valve with firm direct pressure and then release. You ll
+see the measuring stick get pushed out of the other side of the gauge (on a pen
+gauge).
+ Fill the tire with air, recheck the pressure, then repeat as needed until the desired
+pressure is obtained.
+ Replace the valve cap
+34
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Tire pressure is measured in PSI (pounds per square inch) or KPA (Kilopascals) which
+are simply units of measurement for pressure. (Pressure is a force distributed over
+surface area)
+
+Checking the tire pressure
+
+Wheel Alignment
+Tires can wear rapidly if they are not aligned properly, or the vehicle can pull to one side
+while driving. There are three angle measurements that are used in tire alignment:
+camber, toe, and caster. Knowing these angles is necessary for any tire technician. In
+addition, knowing these angles can be helpful for anyone trying to communicate with tire
+technicians.
+In order to understand these angles one must consider the planes of the vehicle, which
+are ways of dividing the vehicle in each of its three dimensions (length, width and
+height). The horizontal plane, often depicted in math as the X plane, divides the vehicle
+into top and bottom parts. The vertical plane, often depicted in math as the Y plane,
+divides the vehicle into right and left parts (or driver s side and passenger side). A
+second vertical plane which intersects the first vertical plane at 90 degrees is often
+depicted in math as the Z plane, and it divides the vehicle into front and rear parts.
+
+These three images show a model of a vehicle from the front, side and top views and the three
+dimensional planes that are used to describe tire alignment angles.
+Images by Rex Kimball, www.MirexMarketing.com
+
+35
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+The camber angle lies on the Z plane. (Imagine looking at the tires from the front of the
+vehicle). A camber angle of zero is when the wheel is vertical. If there is any camber,
+then the wheel is deviating from the vertical plane, or the Y plane. In many vehicles the
+camber should be zero, but some may deviate by 2-3 degrees.
+
+Image shows an outward camber. Notice how a tire in this alignment would wear quicker on the outside. If
+it had an inward camber then it would wear more on the inside of the tire
+Image by Rex Kimball, www.MirexMarketing.com
+
+A wheelchair with an inward camber as seen on many athletic wheelchairs.
+
+The toe angle lies on the X plane and deviates from the Y and Z planes. (Imagine the
+vehicle from a bird s eye view or a top view). A toe angle of zero is when the wheels are
+36
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+parallel on the Z and Y planes. This isn t quite how the wheels should be, at least not
+the front wheels. When thinking of toe, consider either the front wheels as a pair or the
+rear wheels as a pair. The distance between the front of each pair of wheels is
+measured and the rear of each pair (i.e. the distance between the front of the front
+wheels and the rear of the front wheels when considering the pair of front wheels).
+When the front wheels are properly aligned the front of the front wheels will actually be
+slightly closer together than the back of the front wheels, meaning the front wheels
+should have a slight inward toe. When the rear wheels are properly aligned they will be
+parallel (i.e. the distance between the front of the rear wheels is the same as the
+distance between the rear of the rear wheels).
+
+Image shows an inward toe of the front passenger tire.
+Image by Rex Kimball, www.MirexMarketing.com
+
+Measuring the distance between the front and back of the front tires as a pair and the rear tires as a pair.
+In this illustration, line a is shorter than line b, indicating an inward toe of one or both tires (both in this
+image). Lines c and d are equal in length, indicating a toe angle of zero.
+Image by Rex Kimball, www.MirexMarketing.com
+
+37
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+If a right wheel is turned inward while the left wheel is straight, or if both wheels are
+turned too far inward, or both are turned outward, etc., then there is an abnormal toe
+angle present and the wheels are not aligned. (Technically when you steer the vehicle
+and the front wheels turn to the left or right, they are deviating from the Y and Z planes,
+but they stay parallel to each other with only a slight variation to account for the fact that
+one wheel is on the outside and one is on the inside while turning).
+The caster angle is an angle which lies on the Y plane and deviates from the Z plane.
+(Imagine looking at the vehicle from the side). Most devices with steering capability do
+not have a caster angle of zero. When the deviation is towards the rear, the caster is
+considered positive. When the deviation is towards the front, the caster is considered
+negative. On motor vehicles the caster is usually positive, (the higher ball joint will be
+closer to the rear than the lower ball joint). This helps the vehicle to drive straight even
+when the steering wheel is hands-free. Since the view of the caster is blocked by the
+wheel on vehicles with four wheels, it is most easily visible on motorcycles and bicycles.
+Think of the two braces that come down on both sides of the front wheel. Notice how
+the handlebars are closer to the rear than the center point (fulcrum) of the front wheel.
+This is a clearly visible positive caster. The front wheels of shopping carts have a
+negative caster. The physics of a negative caster allows for the front wheels to turn
+counter clockwise as the cart is turning clockwise so that the cart is easier to maneuver
+throughout the store.
+
+Image shows a positive caster. Motor vehicles have positive casters which help the vehicle drive straight
+even with a hands-free steering wheel.
+Image by Rex Kimball, www.MirexMarketing.com
+
+38
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+A positive caster is easily seen on the front wheels of motorcycles and bicycles.
+Image adapted, original credit: CC-BY-SA-Yesterdays Antique Motorcycles on Wikipedia
+
+Negative caster on a cart
+Image adapted, original credit: CC-BY-SA-DMahlko on Wikipedia
+
+39
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Wear Bar
+The wear bar is a horizontal bar molded into the tire between the treads. The wear bar
+indicates safe tread depth. It is usually about 1/16 of an inch measured from the valley
+of the tread, but not as high as the tread itself when the tire is new. As the tread wears
+down, the wear bar becomes more visible. When the tread is even with the wear bar the
+tires should be changed. Tires should be rotated with each oil change and kept in
+alignment to ensure even tread wear.
+
+Tire with arrows pointing to the wear bars between the treads.
+
+How to Change a Tire
+Knowing how to change a tire is mostly helpful in case you get a flat while driving on the
+road. Every other time your tires get removed, rotated and/or replaced it will be by a tire
+technician.
+Every vehicle has instructions for using the jack and other tools as necessary to change
+the tire. Some of the details can vary by make and model, such as the storage location
+for the jack and spare tire. Consult the owner s manual of the vehicle. Also, there will
+often be a sticker with instructions located with the jack and spare tire.
+
+40
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Standard spare tire kit with spare tire, lug wrench, and tire jack. This particular kit does not include chocks
+for the other tires. Notice how the spare tire is smaller than the regular tire. It is only meant to be used to
+get the vehicle to a repair shop.
+Image credit: CC-BY-Kurt Nordstrom
+
+Here are some general guidelines for changing a tire (in order):
+ Make sure the vehicle is on level ground (see Chapter 1, Safety, proper lifting
+points)
+ Apply the parking brake
+ Remove the spare tire and tools from the vehicle
+ Use wheel chocks to block the wheels opposite of the wheel you re changing (i.e.
+if you re changing a rear tire, then put the chocks in front of the front wheels).
+o Wheel chocks are similar to triangle-shaped door stoppers. When chocks
+are included with the tire changing kit, then they should be used. However,
+they are not present with every vehicle. Cases where they re not present
+may include vehicles with a rear parking brake and front wheel drive.
+When changing a rear wheel in these vehicles the front wheel drive keeps
+the vehicle stable, and when changing a front wheel in these vehicles the
+rear parking brake keeps the vehicle stable.
+ Loosen the lug nuts before lifting the vehicle, but do not remove
+ Pump or crank the jack to lift the vehicle using the proper lift points (see Chapter
+1, Safety, proper lifting points)
+ Remove the lug nuts
+ Remove the flat tire
+ Place the spare tire
+ Replace the lug nuts snug
+ Lower the vehicle
+41
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+
+
+
+www.CrawfordsAutoService.com
+
+Torque the lug nuts (tighten them as much as possible after the vehicle has been
+lowered)
+Replace the tools in the appropriate location for future use.
+Carry the flat full-size tire to the tire shop with you.
+
+Spare tires are often smaller than the full-size tires that are regularly driven on. Spare
+tires are only meant to transport the vehicle to a tire shop when needed and should be
+changed as soon as possible. They should not be driven on regularly.
+Tire Disposal
+Any time you purchase a tire, the tire shop is responsible for charging a disposal fee
+and disposing the old tire properly. If for some reason you have to dispose of the tires
+yourself, you can take them to the city dump. The dump may charge you a fee. You can
+try taking it to a tire recycling facility where you might be able to dump them for free or
+even get paid for them.
+
+42
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Chapter 5: Internal Combustion Engines & Engine Oil
+In this chapter you'll learn how an internal combustion engine works and the importance
+of engine oil.
+
+How an internal combustion engine works:
+All internal combustion engines operate on a theory called the Otto Cycle of events,
+named after Nikolaus Otto, who invented it in 1867. It occurs in 4 repeating steps or
+cycles:
+ Intake
+ Compression
+ Combustion (or power)
+ Exhaust
+The fuel and air are drawn into the engine cylinder by the piston moving down while the
+intake valve is open. When the piston starts moving up, both intake and exhaust valves
+are closed. The piston moving up compresses the air and fuel mixture. The air and fuel
+mixture is then ignited with a spark plug (in regular gasoline engines), creating
+combustion. The extreme heat creates high pressure forcing the piston down. Next, the
+exhaust valve opens. The piston goes back up exhausting the exhaust gas. Then the
+cycle is repeated.
+
+C: Crankshaft
+E: Exhaust camshaft
+I: Inlet camshaft
+P: Piston
+R: Connecting rod
+S: Spark plug
+V: Valves (Red: exhaust, Blue: intake)
+W: Cooling water duct
+
+Cross section of a cylinder in a combustion engine.
+
+43
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Here is a decent animation of the Otto cycle on YouTube:
+http://www.youtube.com/watch?v=6qHherIwsTE. (In the illustration above, the intake is
+on the right and the exhaust is on the left, but in the YouTube animation the intake is on
+the left and the exhaust is on the right)
+The process of combustion is the conversion of chemical energy (gasoline) into heat
+energy (combustion) which is converted into reciprocating energy (pumping of the
+pistons). The pistons turn a crank shaft via a connecting rod. As the piston goes up and
+down during combustion it rotates the crankshaft. The crankshaft turns reciprocating
+energy into rotational energy. This energy is eventually transferred to the wheels
+through the drivetrain, which we will discuss later in Chapter 9.
+
+An illustration showing pistons (gray) in their respective cylinders (blue) and a crankshaft (red). As the
+pistons go up and down the crankshaft is rotated. This image is animated at
+http://commons.wikimedia.org/wiki/File:Cshaft.gif
+
+In a diesel engine there are no spark plugs. The fuel is ignited based on compression
+alone. The compression is higher on a diesel engine, which generates enough heat to
+cause the combustion.
+A hybrid vehicle uses an electric motor and battery for assisting propulsion along with
+the internal combustion engine. The internal combustion engine generates electricity to
+recharge the batteries. Also, the batteries are recharged when braking to a stop.
+
+44
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Engine Oil
+
+Sample of motor oil
+
+The purpose of engine oil is to form a film of lubrication between all moving parts of an
+internal combustion engine to reduce friction and wear. Choosing the right engine oil for
+your vehicle and changing the oil during regularly-scheduled maintenance intervals will
+keep the engine running smoothly over time. The recommended oil type and
+specification for your vehicle can be found in the owner's manual. Another place to find
+it is on the oil fill cap. It will be based on the ambient temperature where you live. There
+are two engine oil codes that the owner s manual will specify, an API and an SAE.
+All oil has an API code which stands for American Petroleum Institute. It's a service
+rating for the quality, cleanliness, and types of detergents in the oil. The code will
+always be two letters.
+
+The SAE is the viscosity or thickness of the oil. Modern oil is multi-viscosity oil. The SAE
+may be something to the effect of 5W-30. The first number-letter combo (5W) indicates
+the viscosity or thickness of the oil when it is cold. The second number is the viscosity at
+the engine operating temperature. Before they had multi-viscosity oil there was only
+single-viscosity oil (such as SAE 30), which in cold weather was extremely thick. Trying
+to pour it into your engine would be like pouring honey, but more importantly it would be
+hard to pump the oil and lubricate the engine. That's why older engines had to be
+warmed up before you could drive them.
+45
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Chapter 6: The Cooling System
+This chapter is about the cooling system for the engine, not the air conditioning used to
+cool passengers while driving. A cooling system is needed to dissipate excess heat
+created during the internal combustion process.
+Cooling system maintenance is preventive maintenance done to avoid an overheating
+situation and to avoid electrolysis (the breakdown of metals that occurs inside the
+engine block). Cooling system maintenance mileage varies by make and model. In
+some cases, maintenance is necessary before the mileage indicated in the owner's
+manual. For example, if the manufacturer recommendation is a coolant flush at 150,000
+miles, it could easily need to be flushed before that. If the coolant is low then there may
+be a leak. Leaks can occur at the water pump, heater core, the hoses, radiator, and at
+multiple locations throughout the engine.
+The coolant is inspected at every oil change (about every 5,000 miles) and when it is
+found to be dirty then a cooling system flush is necessary. Typically the coolant gets
+dirty when non-distilled water is mixed with it. The impurities in the water cause
+corrosion (breakdown of the metals in the engine), which collect with coolant. This can
+clog radiator and cooling passages. That is why coolant is mixed with distilled water
+where these impurities are absent.
+When checking the coolant at home, be sure to never open the radiator while the
+engine is hot. (Remember Chapter 2: Checking Fluids).
+How to flush the cooling system:
+ Refer to the owner s manual for locations of each part of the cooling system
+ Open the radiator drain to drain the cooling system and collect the drainage into
+a container (you can take this to your local auto parts store for recycling)
+ Remove the thermostat. The thermostat is typically on the engine side of the
+upper radiator hose, but in some cases it s on the lower hose.
+ Disconnect the lower radiator hose, force coolant through the thermostat housing
+(upper hose and engine block) with a garden hose until the water runs clear
+ Connect the garden hose to the radiator, flush water through the radiator until the
+water runs clear.
+ Completely drain the cooling system of all the water.
+ Reinstall the thermostat
+ Disconnect the reservoir and flush with the garden hose until water runs clear.
+Completely drain the reservoir.
+ Connect the hoses and close the drains.
+ Fill the cooling system with new coolant to manufacturer's specification and
+distilled water. Use a 50/50 mixture of coolant and distilled water or pre-mixed
+coolant.
+
+46
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Flushing the cooling system will not correct an overheating concern. If your vehicle is
+overheating, (as indicated on the temperature gauge on the dash), it would need to be
+diagnosed and repaired.
+Any time you open the cooling system and put it back together you want to pressure
+test the cooling system to check for any leaks. You can use a pressure tester which can
+be rented from an auto parts store. It will come with instructions. Generally, it attaches
+to the radiator where the radiator cap goes, and you pump it by hand until the pressure
+on the gauge matches the pressure that is written on top of the radiator cap. Typically
+on a modern vehicle this pressure is between 13 - 16 psi. Let the vehicle sit with this
+pressure for 20 - 30 minutes. Then inspect the entire cooling system for any leaks and
+check the gauge for a change in pressure. If there is less pressure than before then
+there is probably a leak.
+
+47
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+Pressure testing the cooling system
+
+48
+
+www.CrawfordsAutoService.com
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Chapter 7: The Fuel System
+This chapter is about the fuel system. The fuel system is the system which pumps fuel
+into the cylinders of the internal combustion engine and mixes it with the perfect amount
+of air for combustion. There are two types of fuel systems: fuel injection and
+carburetors.
+
+Illustration of a carburetor.
+Image credit: CC-BY-SA-WikipedianProlific on Wikipedia
+
+Prior to 1985 most vehicles used a carburetor. A carburetor uses a venturi (narrowed
+passage within the carburetor) to draw fuel from a float bowl based strictly on the
+volume of air flowing through the carburetor. A carburetor is a primitive method of
+mixing air and fuel. It is far less efficient than modern fuel injection. That s why all
+modern cars today are built with fuel injection.
+How a Fuel Injection System Works:
+Fuel injection is a complex electrical circuit using multiple sensors as inputs to a PCM
+(powertrain control module, also called the computer). The PCM then interprets the
+inputs from these sensors and produces a PWM (pulse width modulated) signal. A
+PWM signal is a digital on/off signal. This translates into how much fuel is injected into
+the engine.
+The PCM then receives feedback signals from oxygen sensors. An oxygen sensor is a
+sensor that checks the air-fuel ratio by monitoring exhaust gas at or near the exhaust
+49
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+manifolds (review Chapter 5 if needed). Using this information, the PCM can adjust fuel
+trim accordingly to keep the engine running clean, long and efficient. This is one of the
+main reasons newer automobiles last so much longer, burn less fuel, and have cleaner
+emissions.
+
+Illustration of a fuel injector.
+Image credit: CC-BY-SA-WikipedianProlific on Wikipedia
+
+Fuel Filter and Air Filter:
+There are two filters which protect the fuel system and engine: the fuel filter and the air
+filter. The fuel system is very sensitive to contamination and debris. A small amount of
+contamination can cause severe problems in any fuel system. Therefore, these filters
+are critical for protecting the fuel system and engine.
+
+A fuel filter (white) next to the air filter compartment (circular black part)
+Image credit: CC-BY-Phasmatisnox on Wikipedia
+
+50
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+When you fill your vehicle with fuel from a gas station, the fuel will have contaminants.
+Between the fuel tank and the engine the fuel passes through a sock filter which
+prevents large contaminants from passing through. Then the fuel will pass through the
+fuel filter which prevents small contaminants from passing. Anything that passes
+through the fuel filter can pass through the rest of the fuel system. Refer to the owner s
+manual to find the manufacturer's recommendation for the mileage at which the fuel
+filter should be changed.
+An air filter protects the engine from dust and dirt entering the combustion chamber
+through the air intake system. Any dirt in the engine can cause engine wear and
+eventually lead to engine failure. Therefore, an air filter, like the fuel filter, is also a
+critical component in any internal combustion engine. The air filter is inspected with
+every oil change and it is changed as needed. (The air filter was also mentioned in
+Chapter 2 since checking it is part of general maintenance).
+
+Various air filters.
+Image credit: CC-BY-SA- Maly LOLek on Wikipedia
+
+51
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Chapter 8: The Electrical System
+This chapter is about the electrical system of the vehicle. The main parts of the
+electrical system are the battery, alternator, and ignition system. The battery is the
+power source of the whole vehicle. The alternator is a re-charging device which is used
+to maintain the charge of the battery. The ignition system is used to ignite the fuel at the
+correct time during the Otto cycle of events (review Chapter 5 for the Otto cycle of
+events).
+
+Alternator
+Image credit: CC-BY-SA-Lolossos on Wikipedia
+
+Car Battery
+
+Ignition System (prior to 1975)
+Image credit: CC-BY-SA-Allumage_batterie on Wikipedia
+
+52
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+The ignition in this lesson is not the same as the key ignition; it s about the ignition
+system that is used in the engine to ignite the air-fuel mixture in the combustion
+chamber. Prior to 1975, the ignition system consisted of the ignition coil, capacitor,
+contact breaker, distributor and spark plugs. The ignition coil converts low voltage
+electricity into high voltage. The high voltage electricity is sent to the distributor through
+the rotor, then it transmits out the distributor cap through plug wires to the spark plugs.
+The contact breaker or contact points complete and interrupt the circuit to the ignition
+coil on the low voltage side. The capacitor absorbs a voltage spike when the points
+open to avoid burning the contacts of the points.
+In a modern vehicle the ignition system consists of a crankshaft position sensor, which
+sends a signal to the PCM (powertrain control module or computer). The PCM interprets
+the signal and sends a signal to the ignition coils on each cylinder. Then the ignition
+coils fire through the spark plugs. Some vehicles will use one coil for two cylinders, and
+some have a separate coil for each cylinder. When one coil is used for two cylinders,
+the spark plugs for both cylinders fire at the same time, but one of the cylinders will be
+in the exhaust step of the Otto cycle, so it s kind of a waste spark (not used to ignite
+fuel).
+The ignition system works in conjunction with fuel injection (Chapter 7) so that the
+correct Otto Cycle of events occurs in the cylinders. The cylinders of internal
+combustion engines are numbered and the firing sequence occurs in a specific order.
+The firing order can vary by vehicle make and model. The engine size is also a factor.
+For example, in an 8 cylinder Chevy engine the cylinders might be numbered 1, 3, 5, 7
+on the driver s side (or left side of the engine from the driver s perspective), and 2, 4, 6,
+8 on the passenger side. The firing order for this particular engine would be 1, 8, 4, 3, 6,
+5, 7, 2.
+
+Illustration of numbered cylinders of a V8 engine; the driver s side is the right side of this image since the
+front of the engine is towards the bottom of the image.
+
+53
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Spark Plug Gap:
+The purpose of the spark plug gap is to create an electric arc or spark of high heat to
+ignite the air-fuel mixture in the combustion chamber at the correct time. If the gap is too
+small then the spark is not hot enough to ignite the fuel. If the gap is too wide, then the
+voltage is not high enough to create a spark. Either condition can create an ignition
+misfire, causing poor performance and high emissions.
+How to Safely Jump Start a Vehicle with a Failed Battery:
+When a battery loses its charge the vehicle won t start and it becomes necessary to use
+another vehicle for a jump start. Since jump starting a failed battery with a charged
+battery involves creating an electrical circuit, it is important to follow the right steps to
+perform a jump start safely:
+ Do your best to line up the vehicles so that the two batteries are close enough to
+connect jumper cables.
+ Turn off the active vehicle
+ Verify there is no odor (like sulfur) coming from either battery. If there is a sulfur
+odor do not attempt to jump start the vehicle. The battery could explode due to
+the gas that is released (hydrogen gas).
+ The next steps involve connecting the cables. When connecting cables to the
+first vehicle, which is the dead vehicle, make sure the other ends of the cables
+are not touching each other.
+ First connect the red cable to the positive (red) battery terminal on the dead
+battery or to the jump start locations specified in the owner s manual.
+ Connect the black cable to the negative terminal of the dead battery or to the
+jump start locations specified in the owner s manual.
+ Connect the positive (red) cable to the positive terminal of the working vehicle (or
+to the specified jump start location in the owner s manual of the working vehicle).
+ Connect the negative (black) cable to the negative terminal of the working vehicle
+(or to the specified jump start location in the owner s manual of the working
+vehicle) or to anything metal. The metal must be bare or without any paint that
+would inhibit conduction of electricity. The engine block is sufficient. Yet, the
+negative terminal is often the most accessible.
+o (More briefly the order is: dead red, dead black, live red, then live black.
+Red is always positive, black is always negative.)
+ Start the working vehicle and allow it to run for approximately 5 minutes.
+ Attempt to start the other vehicle. If the vehicle fails to start, there may be
+additional problems or the battery is no longer rechargeable.
+ Take off the cables in reverse order (always remove negative first) and make
+sure the cables don t touch each other as you re removing them
+o Remove the negative cable from the jumped vehicle
+o Remove the positive cable from the jumped vehicle (make sure they don t
+touch each other)
+o Remove the negative cable from the previously working vehicle
+o Remove the positive cable from the previously working vehicle.
+54
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+That may seem like a lot of steps above to memorize, so here are some tricks to
+remember the process: first connect the Dead Red, Fred. This phrase will help you
+remember that when connecting the cables you ll start with the positive cable on the
+dead battery. The order is dead red, dead black, live red, live black. Then it s the
+reverse order to remove the cables after the dead battery is jumped: First remove the
+Jumped Black, Jack. Remove the jumped black, jumped red, then the previously live
+black, then the previously live red.
+Never attempt to jump start a diesel vehicle. Since a diesel engine battery requires
+much more power, attempting to jump start it could damage the running vehicle.
+Typically you can attempt to jump start a hybrid car, but if the high power battery is
+dead, the vehicle will not start. However, a hybrid can be used to jump start a regular
+gasoline vehicle.
+
+55
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Chapter 9: The Drive Train
+The drive train (drivetrain or powertrain) is a series of parts that transfer energy from the
+combustion engine to the wheels. If needed, review Chapter 5 to recall how the internal
+combustion engine works to convert chemical energy to rotational energy. The drive
+train has three main parts: the transmission, drive line or drive shaft, and differential. In
+some four-wheel drive vehicles a transfer case is also necessary.
+
+Powertrain for a Subaru vehicle. The engine and transmission are seen on the right. The drive shaft is in
+the middle and the differential is on the left at the center of the rear axle.
+
+The rotation of the crankshaft in the internal combustion engine does not equal the
+rotation of the wheels. Just like a bicycle, motor vehicles have gears. The lower gears
+are used for lower speeds, while the higher gears are used for higher speeds. Yet, the
+RPM which is read on the dashboard tachometer may be relatively constant (or stay
+within a range) through all speeds. The transmission, which is where the actual gears
+are located, takes an input speed from the crankshaft and reduces it to the output speed
+until the vehicle is in direct drive. In other words, it changes the gear ratios. So, in first
+gear you might have an input to output ratio of 4 to 1. This means that as the input shaft
+goes around four times, the output shaft goes around one time. At 4,000 RPMs input
+you would have 1,000 RPMs output. Second gear may have a 3 to 1 ratio and third gear
+a 2 to 1 ratio. Fourth gear would be direct drive with a 1 to 1 ratio.
+Think of the sprockets on a bicycle. There is a large sprocket on the front that rotates as
+the bike is pedaled, and there are also large and small sprockets on the back wheel with
+a chain that connects the front sprocket to the rear sprockets. As the gears are
+changed, so is the mechanical advantage for the person that is pedaling.
+
+56
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+In direct drive, the input speed and the output speed are the same; there is no gear
+reduction. Modern vehicles have overdrive, which is a ratio of 0.75 to 1. This means that
+the input speed is less than the output speed, which results in better fuel economy on
+modern vehicles.
+These numbers and ratios are used to present the general idea. Every vehicle has its
+own input to output ratios.
+The drive line (or drive shaft) is a round tube that transfers power from the transmission
+to a differential. It is situated longitudinally underneath the car. A front-wheel drive
+vehicle won t have a drive shaft. Some four-wheel drive vehicles have more than one
+drive shaft.
+A differential (aka rear differential in rear-wheel drive vehicles, rear end, or part of the
+rear axle) has hypoid gears. These are specialized gears which transmit the rotation of
+the drive shaft 90 degrees in order to turn the axles and correlating wheels and tires.
+There are spider gears inside the center section of the differential that allow the wheels
+to travel different distances while turning. Consider a car that is turning right. The
+driver s side rear wheel travels a farther distance than the passenger side rear wheel.
+Think of using a protractor to draw a circle. One leg of the protractor simply rotates on
+one center spot, while the other leg draws the circle. While the rear wheels of a vehicle
+don t turn as sharply as a protractor, the principle is the same.
+
+A differential for a German vehicle with cutout to see the inside.
+Image credit: CC-BY-SA-Aconcagua on Wikipedia
+
+57
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+An illustration of a differential which shows how the gears can be used to change the direction of the
+rotation. The drive shaft is on the lower right corner of the image. The top right and lower left of the image
+show the rear axle which extends to the rear wheels.
+Image credit: CC-BY-SA-17177 on Wikipedia
+
+The Difference Between a Manual and Automatic Transmission:
+A manual transmission (which is also called a standard transmission) uses conventional
+gears. All of these gears are turning at all times when the engine is running and the
+clutch is released. When a gear is selected with the gear shift, the gear is being
+attached to the output shaft. Then to change gears, the clutch is depressed and the next
+gear is selected which attaches that gear to the output shaft. The gears are manually
+selected.
+
+58
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Illustration of a manual transmission.
+
+An automatic transmission uses sun and planet gears. A sun and planet gear set has
+a central sun gear with planetary gears (typically three or four) located around the
+sun gear. These gears can rotate, turn or hold to create different speeds and
+directions. To select the gears there are multiple clutch packs and/or bands that are
+hydraulically applied by a valve body to control gear selection.
+
+59
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Illustration of sun and planet gears in an automatic transmission. The yellow gear in the illustration is the
+sun gear and the four violet gears surrounding the sun gear are the planet gears.
+Image credit: CC-BY-SA-Wapcaplet on Wikipedia
+
+Types of Automatic Transmission Fluid:
+There are 30 or more different types of transmission fluid for today s modern vehicles.
+All the fluids look the same. Refer to the owner s manual to select the correct fluid.
+Aftermarket suppliers make fluids that are compatible with multiple different vehicles.
+When choosing aftermarket fluids, be sure that the specified fluid in the owner s manual
+is listed on the aftermarket bottle.
+Lubricants Used in Standard Transmission:
+The lubricants used in a standard (or manual) transmission on modern vehicles have
+multiple types of fluid. Be sure that the fluid installed in the vehicle meets the
+manufacturer's specifications.
+Lubricants Used in Differentials:
+Most differentials use conventional 80-90 gear oil. The 80-90 numbers indicate the
+weight and viscosity of the oil. (These are similar to the API and SAE discussed in
+Chapter 5). Some vehicles require special fluids. Be sure the fluid meets the
+manufacturer s specifications. Limited slip differentials may require an additional
+additive.
+The Difference Between Front Wheel Drive, Rear Wheel Drive & Four Wheel Drive:
+The main differences between front wheel, rear wheel, and four wheel drive are the
+position of the drive train parts and where the drive train transmits the energy.
+
+60
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Illustration of a transaxle which has a transmission and a differential
+Image credit: CC-BY-SA-Hoikka1 on Wikipedia
+
+Front-wheel drive
+Includes engine (red), and transaxle.
+Image credit: CC-BY-SA- Moebiusuibeom-en on Wikipedia
+
+A front wheel drive vehicle incorporates a differential and a transmission into one piece,
+called a transaxle. The transaxle transmits power from the engine to the front wheels.
+
+61
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Rear-wheel drive
+Includes engine (red), transmission, drive shaft, and rear differential.
+Image credit: CC-BY-SA- Moebiusuibeom-en on Wikipedia
+
+A rear wheel drive vehicle transmits engine power through a transmission to the drive
+shaft, and then to a differential in the rear of the vehicle.
+
+Four-wheel drive
+Includes engine (red), transmission, transfer case, front & rear drive lines, and front & rear differentials.
+Image credit: CC-BY-SA- Moebiusuibeom-en on Wikipedia
+
+62
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Alternate four-wheel drive
+Includes engine (red), front transaxle, drive line, and rear differential.
+Image credit: CC-BY-SA- Moebiusuibeom-en on Wikipedia
+
+One type of four wheel drive vehicle transmits power through a transmission, and then
+to a transfer case, which distributes the power through the front and rear drive shafts,
+then to the front and rear differentials. Another type of four wheel drive has a front
+transaxle and rear differential.
+(The diagrams in this book are not the only configurations. A vehicle can have a rear
+engine with all three drive types, or even a mid-mounted engine.)
+
+63
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Chapter 10: Brakes
+Brakes offer a way to slow the momentum of a vehicle for better control and safety on
+the road. A brake system uses hydraulic advantage to apply force to a friction material
+that generates heat. A moving vehicle has kinetic energy. Brakes convert kinetic energy
+into heat energy.
+There are two types of brakes: disc brakes and drum brakes. The main differences are
+the shapes of the brakes and their friction material. Friction material provides the buffer
+that prevents metal from grinding when the brakes are applied. It can withstand the heat
+that is generated, although it wears out over time and has to be replaced many times
+throughout the life of the vehicle.
+Disc brakes have a rotor (disc) for each wheel and brake pads are the friction material.
+A brake caliper applies force to a brake pad, which presses it against the rotor when it is
+applied. This generates heat and stops the vehicle.
+
+A disc brake. The rotor is the shiny gold-colored disc and the caliper is red. The black piece between the
+caliper and the rotor is the pad.
+Image credit: CC-BY-SA-David Monniaux
+
+Disc brake pads. They re red in this image. They can be any color.
+Image credit: CC-BY-SA-Treemonster86 on Wikipedia
+
+64
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Drum brakes are shaped like a drum and brake shoes are the friction material. A wheel
+cylinder applies pressure to a brake shoe with a friction lining. Think of a circle within a
+circle. A hydraulic device expands the shape of the shoes to press against the drum.
+This generates heat and stops the vehicle.
+
+Illustration of a drum brake
+Image credit: CC-BY-SA-Wapcaplet on Wikipedia
+
+Drum brake shoes (violet color) and linings.
+Image credit: CC-BY-SA-Maly LOLek on Wikipedia
+
+The master cylinder is a hydraulic cylinder that is used to apply force to the brake
+calipers and/or wheel cylinders. The wheel cylinders (used in drum brakes) and the
+brake calipers (used in disc brakes) are both hydraulic slave cylinders .
+Anti-lock brakes have complex electrical and hydraulic components which are used to
+avoid skidding wheels in a panic stop or in a poor traction condition. The anti-lock
+brakes (ABS) use signals from each wheel speed sensor to determine if one wheel is
+65
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+stopping faster than any of the others. If this occurs, the ABS control module (a
+computer) will signal the ABS hydraulic control unit to isolate that wheel, release brake
+pressure, and then pulsates the brake pressure to maintain equal speeds of all four
+wheels. This helps avoid skidding and maintains maneuverability during a panic stop.
+How to Check the Brake System:
+The brake system is often checked by the mechanic during routine oil changes and
+maintenance. However, it can also be checked at home. Consult the service manual of
+the specific make and model about checking the brakes and finding the locations of
+each part of the brake system. Follow these steps to check the brake system:
+ Start under the hood.
+ Check the brake master cylinder for leaks.
+ Check the level and condition of the brake fluid.
+ Inspect all lines and the anti-lock brake module for leaks or loose, damaged
+connectors.
+ Raise the vehicle and support it securely on a lift or jack stands (review Lesson 1
+if needed)
+ Remove all four wheels
+ If the vehicle has drum brakes, then remove the drums.
+ Inspect all brake lines and hoses for signs of leaking or cracking
+ Inspect the caliper hardware and dust boots for damage
+ Inspect the caliper (or wheel cylinders) for brake fluid leaking.
+ Inspect the rotors for smoothness. If a rotor has any pits or grooves then it will
+have to be reconditioned or replaced.
+ Check the thickness of all the brake pads.
+If there is any variation in the brake pad (or shoe) thickness between the driver side and
+passenger side, then there may be an adjustment problem, a defective caliper or other
+defective hardware. Usually the front brakes wear faster since the front brakes are
+responsible for about 80% of the stopping. There is no blanket measurement for brake
+pad thickness since the thickness of new pads can vary by make and model of the
+vehicle. A few millimeters could appear brand new in one car but be an indication for
+pad replacement in another. If the thickness of the pad is 20% of the original thickness
+or less, then the pads should be replaced. The original thickness can be found in the
+service manual for the vehicle.
+
+66
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Chapter 11: The Auto Repair Industry
+Consumers should be aware of how the auto repair industry works. When you bring
+your vehicle to an auto repair shop and enter the office, you re usually greeted by a
+service writer. It doesn t matter if you go to a dealership, a franchised shop (like Midas
+or Firestone), or a small independent shop -- more often than not, the service writer is
+the first person you meet. The service writer acts as an intermediary between you and
+the repair technician. He tells the technician to inspect the car, the technician informs
+him what the findings are, and then he comes back to you with the findings. Some
+shops allow the customer to come into the repair room to see the technician s findings,
+but many don t.
+The service writer is evaluated by upper management, which may include the manager
+of the shop, a director of one or many shops, and/or the owner. The owners of large
+shops are not usually onsite and function mostly as investors. They re hoping to make a
+return on their investment. Directors may manage multiple shops or be the head of an
+entire department, such as the service department at a dealership.
+
+Illustration of how the auto repair industry is organized
+
+Since the service writer is a middleman between the customer and the technician, there
+are frequent communication problems that can occur. A customer may come into the
+shop and say that the car makes a squeaking sound when the brakes are applied. The
+service writer thinks it s the brake pads, so he tells the technician to inspect the brake
+pads. There may be nothing wrong with the brake pads. What the service writer should
+have done is write down that there is a squeaking sound when the brakes are applied.
+Then the technician can diagnose the problem better. Similar communication issues can
+also occur in the other direction. The technician may explain problems or findings to the
+service writer and the service writer may fail to relay the information correctly to the
+customer.
+
+67
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+The service writer is first and foremost a salesman, not a technician. His knowledge and
+understanding of how a vehicle works is often not any greater than the customer s.
+Some service writers can be very knowledgeable about cars; others are not. In either
+case, when the customer speaks to him, he will appear to understand what is wrong
+with the vehicle.
+A major problem with the entire industry, from the technicians to upper management, is
+that everyone is paid on commission. This means that they are motivated and rewarded
+to increase sales and raise the price in order to make more money. The services that
+they suggest are often not damaging to the car; they re just not necessary. They may
+say that your cooling system needs a flush when it doesn t or they could fudge the
+numbers on maintenance intervals to increase the frequency of services. Maintenance
+services are often based on mileage, so it s easy for a shop to say that a service is
+required at 30,000 miles when it actually isn t due until 90,000 miles. By changing the
+interval to every 30,000 miles, they sell the service three times instead of one. This is
+why it is important to review the maintenance chart in the owner s manual of the vehicle.
+Also, some repairs are needed at an earlier time than what is specified in the owner s
+manual. This will be based on certain conditions which can include the weather, the
+driving route, the driver s habits, and other environmental conditions where the vehicle
+is driven or parked on a regular basis.
+Auto dealerships generally have a service department and a sales department which
+are run as two separate businesses. The sales department is actually a customer to the
+service department. The sales department is responsible for moving inventory (selling
+cars on the lot). The service department is responsible for providing services which
+include inspections, maintenance and repairs. The sales department is a customer to
+the service department because every vehicle has be inspected and serviced before it
+can be sold. Since the service writer is still paid by commission even when ordering
+services for the same dealership, he can often tell the sales department that a particular
+vehicle can t be placed out on the lot unless it receives all the top services. Since the
+sales department wants to sell the vehicle, they have no other choice than to accept the
+services and pass the additional costs on to the customer. The service department is
+the one that determines whether a vehicle can be put on the lot, not the sales
+department. This arrangement can be a safeguard for the vehicles being sold and add
+protection to buyers. However, it also gives the services writers more control and it is
+often used to increase commissions.
+When people take their cars to the dealership for maintenance, they are often under the
+impression that the dealership has a certified technician performing the repairs. Often
+the technicians are just kids out of high school with little training or experience. These
+entry level employees are often called lube techs because traditionally the job only
+involves changing the oil. However, today some dealerships allow lube techs to perform
+any repair that they feel comfortable doing, even if they weren t specifically trained for it.
+This saves the dealership money because the lube techs aren t paid as much as the
+certified technicians.
+
+68
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Illustration of Auto Dealership organization
+
+Some shops are sincerely honest, and they do their best to provide good service. Yet,
+the system is still flawed. The staff is still paid by commission and the communication
+gap can still exist between the customer and the repair technician due to the presence
+of the middleman service writer.
+At Crawford s Auto Repair, we have a completely different system of management. The
+owners are the technicians and they don t get paid by commission. There are no service
+writers. Customers have direct interaction with the technician, who inspects the vehicle.
+An honest and accurate estimate is given to each customer. The technician only
+performs the repairs after receiving permission from the customer and customers are
+always welcome into the repair room to observe the inspections and repairs. Also, we
+never try to sell unnecessary repairs or services.
+
+Illustration of Crawford s Auto Repair organization - no service writer, no commissions, no unnecessary
+services or fees.
+
+69
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+This book is provided to all auto repair consumers free of charge to help them gain a
+better understanding of their vehicle and the auto industry in order to save money. If
+you ve enjoyed this book, and if you re within a reasonable driving distance of our shop,
+then come try us out.
+We re located at 2855 S Alma School Rd, Mesa, Arizona 85210.
+Visit our website at www.CrawfordsAutoService.com or call us at 480-201-0740.
+Our website and blog have more information on auto maintenance and repair.
+
+70
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+Chapter 12: How to Buy a Car
+By contributing author Rex Kimball
+Buying a big-ticket item, like a vehicle, can be daunting, especially if the buyer doesn t
+know where to start. This chapter offers a beginner s guide to buying a vehicle. Yet,
+when it comes to buying a vehicle, serious buyers will go beyond the steps described
+here. For example, this chapter may mention the art of negotiation, yet entire books
+have been written on the subject of negotiating, and increasing one s skill in negotiation
+will help the buyer to get a better deal.
+One of the most important things for potential car buyers to know is that the majority of
+vehicles depreciate in value over time. If you purchase a new or used vehicle from a
+dealership, the vehicle depreciates by about 20% of the sale price the minute it is driven
+off the lot. That means that if you turned around and sold the vehicle within a week,
+you d probably only be able to sell it for about 20% less than you paid for it. It s not like
+buying a house where the property generally increases in value over time (except
+during economic decline). Vehicles are not investments; they re simply a necessary
+expense in locations that don t have good public transportation as an alternative. (They
+could be investments if you get involved in the collector s market, which is an entirely
+different game).
+It is also important to realize that the cost in owning a vehicle is much more than simply
+the sales price of the vehicle. All expenses must be considered before accepting the
+burden on your monthly budget. The sales price of the vehicle is just the beginning. If
+you re taking out a loan to pay for the vehicle then you ll first have the monthly loan
+payment.
+You ll also have to pay for gas to run the vehicle. The price of gas varies from week to
+week and by location. Wednesday is probably the best day of the week to buy gas. You
+also don t want to fill up while the service truck is at the gas station refilling the storage
+tanks. When they refill the tanks there are contaminants at the bottom that get stirred up
+and these contaminants can come through the gas pumps and into your vehicle.
+Granted, you learned about the fuel filter in Chapter 7, but there is no sense in wearing
+it out sooner than you have to. Go to www.MapQuest.com and click on gas prices to
+find the best gas prices in your area. The amount of gas that you have to purchase from
+week to week will depend on how much you drive and the gas mileage of the vehicle
+that you purchase.
+Gas mileage is calculated by the change in mileage divided by gallons used (or miles
+per gallon, MPG). The next time you go to the gas station to refuel, fill the gas tank to
+full and write down the mileage that appears on your odometer. Then, after you ve
+driven for a while, return to the gas station and fill the gas tank to full. The amount of
+gallons that you purchased is the amount of gas that you used from full tank to full tank
+after driving for that time. That number goes in the denominator of the equation. The
+number of gallons will appear on the pump display and on your receipt. When refilling
+the second time, you ll also record the mileage on your odometer. The change in
+71
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+mileage is the new mileage recording minus the previous mileage recording, and that
+number goes in the numerator of the equation.
+
+When shopping for vehicles, you can look up the gas mileage as one of the features.
+(Go to any page past the home page at www.CrawfordsAutoService.com to use the free
+tool on the sidebar). The reported gas mileage is a statistical average that the vehicle
+generally gets and the vehicle that you purchase could get better or worse gas mileage
+depending on the condition of the vehicle and the roads where you will be driving.
+There will be a monthly fee for vehicle insurance. Insurance fees will vary by the amount
+of coverage that you want. Liability insurance only pays for any damages that you might
+cause to the other party when you get in an accident and you are at fault. It won t pay to
+replace your vehicle or for your potential medical bills. You ll also want to consider
+whether you want roadside service in case the vehicle breaks down, or coverage for car
+rental fees in case you need a replacement vehicle while your vehicle is repaired. This
+additional coverage cost more per month.
+There are many car insurance companies. Some of the more frequently advertised
+companies are Geico, All State, Progressive, Farmers, Esurance, and Liberty Mutual.
+Yet, there are many, many others. Their advertisements often tout that by simply giving
+them a call you could save a significant amount on your monthly insurance bill. That is
+true because each of their coverage plans are catered to specific types of drivers and
+these plans change from year to year. Hypothetically, this year Insurance Company A
+might have better rates for the common commuter with nothing on their driving record,
+while Insurance Company B might have the best rates for single mothers who are
+transporting three or more children on a regular basis. When they determine the
+monthly rate, they take many factors into consideration and many of these factors are
+company secrets that aren t publicly announced to potential customers. So, the best
+way to find the best deal is to get a quote from each company.
+Some ways to reduce your monthly insurance cost are to never get a speeding ticket,
+never get in an accident, get good grades if you re a student, get married, be within a
+certain income bracket (not too low or too high), be female, and stay in frequent contact
+with the insurance company. Most of these factors are based on statistics. They re not
+being sexist or having other forms of bias; they have the research and numbers to
+justify charging a higher monthly fee for drivers who are at a higher risk. Also, many
+insurance companies offer discounts if you combine your car insurance with other types
+of insurance that they offer, such as home owner s insurance. They call it bundle
+discounts.
+Shopping for the best car insurance can be a long process. Without a doubt there is a
+large percentage of car insurance customers who are paying more because they re too
+72
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+intimidated by the research that is required for finding the best deal. You should get
+used to the idea that you ll frequently need to call the insurance company and be put on
+hold to wait for a representative. Be adamant enough with the representatives to get the
+best deals and avoid getting ripped off, yet be courteous and professional enough so
+that the representative will still want to help you. Shopping for car insurance can start
+simultaneously with shopping for the vehicle. Some companies may be able to help you
+identify the vehicles with the lowest monthly insurance rates. Yet, some of them might
+not be able to provide a quote until you can tell them which vehicle you ll be driving.
+Besides the vehicle price, gas and insurance, there will be yearly fees for vehicle
+registration. You can find out the yearly registration fee by contacting your local Motor
+Vehicle Division (MVD or DMV) or your state s department of transportation. Some
+states require vehicle inspections and emissions testing before your vehicle can be
+registered. This information is also available at the DMV.
+There will also be costs for maintenance and repair. The best way to reduce these costs
+is by taking care of the vehicle and following the maintenance chart in the owner s
+manual. If the vehicle has a service light illuminated on the dashboard or if the vehicle
+starts to have symptoms - don t neglect it. Neglect will lead to further damage, which will
+require more expensive repairs. A simple example is brake pad replacement. Replacing
+the brake pads could cost about $200; but if you wait until the pads wear down
+completely and you start grinding metal on the rotor, then the repair could easily be
+$800 or more (review Chapter 10 for brakes). If the vehicle is well-maintained, it will last
+a lot longer -- maybe even 15 years longer or more. Overall, it costs less to maintain a
+vehicle than to buy new vehicles more frequently.
+Maintenance costs will be a factor for determining which vehicle to purchase since
+some makes and models cost more to maintain than others. Often, a more expensive
+sales price of the vehicle also means that replacement parts and maintenance will cost
+more. Some car manufacturers could even have the same part for the basic and sporty
+models. Yet, if the same part is ordered for the sporty model then it will cost more. The
+parts manufacturer figures that if the customer could pay for the sportier model then
+they can also pay more for the part, even if it s the exact same part with a different label.
+Review of Vehicle Expenses:
+ Sales price/monthly loan payment
+ Monthly insurance payment
+ Yearly registration fee
+ State inspection fees
+ Gas
+ Regular maintenance
+ Repairs
+Once you re able to determine a ballpark figure for your monthly expenses of owning a
+vehicle, you ll be ready to start shopping. Some people find more comfort in purchasing
+a vehicle from a dealership because the organization within a brick and mortar facility
+73
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+gives them a false sense of security. The problem with purchasing from a dealership is
+that they add unnecessary services and fees. For example, in Arizona they might add a
+desert care package and it will be listed with all the other fees. Since most customers
+don t know what the desert care package is, they don t ask about it. It essentially means
+that they tinted the windows without asking if you wanted it, and they will absolutely be
+charging you more than it would cost to tint the windows privately. They might also list
+theft protection as one of the fees. This means that they had a technician etch a
+number into the windows. They might charge $200 for this service which takes the
+technician about 10-15 minutes to perform. Also, if you re vehicle gets stolen, the police
+department won t use this number to identify your vehicle. They ll use the VIN (vehicle
+identification number).
+The dealership will have many tricks for justifying an increased price on the bottom line.
+You can avoid some of these expenses by going through each item on the list and
+asking them to describe exactly what this means. Don t accept the sales description; tell
+them to really explain it. Then, if you don t want it on the bill, tell them to take it off. If you
+buy from a dealership you can expect to spend the entire day there. Dealerships also
+offer poor trade-in value for your prior vehicle.
+If you decide to buy from a dealership, the best time of the year to buy is December,
+particularly on Christmas Eve and New Year s Eve. In any given month, the inventory
+on the lot isn t necessarily owned by the dealership. They have the vehicles on a floor
+money loan. If they don t keep the vehicle beyond a certain time period, they don t have
+to pay interest on the loan, and they make the profit from the sale without an additional
+expense. If you happen to pick a vehicle that is near the end of its loan period, then the
+dealership might be willing to sell it at a cheaper price. December is a particularly good
+time since people are more willing to buy during the holidays and the dealerships want
+to increase their sales numbers before the end of the year. This makes them more
+willing to negotiate, regardless of whether the loan period for the vehicle is ending.
+If you buy from a private owner, there is no guarantee that they won t tell you little white
+lies about the vehicle in order to get you to buy it. However, a private owner won t be as
+likely to trick you into spending more for the vehicle than it s worth. There are tools that
+you can use to determine the value of the vehicle, and give you a more accurate
+starting point for a fair price.
+Before deciding which vehicle to purchase, you ll want to write down some of the
+features you want, or decide on the purposes that the vehicle will serve. A pickup truck
+might make an excellent working vehicle, but the gas mileage could make it a lousy
+commuter vehicle. Will it be meant for one driver or more than one driver? How many
+passengers will be transported on a regular basis? Do you need a lot of trunk space?
+Do you plan on driving it until it dies, or will you sell it once it reaches a certain age or
+mileage? If you know that you ll eventually sell it, then you ll want to pick a make and
+model with a good reputation for resale value. All these features and more will help
+determine which vehicle you should look for.
+
+74
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+If you buy from a private owner, the shopping will begin within the comfort of your own
+home. Some resources to find cars for sale include www.Craigslist.org,
+www.AutoTrader.com (and the Auto Trader print publication), Yahoo! Autos
+(autos.yahoo.com), www.Cars.com, and many free publications which are given away
+at local gas stations and outside public libraries.
+When you find a vehicle that interests you, look up the make and model on Kelly
+Bluebook (www.KBB.com) to see the listed value. Sometimes a seller will list it for
+higher than the Kelly Bluebook price on purpose. There could be a variety of reasons for
+doing this, which include: hesitation to sell the vehicle, hope to sell it for more, upgrades
+which the owner added, or simply the expectation to negotiate.
+If the vehicle says OBO , it means or best offer . This is an open invitation to
+negotiate. There may also be a variety of other abbreviations, especially if the ad is in
+print. Printed advertising fees are based on the number of characters or words, so the
+seller is trying to save money on the ad. If there is ever an abbreviation that you don t
+understand, look for an abbreviation key in the publication or look it up online.
+If the vehicle has a restored title , that means that at one time the vehicle had enough
+damage that the cost of repair was more than the total value of the vehicle. It may have
+been in an accident, flood, or other event to cause the damage. The repairs can include
+anything from engine repair to cosmetic changes to the vehicle. Generally, restored
+titles are less expensive, but the risk that there is something wrong is much greater.
+Once you find a vehicle you re interested in, call or email the owner for more
+information. Since the ad may not have all the information you need, here are some
+questions you might want to ask:
+Go through the features listed on Kelly Blue Book and gather any information you
+need that is not on the ad (Is it a two door or four door? Does it have a CD
+player, etc.)
+If you re a non-smoker, was the vehicle ever driven by a smoker? A smoker
+wouldn t care much either way, but a non-smoker will find it s very difficult to get
+the smell of smoke out. Smokers who know they ll sell their vehicle eventually
+should never smoke in that vehicle because it reduces the resale value.
+Has it had its regular maintenance? Oil changes at 5,000 miles? Etc. -- A vehicle
+with 100,000 miles that has had regular maintenance is better than a vehicle with
+20,000 miles and never been maintained.
+Would it be OK if I test drove it to my mechanic as part of the evaluation?
+Is the Carfax provided? -- A Carfax is a report of all the times the vehicle has had
+an insurance claim for repairs. (http://www.Carfax.com) If you buy from a
+dealership, they usually include the Carfax. If you buy from a private owner, they
+75
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+may or may not provide the Carfax since it costs extra. Auto Trader online has a
+place which indicates if the Carfax is available.
+What was the car used for and where was it driven most of the time? Were dirt
+roads a part of the regular commute? Etc. -- Some of the best vehicles were only
+driven to the grocery store and home by an old lady who never went anywhere
+else and always took care of her things. Buying a used car from an organization
+who regularly kept them maintained for top reliable performance can also be a
+good source, such as an LDS Mission or a business.
+Is the price negotiable?
+If you re satisfied with the phone or email interview, then you ll schedule a time with the
+owner for seeing the vehicle.
+After reading this book, you ll have a much greater advantage when evaluating a
+potential vehicle for purchase. You ll know to check the dashboard lights, the horn, the
+exterior lights, the battery, and many other parts of the vehicle because now you re
+familiar with how a vehicle works. You ll want to make sure it comes with a complete
+spare tire kit. Try looking down the side of the vehicle at different angles to see how the
+light reflects off the paint. If you detect two different coats of paint or areas where touch
+up paint has been applied then ask the seller about it. If the side panels and doors look
+smooth from one angle but then you detect some waviness when looking from a
+different angle, then the vehicle may have been in a side-impact collision and its safety
+features could be compromised.
+You ll want to test drive the vehicle. See how it handles, accelerates and brakes. Go to
+a stretch of road like a freeway onramp or a long stretch between street lights where
+you can floor it. At some point in the inspection, you ll ask for a Carfax report or any of
+the information the seller might have on previous maintenance and repairs.
+One of the smartest things you can do is take the car to a trusted mechanic as part of
+the evaluation. Find a place where you can develop a direct working relationship with
+the technician and not a service writer (review Chapter 11 for a description of service
+writers). Crawford s Auto Repair would be your best choice for a pre-purchase
+inspection if you live in the Mesa-Chandler-Gilbert area of Arizona. Some shops offer a
+free estimate but if they know you re requesting the evaluation to buy a vehicle, then
+they might charge for the inspection since there is less of a chance of you buying their
+repair services. The inspection fee will be worth it because the trained eye of the
+mechanic and the tools they use for diagnostics will enable them to spot things that you
+don t even know to look for. They ll look at the body of the vehicle from the inside, raise
+it up and look at the drive train and the underside of the engine, the brakes, and they ll
+attach their diagnostic device to the vehicle computer to receive any trouble codes that
+are stored on the vehicle s computer. A mechanic s inspection will tell you much more
+information than simply looking at the vehicle or test driving it yourself. And a seller who
+is confident in the value of the vehicle will allow you have it evaluated by a mechanic.
+76
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+After a personal inspection of the vehicle and the mechanic s inspection, if possible
+you ll want to use an internet-enabled device to go through the Kelly Blue Book estimate
+again. Now that you have more information, you ll be able to get a more accurate
+estimate from Kelly Blue Book. Also, ask the mechanic for his best estimate on what the
+vehicle is worth. Between Blue Book and the mechanic, keep this baseline estimate in
+mind and do not go over it when negotiating. First of all, are you willing to pay this
+baseline estimate for the vehicle? If you don t want the vehicle enough to negotiate,
+then just let the owner know that after evaluating the vehicle you re not interested. If you
+are interested then you can start negotiating.
+Consider the asking price of the vehicle. Is it lower than your baseline estimate? If it is,
+then it s your new baseline and do not go above it. If the asking price is above your
+baseline estimate then still do not go above your baseline. You ll want to make a
+counter offer to be as low as it can be without being offensive. It should at least be a
+couple hundred dollars lower than the Kelly Blue Book estimate. And you ll use the
+information you gathered during the inspection to justify the lower offer. If it needs a
+repair, then you ll mention that the price of the repair should be deducted from the
+asking price.
+Be patient. Do not get excited to buy a vehicle. Read the seller s body language. Hold
+your ground. Read a book on negotiation, or many books. There is so much to this art
+and usually the better negotiator gets the deal he or she wants while the other person
+makes compromises. If you re too anxious to buy the vehicle or if you re too lazy to go
+through the process of calling sellers and inspecting a vehicle more than once, then
+you ll probably pay more. Expect to go through this process a few times before finding a
+satisfying deal.
+After you agree on a price, the seller will take the title to the Division of Motor Vehicles
+(DMV) or a private title shop and get the title notarized for selling the vehicle. You might
+use that time to go to the bank or a title loan store to get the money to pay for the
+vehicle. You can arrange for the best type of payment with the seller. If you pay for it in
+full from your bank account, then paying with a cashier s check made out to the seller
+may be more secure than carrying cash. Then you and the seller will meet up again to
+trade the payment for the title and keys. After you receive the title, you ll have to take it
+to the DMV or to an independent title service shop to have a new title drawn up in your
+name and get your license plate. Within the next 10 days you ll also need to call the
+insurance company to have the new vehicle added to your current coverage plan or
+purchase new insurance.
+Finding the right vehicle for your needs at the right price will be very rewarding. If you do
+your homework, put in the effort and follow the steps in this chapter, then you ll be able
+to find a good vehicle that you can afford. Good luck!
+
+77
+
+Crawford s Guide to Beginners Auto Maintenance & Repair
+
+www.CrawfordsAutoService.com
+
+About the author of this chapter: Rex Kimball has been involved in internet marketing
+for over seven years and he is the owner of www.MirexMarketing.com. If you re a
+business owner in need of additional promotion then Mirex Marketing can help. An
+ebook (or electronic book) such as the one you re currently reading is an excellent way
+to promote your website and gain customer trust through honest disclosure and
+consumer education. Contact Mirex Marketing today!
+About the author of this ebook: Jeff Crawford has been an auto technician for over 20
+years and he is the owner of Crawford s Auto Repair in Mesa, Arizona. He is a firm
+believer that auto repair customers deserve to have direct contact with the technician
+who fixes the vehicle. If you live near the Mesa, Arizona area, then check out
+Crawford s Auto repair for all your vehicle maintenance and repair needs.
+
+Quality you can trust!
+2855 S Alma School Rd. Suite 107
+Mesa, AZ 85210
+480-201-0740
+www.CrawfordsAutoService.com
+crawfordsautomotive@gmail.com
+
+78
+
+Download the PDF of this book for free:
+http://crawfordsautoservice.com/crawfords-auto-repairguide-free-ebook/
+
+This book is also available in Kindle Format and
+Paperback.
+
+
