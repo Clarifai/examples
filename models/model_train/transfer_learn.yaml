@@ -1,7 +1,8 @@
-dataset_id: 'image_dataset'
+dataset_id: ''
 dataset_version_id: ''
-concepts: ['id-ramen', 'id-prime_rib', 'id-hamburger', 'id-beignets']
+concepts: []
 train_params:
   enrich_dataset: Automatic
 inference_params:
   min_value: 0.0
+concepts_mutually_exclusive: false
