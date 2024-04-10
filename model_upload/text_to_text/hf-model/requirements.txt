@@ -3,7 +3,7 @@ tritonclient[all]
 torch==2.1.1
 accelerate==0.20.3
 bitsandbytes==0.41.0
-transformers==4.34.1
+transformers==4.38.0
 scipy==1.10.1
 einops==0.6.1
 xformers==0.0.20
