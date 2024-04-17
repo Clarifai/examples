@@ -1,6 +1,6 @@
 clarifai
 tritonclient[all]
 torch==1.13.1
-transformers==4.30.2
+transformers==4.38.0
 Pillow==10.3.0
 diffusers==0.19.0
