@@ -1,8 +1,0 @@
-dataset_id: ''
-dataset_version_id: ''
-concepts: []
-train_params:
-  enrich_dataset: Automatic
-inference_params:
-  min_value: 0.0
-concepts_mutually_exclusive: false
