@@ -12,9 +12,11 @@ This notebook demonstrates how to leverage Clarifai-Unstructured integration for
 
 
 ## Notebooks
-| Function    | Notebook    | Open in Colab |
-| ----------- | ----------- | -----------   |
-| Chains      | [Clarifai-Unstructured-S3 Example notebook](https://github.com/Clarifai/examples/blob/main/Integrations/Unstructured/Clarifai_Unstructured_integration_demo.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/Integrations/Unstructured/Clarifai_Unstructured_integration_demo.ipynb) |
+ | Notebook    | Open in Colab |
+| ----------- | -----------   |
+| [S3 bucket as source Example notebook](https://github.com/Clarifai/examples/blob/main/Integrations/Unstructured/Clarifai_Unstructured_integration_demo.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/Integrations/Unstructured/Clarifai_Unstructured_integration_demo.ipynb) |
+| [Dropbox as source Example notebook](https://github.com/Clarifai/examples/blob/main/Integrations/Unstructured/Dropbox_Clarifai_Unstructured_integration_example.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/Clarifai/examples/blob/main/Integrations/Unstructured/Dropbox_Clarifai_Unstructured_integration_example.ipynb)|
+| [Github as source Example notebook](https://github.com/Clarifai/examples/blob/main/Integrations/Unstructured/Clarifai_github_using_unstructured_io_integration_example.ipynb) |[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/Clarifai/examples/blob/main/Integrations/Unstructured/Clarifai_github_using_unstructured_io_integration_example.ipynb)|
 
 
 
