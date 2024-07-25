@@ -1,6 +1,6 @@
 clarifai
 tritonclient[all]
-torch==1.13.1
+torch==2.2.0
 transformers==4.38.0
 scipy==1.10.1
 sentencepiece==0.1.99
