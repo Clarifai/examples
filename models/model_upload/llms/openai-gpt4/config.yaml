@@ -1,0 +1,15 @@
+# This is the sample config file for the llama model.
+
+model: 
+  id: "model_id"
+  user_id: "user_id"
+  app_id: "app_id"
+  model_type_id: "text-to-text"
+
+build_info:
+  python_version: "3.10"
+
+inference_compute_info:
+  cpu_limit: "2"
+  cpu_memory: "2Gi"
+  num_accelerators: 0

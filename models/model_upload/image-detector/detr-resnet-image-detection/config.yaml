@@ -1,0 +1,22 @@
+# This is the sample config file for the image-classifier model.
+
+model: 
+  id: "model_id"
+  user_id: "user_id"
+  app_id: "app_id"
+  model_type_id: "visual-detector"
+
+build_info:
+  python_version: "3.10"
+
+inference_compute_info:
+  cpu_limit: "2"
+  cpu_memory: "13Gi"
+  num_accelerators: 1
+  accelerator_type: ["NVIDIA-A10G"]
+  accelerator_memory: "10Gi"
+
+
+checkpoints:
+  type: "huggingface"
+  repo_id: "facebook/detr-resnet-50"

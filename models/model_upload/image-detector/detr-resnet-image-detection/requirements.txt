@@ -1,0 +1,5 @@
+torch==2.1.2
+tokenizers==0.19.1
+transformers==4.40.1
+pillow
+requests
