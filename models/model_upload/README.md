@@ -30,12 +30,12 @@ There are only three necessary files:
  - `model.py` - the implementation of the model.
  - `config.yaml` - contains compute resource information and other details needed to build the Docker image and upload the model to the to Clarifai Platform.
 
-### Define config.yaml
+### Model Upload Process
 - Define a appropriate model id, and your user_id and app_id in the config.yaml of model example for where the model should be uploaded to Clarifia Platform
 
 - Edit the model.py to do as you’d like for the implementation of your model
 
-- Now that your custom model is ready, you can upload it to the API.
+- Now that your custom model is ready, you can serve the model in production
 
 ```
 python -m clarifai.runners.models.model_upload --model_path {model_path}
