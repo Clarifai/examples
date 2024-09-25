@@ -4,12 +4,11 @@ from typing import Iterator
 
 import requests
 import torch
+from clarifai.runners.models.model_runner import ModelRunner
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2
 from PIL import Image
 from transformers import AutoModelForImageClassification, ViTImageProcessor
-
-from clarifai.runners.models.model_runner import ModelRunner
 
 
 def preprocess_image(image_url=None, image_base64=None):
@@ -27,19 +26,20 @@ class MyRunner(ModelRunner):
   def load_model(self):
     """Load the model here."""
 
+    self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
     # if checkpoints section is in config.yaml file then checkpoints will be downloaded at this path during model upload time.
     checkpoint_path = os.path.join(os.path.dirname(__file__), "checkpoints")
-    
-    self.model = AutoModelForImageClassification.from_pretrained(checkpoint_path)
+
+    self.model = AutoModelForImageClassification.from_pretrained(checkpoint_path,).to(self.device)
     self.processor = ViTImageProcessor.from_pretrained(checkpoint_path)
 
-  def predict(
-    self, request: service_pb2.PostModelOutputsRequest
-  ) -> Iterator[service_pb2.MultiOutputResponse]:
+  def predict(self, request: service_pb2.PostModelOutputsRequest
+             ) -> Iterator[service_pb2.MultiOutputResponse]:
     """This is the method that will be called when the runner is run. It takes in an input and
     returns an output.
     """
-    
+
     # Get the concept protos from the model.
     concept_protos = request.model.model_version.output_info.data.concepts
 
@@ -56,7 +56,7 @@ class MyRunner(ModelRunner):
         img = preprocess_image(image_base64=data.image.base64)
       elif data.image.url != "":
         img = preprocess_image(image_url=data.image.url)
-        
+
       with torch.no_grad():
         inputs = self.processor(images=img, return_tensors="pt")
         model_output = self.model(**inputs)
@@ -72,17 +72,13 @@ class MyRunner(ModelRunner):
 
       output.status.code = status_code_pb2.SUCCESS
       outputs.append(output)
-    return service_pb2.MultiOutputResponse(
-      outputs=outputs,
-    )
+    return service_pb2.MultiOutputResponse(outputs=outputs,)
 
-  def generate(
-    self, request: service_pb2.PostModelOutputsRequest
-  ) -> Iterator[service_pb2.MultiOutputResponse]:
+  def generate(self, request: service_pb2.PostModelOutputsRequest
+              ) -> Iterator[service_pb2.MultiOutputResponse]:
     raise NotImplementedError("Stream method is not implemented for image classification models.")
 
-  def stream(
-    self, request_iterator: Iterator[service_pb2.PostModelOutputsRequest]
-  ) -> Iterator[service_pb2.MultiOutputResponse]:
+  def stream(self, request_iterator: Iterator[service_pb2.PostModelOutputsRequest]
+            ) -> Iterator[service_pb2.MultiOutputResponse]:
     ## raise NotImplementedError
     raise NotImplementedError("Stream method is not implemented for image classification models.")
