@@ -26,6 +26,7 @@ class MyRunner(ModelRunner):
       checkpoints,
       low_cpu_mem_usage=True,
       device_map=self.device,
+      torch_dtype=torch.bfloat16,
     )
     # Create a streamer for streaming the output of the model
     self.streamer = TextIteratorStreamer(self.tokenizer, skip_prompt=True, skip_special_tokens=True)
