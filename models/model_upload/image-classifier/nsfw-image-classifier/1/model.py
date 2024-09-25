@@ -58,7 +58,7 @@ class MyRunner(ModelRunner):
         img = preprocess_image(image_url=data.image.url)
 
       with torch.no_grad():
-        inputs = self.processor(images=img, return_tensors="pt")
+        inputs = self.processor(images=img, return_tensors="pt").to(self.device)
         model_output = self.model(**inputs)
         logits = model_output.logits
 
