@@ -1,4 +1,4 @@
-## Clarifai Model Upload Guide
+# Clarifai Model Upload
 
 Clarifai provides an easy-to-use platform to serve AI/ML models in production.
 
@@ -46,7 +46,7 @@ your_model_directory/
 └── config.yaml
 ```
 
-## Model Upload Process
+## Clarifai Model Upload Guide
 
 ### Step 1: Define the `config.yaml` File
 
@@ -90,7 +90,10 @@ repo_id: "meta-llama/Meta-Llama-3-8B-Instruct"
 hf_token: "your_hf_token" # Required for private models
 ```
 
-### Step 2: Prepare the `model.py` File
+### Step 2: Define dependencies in requirements.txt
+List all required Python dependencies for your model in `requirements.txt` file. This ensures that all necessary libraries are installed in the runtime environment
+
+### Step 3: Prepare the `model.py` File
 
 The `model.py` file contains the logic for your model, including how the model is loaded and how predictions are made. This file must implement a class that inherits from `ModelRunner`, which should define the following methods:
 
@@ -117,12 +120,12 @@ def stream(self, request):
 pass
 ```
 
-* `**load_model()**`: Loads the model, similar to an initialization step.
-* `**predict(input_data)**`: Handles the core logic for making a prediction with the model. It processes input data and returns a output reponse.
-* `**generate(input_data)**`: Returns output in a streaming manner (if applicable).
-* `**stream(input_data)**`: Manages streaming input and output (for more advanced use cases).
+* **load_model()**: Loads the model, similar to an initialization step.
+* **predict(input_data)**: Handles the core logic for making a prediction with the model. It processes input data and returns a output reponse.
+* **generate(input_data)**: Returns output in a streaming manner (if applicable).
+* **stream(input_data)**: Manages streaming input and output (for more advanced use cases).
 
-### Step 3: Upload the Model to Clarifai
+### Step 4: Upload the Model to Clarifai
 
 Now that your custom model is ready, you can serve the model in production using:
 
