@@ -4,12 +4,11 @@ from typing import Iterator
 
 import requests
 import torch
+from clarifai.runners.models.model_runner import ModelRunner
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2
 from PIL import Image
 from transformers import DetrForObjectDetection, DetrImageProcessor
-
-from clarifai.runners.models.model_runner import ModelRunner
 
 
 def preprocess_image(image_url=None, image_base64=None):
@@ -27,13 +26,14 @@ class MyRunner(ModelRunner):
 
   def load_model(self):
     """Load the model here."""
-    checkpoint_path = "facebook/detr-resnet-50"
-    self.model = DetrForObjectDetection.from_pretrained(checkpoint_path, revision="no_timm")
+    checkpoint_path = os.path.join(os.path.dirname(__file__), "checkpoints")
+    self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    self.model = DetrForObjectDetection.from_pretrained(
+        checkpoint_path, revision="no_timm").to(self.device)
     self.processor = DetrImageProcessor.from_pretrained(checkpoint_path, revision="no_timm")
 
-  def predict(
-    self, request: service_pb2.PostModelOutputsRequest
-  ) -> Iterator[service_pb2.MultiOutputResponse]:
+  def predict(self, request: service_pb2.PostModelOutputsRequest
+             ) -> Iterator[service_pb2.MultiOutputResponse]:
     """This is the method that will be called when the runner is run. It takes in an input and
     returns an output.
     """
@@ -56,15 +56,14 @@ class MyRunner(ModelRunner):
         img = preprocess_image(image_url=data.image.url)
 
       with torch.no_grad():
-        inputs = self.processor(images=img, return_tensors="pt")
+        inputs = self.processor(images=img, return_tensors="pt").to(self.device)
         model_output = self.model(**inputs)
 
       # convert outputs (bounding boxes and class logits) to COCO API
       # let's only keep detections with score > 0.7 (You can set it to any other value)
       target_sizes = torch.tensor([img.size[::-1]])
       results = self.processor.post_process_object_detection(
-        model_output, target_sizes=target_sizes, threshold=0.7
-      )[0]
+          model_output, target_sizes=target_sizes, threshold=0.7)[0]
 
       width, height = img.size
       for score, label_idx, box in zip(results["scores"], results["labels"], results["boxes"]):
@@ -94,17 +93,12 @@ class MyRunner(ModelRunner):
 
       output.status.code = status_code_pb2.SUCCESS
       outputs.append(output)
-    return service_pb2.MultiOutputResponse(
-      outputs=outputs,
-    )
+    return service_pb2.MultiOutputResponse(outputs=outputs,)
 
-  def generate(
-    self, request: service_pb2.PostModelOutputsRequest
-  ) -> Iterator[service_pb2.MultiOutputResponse]:
+  def generate(self, request: service_pb2.PostModelOutputsRequest
+              ) -> Iterator[service_pb2.MultiOutputResponse]:
     raise NotImplementedError("Stream method is not implemented for image detection models.")
 
-  def stream(
-    self, request_iterator: Iterator[service_pb2.PostModelOutputsRequest]
-  ) -> Iterator[service_pb2.MultiOutputResponse]:
+  def stream(self, request_iterator: Iterator[service_pb2.PostModelOutputsRequest]
+            ) -> Iterator[service_pb2.MultiOutputResponse]:
     raise NotImplementedError("Stream method is not implemented for image detection models.")
-
