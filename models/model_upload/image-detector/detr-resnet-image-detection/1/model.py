@@ -5,6 +5,7 @@ from typing import Iterator
 import requests
 import torch
 from clarifai.runners.models.model_runner import ModelRunner
+from clarifai.utils.logging import logger
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2
 from PIL import Image
@@ -28,9 +29,12 @@ class MyRunner(ModelRunner):
     """Load the model here."""
     checkpoint_path = os.path.join(os.path.dirname(__file__), "checkpoints")
     self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    logger.info(f"Running on device: {self.device}")
+
     self.model = DetrForObjectDetection.from_pretrained(
         checkpoint_path, revision="no_timm").to(self.device)
     self.processor = DetrImageProcessor.from_pretrained(checkpoint_path, revision="no_timm")
+    logger.info("Done loading!")
 
   def predict(self, request: service_pb2.PostModelOutputsRequest
              ) -> Iterator[service_pb2.MultiOutputResponse]:

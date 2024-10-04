@@ -15,9 +15,8 @@ class MyRunner(ModelRunner):
   def load_model(self):
     """Load the model here."""
 
-  def predict(
-    self, request: service_pb2.PostModelOutputsRequest
-  ) -> service_pb2.MultiOutputResponse:
+  def predict(self,
+              request: service_pb2.PostModelOutputsRequest) -> service_pb2.MultiOutputResponse:
     """This is the method that will be called when the runner is run. It takes in an input and
     returns an output.
     """
@@ -27,8 +26,7 @@ class MyRunner(ModelRunner):
     output_info = None
     if request.model.model_version.id != "":
       output_info = json_format.MessageToDict(
-        model.model_version.output_info, preserving_proto_field_name=True
-      )
+          model.model_version.output_info, preserving_proto_field_name=True)
 
     outputs = []
     # TODO: parallelize this over inputs in a single request.
@@ -46,25 +44,18 @@ class MyRunner(ModelRunner):
         output.data.text.raw = data.text.raw + "Hello World" + params_dict.get("hello", "")
       if data.image.url != "":
         output.data.text.raw = data.image.url.replace(
-          "samples.clarifai.com",
-          "newdomain.com"
-          + params_dict.get(
-            "domain",
-          ),
+            "samples.clarifai.com",
+            "newdomain.com" + params_dict.get("domain",),
         )
       if data.image.base64 != b"":
         output.data.image.base64 = (
-          hashlib.md5(data.image.base64).hexdigest() + "Hello World run_input"
-        )
+            hashlib.md5(data.image.base64).hexdigest() + "Hello World run_input")
       output.status.code = status_code_pb2.SUCCESS
       outputs.append(output)
-    return service_pb2.MultiOutputResponse(
-      outputs=outputs,
-    )
+    return service_pb2.MultiOutputResponse(outputs=outputs,)
 
-  def generate(
-    self, request: service_pb2.PostModelOutputsRequest
-  ) -> Iterator[service_pb2.MultiOutputResponse]:
+  def generate(self, request: service_pb2.PostModelOutputsRequest
+              ) -> Iterator[service_pb2.MultiOutputResponse]:
     """Example yielding a whole batch of streamed stuff back."""
 
     # model = request.model
@@ -82,17 +73,13 @@ class MyRunner(ModelRunner):
           output.data.text.raw = f"Generate Hello World {i}"
         if inp.data.image.base64 != b"":
           output.data.text.raw = (
-            hashlib.md5(inp.data.image.base64).hexdigest() + f"Generate Hello World {i}"
-          )
+              hashlib.md5(inp.data.image.base64).hexdigest() + f"Generate Hello World {i}")
         output.status.code = status_code_pb2.SUCCESS
         outputs.append(output)
-      yield service_pb2.MultiOutputResponse(
-        outputs=outputs,
-      )
+      yield service_pb2.MultiOutputResponse(outputs=outputs,)
 
-  def stream(
-    self, request_iterator: Iterator[service_pb2.PostModelOutputsRequest]
-  ) -> Iterator[service_pb2.MultiOutputResponse]:
+  def stream(self, request_iterator: Iterator[service_pb2.PostModelOutputsRequest]
+            ) -> Iterator[service_pb2.MultiOutputResponse]:
     """Example yielding a whole batch of streamed stuff back."""
 
     for ri, request in enumerate(request_iterator):
@@ -115,6 +102,4 @@ class MyRunner(ModelRunner):
           print(out_text)
           output.data.text.raw = out_text
           outputs.append(output)
-        yield service_pb2.MultiOutputResponse(
-          outputs=outputs,
-        )
+        yield service_pb2.MultiOutputResponse(outputs=outputs,)

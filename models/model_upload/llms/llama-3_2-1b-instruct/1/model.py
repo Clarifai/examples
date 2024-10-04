@@ -197,3 +197,21 @@ class MyRunner(ModelRunner):
             )
             yield result
           thread.join()
+
+
+if __name__ == "__main__":
+  # For testing purposes you can run the runner directly.
+  # Just create it.
+  r = MyRunner(compute_cluster_id="blah", nodepool_id="np", runner_id="r")
+  # load the model.
+  r.load_model()
+  # send an inference.
+  logger.info(
+      r.predict(
+          service_pb2.PostModelOutputsRequest(
+              model=resources_pb2.Model(model_version=resources_pb2.ModelVersion(id="")),
+              inputs=[
+                  resources_pb2.Input(data=resources_pb2.Data(text=resources_pb2.Text(
+                      raw="How many people live in new york?")))
+              ],
+          )))
