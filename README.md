@@ -83,7 +83,7 @@ dataset.upload_dataset(task="text_clf", split="train", module_dir="path_to_imdb_
 
 ## Model upload examples
 
-There is an exciting new model upload experience now in private preview. We'd love for you to try it out and give us feedback! If you're interested, please sign up for private preview at:
+There is an exciting new model upload experience now in private preview. We'd love for you to try it out and give us feedback! If you're interested, please sign up for private preview [here](https://forms.gle/MSx7QNxmug2oFZYD6).
 
 
 ## Note
