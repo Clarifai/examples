@@ -4,6 +4,7 @@ from typing import Iterator
 
 import torch
 from clarifai.runners.models.model_runner import ModelRunner
+from clarifai.utils.logging import logger
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2, status_pb2
 from google.protobuf import json_format
@@ -17,6 +18,7 @@ class MyRunner(ModelRunner):
   def load_model(self):
     """Load the model here."""
     self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    logger.info(f"Running on device: {self.device}")
 
     # if checkpoints section is in config.yaml file then checkpoints will be downloaded at this path during model upload time.
     checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
@@ -31,7 +33,7 @@ class MyRunner(ModelRunner):
     # Create a streamer for streaming the output of the model
     self.streamer = TextIteratorStreamer(
         self.tokenizer, skip_prompt=True, skip_special_tokens=True)
-    print("Done loading!")
+    logger.info("Done loading!")
 
   def predict(self,
               request: service_pb2.PostModelOutputsRequest) -> service_pb2.MultiOutputResponse:
