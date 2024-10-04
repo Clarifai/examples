@@ -1,4 +1,0 @@
-clarifai
-tritonclient[all]
-transformers==4.38.0
-torch==2.1.1

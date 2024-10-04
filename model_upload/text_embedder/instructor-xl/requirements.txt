@@ -1,7 +1,0 @@
-clarifai
-tritonclient[all]
-torch==1.13.1
-scipy==1.10.1
-einops==0.6.1
-InstructorEmbedding==1.0.1
-sentence_transformers==2.2.2
