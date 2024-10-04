@@ -199,11 +199,12 @@ class MyRunner(ModelRunner):
 
 
 if __name__ == "__main__":
-
+  # For testing purposes you can run the runner directly.
+  # Just create it.
   r = MyRunner(compute_cluster_id="blah", nodepool_id="np", runner_id="r")
-
+  # load the model.
   r.load_model()
-
+  # send an inference.
   print(
       r.predict(
           service_pb2.PostModelOutputsRequest(
