@@ -2,8 +2,6 @@
 
 Clarifai provides an easy-to-use platform to serve AI/ML models in production.
 
-This feature is currently in Private Preview. We'd love for you to try it out and provide your feedback. To do so please sign up for Private Preview [here](https://forms.gle/MSx7QNxmug2oFZYD6).
-
 There are collection of pre-built model examples for different tasks.
 
 This guide will walk you through the process of uploading custom models to the Clarifai platform, leveraging pre-built model examples for different tasks. You'll also learn to customize models and adjust configurations for deployment.

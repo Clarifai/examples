@@ -1,0 +1,5 @@
+clarifai
+tritonclient[all]
+torch==1.13.1
+transformers==4.38.0
+Pillow==10.3.0
