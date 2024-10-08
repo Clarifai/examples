@@ -19,3 +19,4 @@ inference_compute_info:
 checkpoints:
   type: "huggingface"
   repo_id: "Falconsai/nsfw_image_detection"
+  hf_token: "hf_token"

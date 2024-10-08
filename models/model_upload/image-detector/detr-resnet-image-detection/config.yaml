@@ -20,3 +20,4 @@ inference_compute_info:
 checkpoints:
   type: "huggingface"
   repo_id: "facebook/detr-resnet-50"
+  hf_token: "hf_token"
