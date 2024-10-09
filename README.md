@@ -10,6 +10,7 @@ Experience the power of Clarifai in building Computer Vision , Natual Language p
 
 ## Setup
 * Sign up for a free account at [clarifai](https://clarifai.com/signup) and set your PAT key.
+* You can generate PAT key in the Personal settings -> [Security section](https://clarifai.com/settings/security)
 
 * Install the [Clarifai python sdk.](https://github.com/Clarifai/clarifai-python/tree/master)
 
