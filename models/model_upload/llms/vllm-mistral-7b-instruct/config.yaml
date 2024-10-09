@@ -11,12 +11,12 @@ build_info:
 
 inference_compute_info:
   cpu_limit: "1"
-  cpu_memory: "16Gi"
+  cpu_memory: "12Gi"
   num_accelerators: 1
   accelerator_type: ["NVIDIA-A10G"]
-  accelerator_memory: "18Gi"
+  accelerator_memory: "16Gi"
 
 checkpoints:
   type: "huggingface"
-  repo_id: "mistralai/Mistral-7B-Instruct-v0.2"
+  repo_id: "TheBloke/Mistral-7B-Instruct-v0.2-AWQ"
   hf_token: "hf_token"
