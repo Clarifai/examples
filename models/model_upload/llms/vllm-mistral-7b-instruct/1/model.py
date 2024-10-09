@@ -57,7 +57,7 @@ class MyRunner(ModelRunner):
             '--quantization',
             'awq',
             '--gpu-memory-utilization',
-            '0.4',
+            '0.6',
             '--port',
             '9000',
             '--host',
