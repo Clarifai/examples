@@ -1,0 +1,22 @@
+clarifai_model:
+  clarifai_model_id: ''
+  clarifai_user_app_id: ''
+  description: ''
+  inference_parameters:
+  - default_value: 30
+    description: num_inference_steps
+    field_type: 3
+    path: num_inference_steps
+  - default_value: 7.5
+    description: guidance_scale
+    field_type: 3
+    path: guidance_scale
+  - default_value: low quality
+    description: negative_prompt
+    field_type: 2
+    path: negative_prompt
+  labels: []
+  type: text-to-image
+serving_backend:
+  triton:
+    max_batch_size: 4
