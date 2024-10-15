@@ -1,6 +1,6 @@
-# [Clarifai Data Utils](https://github.com/Clarifai/clarifai-python-datautils)
+# Annotation Loader
 
-Clarifai Data Utils offers various types of multimedia data utilities. Enhance your experience by seamlessly integrating these utilities with the Clarifai Python SDK.
+A framework to load,export and analyze different annotated datasets
 
 ## Installation
 
@@ -9,10 +9,7 @@ Clarifai Data Utils offers various types of multimedia data utilities. Enhance y
 pip install clarifai-datautils
 ```
 
-# Features
-## Annotation Loader
 
-A framework to load, export and analyze different annotated datasets.
 
 ### Supported Formats
 

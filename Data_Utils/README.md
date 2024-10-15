@@ -1,23 +1,8 @@
-![image](https://github.com/user-attachments/assets/b22c9807-f5e7-49eb-b00d-598e400781af)
+# [Clarifai Data Utils](https://github.com/Clarifai/clarifai-python-datautils)
 
-# Clarifai Python Data Utils
-
-
-[![Discord](https://img.shields.io/discord/1145701543228735582)](https://discord.gg/M32V7a7a)
-[![codecov](https://img.shields.io/pypi/dm/clarifai)](https://pypi.org/project/clarifai-datautils)
-
-
-This is a collection of utilities for handling various types of multimedia data. Enhance your experience by seamlessly integrating these utilities with the Clarifai Python SDK. This powerful combination empowers you to address both visual and textual use cases effortlessly through the capabilities of Artificial Intelligence. Unlock new possibilities and elevate your projects with the synergy of versatile data utilities and the robust features offered by the [Clarifai Python SDK](https://github.com/Clarifai/clarifai-python). Explore the fusion of these tools to amplify the intelligence in your applications! 🌐🚀
-
-[Website](https://www.clarifai.com/) | [Schedule Demo](https://www.clarifai.com/company/schedule-demo) | [Signup for a Free Account](https://clarifai.com/signup) | [API Docs](https://docs.clarifai.com/) | [Clarifai Community](https://clarifai.com/explore) | [Python SDK Docs](https://docs.clarifai.com/python-sdk/api-reference) | [Examples](https://github.com/Clarifai/examples) | [Colab Notebooks](https://github.com/Clarifai/colab-notebooks) | [Discord](https://discord.gg/XAPE3Vtg)
+Clarifai Data Utils offers various types of multimedia data utilities. Enhance your experience by seamlessly integrating these utilities with the Clarifai Python SDK.
 
 ---
-## Table Of Contents
-
-* **[Installation](#installation)**
-* **[Getting Started](#getting-started)**
-* **[Features](#features)**
-  * [Data Ingestion Pipeline](#ingestion-pipeline)
 
 
 ## Installation
@@ -38,6 +23,40 @@ python3 -m venv env
 source env/bin/activate
 pip3 install -r requirements.txt
 ```
+
+## Features
+
+### Image Utils
+- #### Annotation Loader
+  - Load various annotated image datasets and export to clarifai Platform
+  - Convert from one annotation format to other supported annotation formats
+
+### Data Ingestion Pipeline
+  - Easy to use pipelines to load data from files and ingest into clarifai platfrom.
+  - Load text files(pdf, doc, etc..) , transform, chunk and upload to the Clarifai Platform
+
+## Quick Usage
+### Image Annotation Loader
+```python
+from clarifai_datautils import ImageAnnotations
+#import from folder
+coco_dataset = ImageAnnotations.import_from(path='folder_path',format= 'coco_detection')
+
+#Using clarifai SDK to upload to Clarifai Platform
+#export CLARIFAI_PAT={your personal access token}  # set PAT as env variable
+from clarifai.client.dataset import Dataset
+dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
+dataset.upload_dataset(dataloader=coco_dataset.dataloader)
+
+#info about loaded dataset
+coco_dataset.get_info()
+
+
+#exporting to other formats
+coco_dataset.export_to('voc_detection')
+```
+
+#### [Annotation Loader Notebook](./Image%20Annotation/image_annotation_loader.ipynb)
 
 ### Data Ingestion Pipelines
 
@@ -68,3 +87,5 @@ dataset = Dataset(dataset_url)
 dataset.upload_dataset(pipeline.run(files = file_path, loader = True))
 
 ```
+
+#### [Data Ingestion Notebooks](./Ingestion%20pipelines/)
