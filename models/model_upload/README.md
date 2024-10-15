@@ -1,6 +1,6 @@
 # Clarifai Model Upload
 
-Clarifai provides an easy-to-use platform to serve AI/ML models in production.
+[Clarifai](https://www.clarifai.com/) provides an easy-to-use platform to serve AI/ML models in production.
 
 > This feature is currently in Private Preview. We'd love for you to try it out and provide your feedback. To do so please sign up for Private Preview [here](https://forms.gle/MSx7QNxmug2oFZYD6).
 
@@ -14,7 +14,7 @@ Clarifai provides a collection of pre-built model examples designed for differen
 To begin, install the latest version of the `clarifai` Python package:
 
 ```bash
-pip install --upgrade clarifai
+python -m pip install --upgrade clarifai
 ```
 
 Next, clone the repository containing example models:
@@ -25,7 +25,10 @@ git clone https://github.com/Clarifai/examples.git
 
 ### Environment Setup
 
-Before proceeding, ensure that the `CLARIFAI_PAT` (Personal Access Token) environment variable is set. This token authenticates your connection to the Clarifai platform.
+Before proceeding, ensure that the `CLARIFAI_PAT` (Personal Access Token) environment variable is set. 
+
+* You can generate PAT key in the Personal settings -> [Security section](https://clarifai.com/settings/security)
+* This token authenticates your connection to the Clarifai platform.
 
 ```bash
 export CLARIFAI_PAT="your_personal_access_token"
@@ -49,7 +52,7 @@ your_model_directory/
 └── config.yaml
 ```
 
-## Clarifai Model Upload Guide
+## Model Upload Guide
 
 ### Step 1: Define the `config.yaml` File
 
