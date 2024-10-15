@@ -97,8 +97,6 @@ hf_token: "your_hf_token" # Required for private models
 
 ### Step 2: Define dependencies in requirements.txt
 List all required Python dependencies for your model in `requirements.txt` file. This ensures that all necessary libraries are installed in the runtime environment
-Make sure to include `clarifai` dependency in the `requirements.txt` too for the next step.
-If you follow strict versioning, pick latest version from [pip](https://pypi.org/project/clarifai/)
 
 ### Step 3: Prepare the `model.py` File
 
