@@ -84,8 +84,9 @@ dataset.upload_dataset(task="text_clf", split="train", module_dir="path_to_imdb_
 ## Data Utils Notebooks
 | Data Util            | Function            | Notebook    | Open in Colab |
 | ------------------| ------------------- | ----------- | -----------   |
-| Image   | [Image Annotation ](Data_Utils/)   | [annotation loader](Data_Utils/image_annotation_loader.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/Data_Utils/image_annotation_loader.ipynb) |
-
+| Image   | [Image Annotation ](Data_Utils/Image%20Annotation/)   | [annotation loader](Data_Utils/Image%20Annotation/image_annotation_loader.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/Data_Utils/Image%20Annotation/image_annotation_loader.ipynb) |
+| Multimodal   | [Data Ingestion ](Data_Utils/Ingestion%20pipelines/)   | [Ready to Use Pipelines](Data_Utils/Ingestion%20pipelines/Ready_to_use_foundational_pipelines.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/Data_Utils/Ingestion%20pipelines/Ready_to_use_foundational_pipelines.ipynb) |
+|     | [Data Ingestion ](Data_Utils/Ingestion%20pipelines/)   | [Multimodal Ingestion](Data_Utils/Ingestion%20pipelines/Multimodal_dataloader.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/Data_Utils/Ingestion%20pipelines/Multimodal_dataloader.ipynb) |
 
 
 ## Model upload examples

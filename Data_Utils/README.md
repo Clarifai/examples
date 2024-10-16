@@ -2,35 +2,90 @@
 
 Clarifai Data Utils offers various types of multimedia data utilities. Enhance your experience by seamlessly integrating these utilities with the Clarifai Python SDK.
 
+---
+
+
 ## Installation
 
+
+Install from PyPi:
 
 ```bash
 pip install clarifai-datautils
 ```
 
-# Features
-## Annotation Loader
+Install from Source:
 
-A framework to load, export and analyze different annotated datasets.
+```bash
+git clone https://github.com/Clarifai/clarifai-python-datautils
+cd clarifai-python-datautils
+python3 -m venv env
+source env/bin/activate
+pip3 install -r requirements.txt
+```
 
-### Supported Formats
+## Features
 
-| Annotation format                                                                                | Format       |      TASK       |
-| ------------------------------------------------------------------------------------------------ | -------      | --------------- |
-| [ImageNet](http://image-net.org/)                                                                | imagenet     | classification  |
-| [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html)                                          | cifar     | classification  |
-| [MNIST](http://yann.lecun.com/exdb/mnist/)                                                       | mnist     | classification  |
-| [VGGFace2](https://github.com/ox-vgg/vgg_face2)                                                  | vgg_face2     | classification  |
-| [LFW](http://vis-www.cs.umass.edu/lfw/)                                                          | lfw     | classification  |
-| [PASCAL VOC](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/htmldoc/index.html)                  | voc_detection     | detection  |
-| [YOLO](https://github.com/AlexeyAB/darknet#how-to-train-pascal-voc-data)                         | yolo     | detection  |
-| [COCO](http://cocodataset.org/#format-data)                                                      | coco_detection     | detection  |
-| [CVAT](https://opencv.github.io/cvat/docs/manual/advanced/xml_format/)                           | cvat     | detection  |
-| [Kitti](http://www.cvlibs.net/datasets/kitti/index.php)                                          | kitti     | detection  |
-| [LabelMe](http://labelme.csail.mit.edu/Release3.0)                                               | label_me     | detection  |
-| [Open Images](https://storage.googleapis.com/openimages/web/download.html)                       | open_images     | detection  |
-| [Clarifai](https://github.com/Clarifai/examples/tree/main/Data_Utils)                       | clarifai     | detection  |
-| [COCO(segmentation)](http://cocodataset.org/#format-data)                                     | coco_segmentation     | segmentation  |
-| [Cityscapes](https://www.cityscapes-dataset.com/)                                                | cityscapes     | segmentation  |
-| [ADE](https://www.cityscapes-dataset.com/)                                                       | ade20k2017     | segmentation  |
+### Image Utils
+- #### Annotation Loader
+  - Load various annotated image datasets and export to clarifai Platform
+  - Convert from one annotation format to other supported annotation formats
+
+### Data Ingestion Pipeline
+  - Easy to use pipelines to load data from files and ingest into clarifai platfrom.
+  - Load text files(pdf, doc, etc..) , transform, chunk and upload to the Clarifai Platform
+
+## Quick Usage
+### Image Annotation Loader
+```python
+from clarifai_datautils import ImageAnnotations
+#import from folder
+coco_dataset = ImageAnnotations.import_from(path='folder_path',format= 'coco_detection')
+
+#Using clarifai SDK to upload to Clarifai Platform
+#export CLARIFAI_PAT={your personal access token}  # set PAT as env variable
+from clarifai.client.dataset import Dataset
+dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
+dataset.upload_dataset(dataloader=coco_dataset.dataloader)
+
+#info about loaded dataset
+coco_dataset.get_info()
+
+
+#exporting to other formats
+coco_dataset.export_to('voc_detection')
+```
+
+#### [Annotation Loader Notebook](./Image%20Annotation/image_annotation_loader.ipynb)
+
+### Data Ingestion Pipelines
+
+#### Setup
+To use Data Ingestion Pipeline, please run
+```python
+pip install -r requirements-dev.txt
+```
+
+
+```python
+from clarifai_datautils.text import Pipeline, PDFPartition
+from clarifai_datautils.text.pipeline.cleaners import Clean_extra_whitespace
+
+# Define the pipeline
+pipeline = Pipeline(
+    name='pipeline-1',
+    transformations=[
+        PDFPartition(chunking_strategy = "by_title",max_characters = 1024),
+        Clean_extra_whitespace()
+    ]
+)
+
+
+# Using SDK to upload
+from clarifai.client import Dataset
+dataset = Dataset(dataset_url)
+dataset.upload_dataset(pipeline.run(files = file_path, loader = True))
+
+```
+
+#### [Data Ingestion Notebooks](./Ingestion%20pipelines/)
