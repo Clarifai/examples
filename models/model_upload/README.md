@@ -177,13 +177,13 @@ python -m clarifai.runners.models.model_upload --model_path {model_directory_pat
 This command builds the model Docker image based on the specified compute resources and uploads it to the Clarifai platform.
 
 
-### Make Model Prediction
+### Model Prediction
 
 Once the model is uploaded, you can easily make the prediction to the model using Clarifai SDK.
 
 > Make sure to create compute cluster and nodepool before making predict call
 
-#### Make unary-unary predict call
+#### unary-unary predict call
 
 ```python
 from clarifai.client.model import Model
@@ -197,7 +197,7 @@ image_url = "https://samples.clarifai.com/metro-north.jpg"
 model_prediction = model.predict_by_url(image_url, compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
 ```
 
-#### Make unary-stream predict call
+#### unary-stream predict call
 
 ```python
 from clarifai.client.model import Model
@@ -209,7 +209,7 @@ list_stream_response = [response for response in stream_response]
 ```
 
 
-#### Make stream-stream predict call
+#### stream-stream predict call
 
 ```python
 from clarifai.client.model import Model
