@@ -25,7 +25,7 @@ git clone https://github.com/Clarifai/examples.git
 
 ### Environment Setup
 
-Before proceeding, ensure that the `CLARIFAI_PAT` (Personal Access Token) environment variable is set. 
+Before proceeding, ensure that the `CLARIFAI_PAT` (Personal Access Token) environment variable is set.
 
 * You can generate PAT key in the Personal settings -> [Security section](https://clarifai.com/settings/security)
 * This token authenticates your connection to the Clarifai platform.
@@ -175,3 +175,47 @@ python -m clarifai.runners.models.model_upload --model_path {model_directory_pat
 ```
 
 This command builds the model Docker image based on the specified compute resources and uploads it to the Clarifai platform.
+
+
+### Model Prediction
+
+Once the model is uploaded, you can easily make the prediction to the model using Clarifai SDK.
+
+> Make sure to create compute cluster and nodepool before making predict call
+
+#### unary-unary predict call
+
+```python
+from clarifai.client.model import Model
+model = Model("url") # Example URL: https://clarifai.com/stepfun-ai/ocr/models/got-ocr-2_0
+            or
+model = Model(model_id='model_id', user_id='user_id', app_id='app_id')
+
+image_url = "https://samples.clarifai.com/metro-north.jpg"
+
+# Model Predict
+model_prediction = model.predict_by_url(image_url, compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
+```
+
+#### unary-stream predict call
+
+```python
+from clarifai.client.model import Model
+model = Model("url") # Example URL: https://clarifai.com/meta/Llama-3/models/llama-3_2-3b-instruct
+            or
+model = Model(model_id='model_id', user_id='user_id', app_id='app_id')
+stream_response = model.generate_by_url('url', compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
+list_stream_response = [response for response in stream_response]
+```
+
+
+#### stream-stream predict call
+
+```python
+from clarifai.client.model import Model
+model = Model("url") # Example URL: https://clarifai.com/meta/Llama-3/models/llama-3_2-3b-instruct
+            or
+model = Model(model_id='model_id', user_id='user_id', app_id='app_id')
+stream_response = model.stream_by_url(iter(['url']), compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
+list_stream_response = [response for response in stream_response]
+```
