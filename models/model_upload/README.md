@@ -181,7 +181,7 @@ This command builds the model Docker image based on the specified compute resour
 
 Once the model is uploaded, you can easily make the prediction to the model using Clarifai SDK.
 
-> Make sure to create compute_cluster and nodepool before making predict call
+> Make sure to create compute cluster and nodepool before making predict call
 
 #### Make unary-unary predict call
 
