@@ -156,11 +156,11 @@ def stream(self, request):
 * **generate(input_data)**: Returns output in a streaming manner (if applicable).
 * **stream(input_data)**: Manages streaming input and output (for more advanced use cases).
 
-### Step 4: Test Model locall
+### Step 4: Test Model locally
 Before uploading your model to the Clarifai platform, test it locally to avoid upload failures due to typos or misconfigurations.
 
 ```bash
-python -m clarifai.runners.models.model_run_locally --model_path <model_path>
+clarifai model test-locally --model_path <model_path>
 
 This prevents from model upload failure due to typos in model.py or wrong implementation of model
 ```
@@ -171,7 +171,7 @@ This prevents from model upload failure due to typos in model.py or wrong implem
 Now that your custom model is ready, you can serve the model in production using:
 
 ```bash
-python -m clarifai.runners.models.model_upload --model_path {model_directory_path}
+clarifai model upload --model_path {model_directory_path}
 ```
 
 This command builds the model Docker image based on the specified compute resources and uploads it to the Clarifai platform.
