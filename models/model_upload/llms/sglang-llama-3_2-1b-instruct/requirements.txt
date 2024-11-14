@@ -1,0 +1,20 @@
+torch==2.4
+tokenizers
+transformers
+accelerate
+optimum
+xformers
+einops
+requests==2.32.2
+packaging
+ninja
+openai==1.51.0
+qwen-vl-utils==0.0.8
+protobuf==3.20.0
+
+sglang[all]
+orjson
+python-multipart
+
+--extra-index-url https://flashinfer.ai/whl/cu121/torch2.4/
+flashinfer
