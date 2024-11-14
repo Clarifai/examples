@@ -5,7 +5,6 @@ import threading
 from typing import Iterator
 
 from clarifai.runners.models.model_runner import ModelRunner
-from clarifai.utils.logging import logger
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2
 from google.protobuf import json_format
@@ -14,11 +13,11 @@ import sglang as sgl
 from transformers import AutoTokenizer
 
 class MyRunner(ModelRunner):
-  """A custom runner that loads the model and generates text using vLLM Inference.
+  """A custom runner that loads the model and generates text using sglang inference.
   """
 
   def load_model(self):
-    """Load the model here and start the vllm server."""
+    """Load the model here """
     os.path.join(os.path.dirname(__file__))
     # if checkpoints section is in config.yaml file then checkpoints will be downloaded at this path during model upload time.
     checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")

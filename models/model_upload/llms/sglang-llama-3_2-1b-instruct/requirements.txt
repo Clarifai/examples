@@ -1,6 +1,6 @@
 torch==2.4
 tokenizers
-transformers
+transformers==4.46.2
 accelerate
 optimum
 xformers
@@ -8,8 +8,6 @@ einops
 requests==2.32.2
 packaging
 ninja
-openai==1.51.0
-qwen-vl-utils==0.0.8
 protobuf==3.20.0
 
 sglang[all]
