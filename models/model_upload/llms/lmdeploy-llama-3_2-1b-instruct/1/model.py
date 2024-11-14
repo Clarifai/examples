@@ -13,19 +13,20 @@ from lmdeploy import pipeline, GenerationConfig, TurbomindEngineConfig
 from transformers import AutoTokenizer
 
 class MyRunner(ModelRunner):
-  """A custom runner that loads the model and generates text using vLLM Inference.
+  """A custom runner that loads the model and generates text using lmdeploy inference.
   """
 
   def load_model(self):
-    """Load the model here and start the vllm server."""
+    """Load the model here"""
     os.path.join(os.path.dirname(__file__))
     # if checkpoints section is in config.yaml file then checkpoints will be downloaded at this path during model upload time.
     checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
-    # Note that Llama3.2-1B-Inst is not supported by turbomind yet, lmdeploy will auto switch to pytorch engine
+    # Note that if the model is not supported by turbomind yet, lmdeploy will auto switch to pytorch engine
     backend_config = TurbomindEngineConfig(tp=1)
     self.pipe = pipeline(checkpoints,
                     backend_config=backend_config)
     self.tokenizer = AutoTokenizer.from_pretrained(checkpoints)
+    
   def predict(self, request: service_pb2.PostModelOutputsRequest
              ) -> Iterator[service_pb2.MultiOutputResponse]:
     """This is the method that will be called when the runner is run. It takes in an input and
@@ -66,7 +67,7 @@ class MyRunner(ModelRunner):
                    gen_config=gen_config)
         text = res.text.replace("<|start_header_id|>assistant<|end_header_id|>", "")
         text = text.replace("\n\n", "")
-        output.data.text.raw = res.text
+        output.data.text.raw = text
 
       output.status.code = status_code_pb2.SUCCESS
       outputs.append(output)
@@ -103,8 +104,8 @@ class MyRunner(ModelRunner):
 
       messages = []
       temperature = inference_params.get("temperature", 0.7)
-      max_tokens = inference_params.get("max_tokens", 100)
-      top_p = inference_params.get("top_p", 1.0)
+      max_tokens = inference_params.get("max_tokens", 256)
+      top_p = inference_params.get("top_p", .9)
 
       if data.text.raw != "":
         prompt = data.text.raw
