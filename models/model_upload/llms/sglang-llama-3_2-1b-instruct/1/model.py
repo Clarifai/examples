@@ -1,7 +1,4 @@
 import os
-import subprocess
-import sys
-import threading
 from typing import Iterator
 
 from clarifai.runners.models.model_runner import ModelRunner
