@@ -11,7 +11,7 @@ build_info:
 
 inference_compute_info:
   cpu_limit: "4"
-  cpu_memory: "24Gi"
+  cpu_memory: "16Gi"
   num_accelerators: 1
   accelerator_type: ["NVIDIA-A10G"]
   accelerator_memory: "24Gi"
