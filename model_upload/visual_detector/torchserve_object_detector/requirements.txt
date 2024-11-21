@@ -1,0 +1,6 @@
+torch==2.0.1
+torchserve==0.9.0
+torchvision
+
+# Add any additional libraries you may need here:
+# <library name>==<version>
