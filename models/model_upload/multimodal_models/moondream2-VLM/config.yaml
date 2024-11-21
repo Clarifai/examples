@@ -1,9 +1,9 @@
 # This is the sample config file for the llama model.
 
 model:
-  id: "moondream2-vlm"
-  user_id: "vikhyatk"
-  app_id: "moondream"
+  id: "moondream2"
+  user_id: "user_id"
+  app_id: "app_id"
   model_type_id: "multimodal-to-text"
 
 build_info:
@@ -19,4 +19,4 @@ inference_compute_info:
 checkpoints:
   type: "huggingface"
   repo_id: "vikhyatk/moondream2"
-  hf_token: "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"
+  hf_token: "hf_token"
