@@ -1,0 +1,22 @@
+# This is the sample config file for the llama model.
+
+model:
+  id: "moondream2-vlm"
+  user_id: "vikhyatk"
+  app_id: "moondream"
+  model_type_id: "multimodal-to-text"
+
+build_info:
+  python_version: "3.10"
+
+inference_compute_info:
+  cpu_limit: "1"
+  cpu_memory: "8Gi"
+  num_accelerators: 1
+  accelerator_type: ["NVIDIA-A10G"]
+  accelerator_memory: "8Gi"
+
+checkpoints:
+  type: "huggingface"
+  repo_id: "vikhyatk/moondream2"
+  hf_token: "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"
