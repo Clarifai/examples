@@ -40,7 +40,7 @@ class MyRunner(ModelRunner):
     logger.info("Done loading!")
 
   def predict(self, request: service_pb2.PostModelOutputsRequest
-             ) -> Iterator[service_pb2.MultiOutputResponse]:
+             ) -> service_pb2.MultiOutputResponse:
     """This is the method that will be called when the runner is run. It takes in an input and
     returns an output.
     """
@@ -52,15 +52,12 @@ class MyRunner(ModelRunner):
     images = list(map(open_images, request.inputs))
     # TODO put in threadpool.map, do we need to call wait() on futures or does this return imgs already?
 
-    outputs = []
+    outputs = [None] * len(images)
     batch = []
-    for i, (inp, img) in enumerate(zip(request.inputs, images)):
-      is_last = (i == len(images) - 1)
-
-      batch.append(img)
-
-      if len(batch) < bsize and not is_last:
-        continue
+    aspect_order = argsort([img.size[0] / img.size[1] for im in images])
+    # TODO: changes this to a chunking function
+    for chunk in iter_chunks(aspect_order, bsize):
+      batch = [images[i] for i in chunk]
 
       with torch.no_grad():
         inputs = self.processor(images=batch, return_tensors="pt").to(self.device)
@@ -70,7 +67,7 @@ class MyRunner(ModelRunner):
       # TODO: double-check dim=-1 means last dimension (not flattened)
       batch_probs = torch.softmax(logits, dim=-1)
 
-      for probs in batch_probs:
+      for i, probs in zip(chunk, batch_probs):
         output = service_pb2.Output()
 
         sorted_labels = torch.argsort(probs, dim=-1, descending=True)
@@ -81,7 +78,7 @@ class MyRunner(ModelRunner):
           c.value = probs[label]
 
         output.status.code = status_code_pb2.SUCCESS
-        outputs.append(output)
+        outputs[i] = output
     return service_pb2.MultiOutputResponse(outputs=outputs,)
 
   def generate(self, request: service_pb2.PostModelOutputsRequest
