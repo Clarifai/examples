@@ -12,10 +12,10 @@ from PIL import Image
 from transformers import AutoModelForImageClassification, ViTImageProcessor
 
 
-def preprocess_image(image_url=None, image_base64=None):
-  if image_base64:
+def open_images(image):
+  if image.data.image.base64 != b"":
     img = Image.open(BytesIO(image_base64))
-  elif image_url:
+  elif data.image.url != "":
     img = Image.open(BytesIO(requests.get(image_url).content))
   return img
 
@@ -35,6 +35,8 @@ class MyRunner(ModelRunner):
 
     self.model = AutoModelForImageClassification.from_pretrained(checkpoint_path,).to(self.device)
     self.processor = ViTImageProcessor.from_pretrained(checkpoint_path)
+    #self.threadpool = ThreadPoolExecutor(8)
+    self.bsize = 4  # TODO get this from config
     logger.info("Done loading!")
 
   def predict(self, request: service_pb2.PostModelOutputsRequest
@@ -44,37 +46,42 @@ class MyRunner(ModelRunner):
     """
 
     # Get the concept protos from the model.
+    # TODO: this should come from the model config or model directory --- NOT the request
     concept_protos = request.model.model_version.output_info.data.concepts
 
+    images = list(map(open_images, request.inputs))
+    # TODO put in threadpool.map, do we need to call wait() on futures or does this return imgs already?
+
     outputs = []
-    # TODO: parallelize this over inputs in a single request.
-    for inp in request.inputs:
-      output = resources_pb2.Output()
+    batch = []
+    for i, (inp, img) in enumerate(zip(request.inputs, images)):
+      is_last = (i == len(images) - 1)
 
-      data = inp.data
+      batch.append(img)
 
-      output_concepts = []
-
-      if data.image.base64 != b"":
-        img = preprocess_image(image_base64=data.image.base64)
-      elif data.image.url != "":
-        img = preprocess_image(image_url=data.image.url)
+      if len(batch) < bsize and not is_last:
+        continue
 
       with torch.no_grad():
-        inputs = self.processor(images=img, return_tensors="pt").to(self.device)
+        inputs = self.processor(images=batch, return_tensors="pt").to(self.device)
         model_output = self.model(**inputs)
         logits = model_output.logits
 
-      probs = torch.softmax(logits, dim=-1)[0]
-      sorted_indices = torch.argsort(probs, dim=-1, descending=True)
-      for idx in sorted_indices:
-        concept_protos[idx.item()].value = probs[idx.item()].item()
-        output_concepts.append(concept_protos[idx.item()])
+      # TODO: double-check dim=-1 means last dimension (not flattened)
+      batch_probs = torch.softmax(logits, dim=-1)
 
-      output.data.concepts.extend(output_concepts)
+      for probs in batch_probs:
+        output = service_pb2.Output()
 
-      output.status.code = status_code_pb2.SUCCESS
-      outputs.append(output)
+        sorted_labels = torch.argsort(probs, dim=-1, descending=True)
+
+        for label in sorted_labels:
+          c = output.data.concepts.add()
+          c.CopyFrom(concept_protos[label])
+          c.value = probs[label]
+
+        output.status.code = status_code_pb2.SUCCESS
+        outputs.append(output)
     return service_pb2.MultiOutputResponse(outputs=outputs,)
 
   def generate(self, request: service_pb2.PostModelOutputsRequest
