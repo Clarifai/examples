@@ -1,4 +1,5 @@
 import base64
+import itertools
 import os
 import subprocess
 import sys
@@ -13,292 +14,226 @@ from google.protobuf import json_format
 from openai import OpenAI
 
 
+def construct_messages(input_data: resources_pb2.Data) -> list[dict]:
+  """Constructs the prompt and messages based on input data."""
+  DEFAULT_PROMPT = "please describe the image."
+  prompts = []
+  images = []
+
+  if input_data.parts:
+    prompts = [part.text.raw for part in input_data.parts if part.text.raw] or [DEFAULT_PROMPT]
+    images = [part.image.base64 for part in input_data.parts if part.image.base64]
+
+    if not prompts:
+      prompts.append(DEFAULT_PROMPT)
+  else:
+    prompts.append(input_data.text.raw or DEFAULT_PROMPT)
+    images.append(input_data.image.base64)
+
+  content = []
+  for prompt, image_bytes in itertools.zip_longest(prompts, images):
+    if prompt:
+      content.append({"type": "text", "text": prompt})
+    if image_bytes:
+      image = "data:image/jpeg;base64," + base64.b64encode(image_bytes).decode("utf-8")
+      content.append({"type": "image_url", "image_url": {"url": image}})
+
+    messages = [{"role": "user", "content": content}]
+
+  return messages
+
+
+def get_inference_params(request) -> dict:
+  """Get the inference params from the request."""
+  inference_params = {}
+  if request.model.model_version.id != "":
+    output_info = request.model.model_version.output_info
+    output_info = json_format.MessageToDict(output_info, preserving_proto_field_name=True)
+
+    if "params" in output_info:
+      inference_params = output_info["params"]
+  return inference_params
+
+
+class VLLMServerManager:
+
+  def __init__(self, port, gpu_memory_utilization, tensor_parallel_size, max_model_len, dtype):
+    self.port = port
+    self.gpu_memory_utilization = gpu_memory_utilization
+    self.tensor_parallel_size = tensor_parallel_size
+    self.max_model_len = max_model_len
+    self.dtype = dtype
+    self.server_started_event = threading.Event()
+    self.process = None
+
+  def start_server(self, python_executable, checkpoints):
+    try:
+      self.process = subprocess.Popen(
+          [
+              python_executable,
+              '-m',
+              'vllm.entrypoints.openai.api_server',
+              '--model',
+              checkpoints,
+              '--dtype',
+              str(self.dtype),
+              '--tensor-parallel-size',
+              str(self.tensor_parallel_size),
+              '--quantization',
+              'awq',
+              '--gpu-memory-utilization',
+              str(self.gpu_memory_utilization),
+              '--port',
+              str(self.port),
+              '--host',
+              'localhost',
+              '--max-model-len',
+              str(self.max_model_len),
+              "--trust-remote-code",
+          ],
+          stdout=subprocess.PIPE,
+          stderr=subprocess.PIPE,
+          text=True,
+      )
+      for line in self.process.stderr:
+        if "Uvicorn running on http://localhost:" in line.strip():
+          self.server_started_event.set()
+          break
+    except Exception as e:
+      raise RuntimeError(f"Failed to start vLLM server: {e}")
+    finally:
+      if self.process:
+        self.process.terminate()
+
+  def wait_for_startup(self):
+    self.server_started_event.wait()
+
+
+def stream_completion(self, input_data, inference_params):
+  """Stream iteratively generates completions for the input data."""
+
+  temperature = inference_params.get("temperature", 0.7)
+  max_tokens = inference_params.get("max_tokens", 100)
+  top_p = inference_params.get("top_p", 1.0)
+
+  messages = construct_messages(input_data)
+  kwargs = dict(
+      model=self.model,
+      messages=messages,
+      temperature=temperature,
+      max_tokens=max_tokens,
+      top_p=top_p,
+      extra_body={"stop_token_ids": [151645, 151643]},
+      stream=True,
+  )
+  stream = self.client.chat.completions.create(**kwargs)
+
+  return stream
+
+
 class MyRunner(ModelRunner):
-  """A custom runner that loads the model and generates text using vLLM Inference.
+  """
+  A custom runner that integrates with the Clarifai platform and uses vLLM inference
+  to process inputs, including text and images.
   """
 
   def load_model(self):
     """Load the model here and start the vllm server."""
+
+    # vLLM parameters
+    self.gpu_memory_utilization = 0.8
+    self.tensor_parallel_size = 1
+    self.max_model_len = 2048
+    self.dtype = "auto"
     self.port = 8000
+
+    self.server_manager = VLLMServerManager(self.port, self.gpu_memory_utilization,
+                                            self.tensor_parallel_size, self.max_model_len,
+                                            self.dtype)
+
+    # Initialize the OpenAI client
     openai_api_base = f"http://localhost:{self.port}/v1"
     openai_api_key = "Not Required"
     self.client = OpenAI(
         api_key=openai_api_key,
         base_url=openai_api_base,
     )
-    self.server_started_event = threading.Event()
 
-    self.python_executable = sys.executable
-
-    # Start the VLLM server in a separate thread
-    vllm_server_thread = threading.Thread(target=self.vllm_openai_server)
-    vllm_server_thread.start()
-
-    # Wait for the server to be ready
-    self.server_started_event.wait()
-
-    models = self.client.models.list()
-    self.model = models.data[0].id
-
-  def vllm_openai_server(self):
-    os.path.join(os.path.dirname(__file__))
+    python_executable = sys.executable
 
     # if checkpoints section is in config.yaml file then checkpoints will be downloaded at this path during model upload time.
     checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
-    process = subprocess.Popen(
-        [
-            self.python_executable,
-            '-m',
-            'vllm.entrypoints.openai.api_server',
-            '--model',
-            checkpoints,
-            '--dtype',
-            'float16',
-            '--tensor-parallel-size',
-            '1',
-            '--quantization',
-            'awq',
-            '--gpu-memory-utilization',
-            '0.8',
-            '--port',
-            str(self.port),
-            '--host',
-            'localhost',
-            '--max-model-len',
-            '2048',
-            "--trust-remote-code",
-        ],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-    )
 
-    # Check the server output to confirm it's running
-    for line in process.stderr:
-      line = line.strip()
-      logger.info(line)
-      if "Uvicorn running on http://localhost:" in line:
-        self.server_started_event.set()
-        logger.info(f"vLLM Server started at http://localhost:{self.port}")
-        break
+    try:
+      # Start the vllm server in a separate thread
+      vllm_server_thread = threading.Thread(
+          target=self.server_manager.start_server, args=(python_executable, checkpoints))
+      vllm_server_thread.start()
 
-  def predict(self, request: service_pb2.PostModelOutputsRequest
-             ) -> Iterator[service_pb2.MultiOutputResponse]:
+      # Wait for the server to start
+      self.server_manager.wait_for_startup()
+    except Exception as e:
+      logger.error(f"Error starting vLLM server: {e}")
+      raise Exception(f"Error starting vLLM server: {e}")
+
+    # Get the model ID from the OpenAI API
+    models = self.client.models.list()
+    self.model = models.data[0].id
+
+  def predict(self,
+              request: service_pb2.PostModelOutputsRequest) -> service_pb2.MultiOutputResponse:
     """This is the method that will be called when the runner is run. It takes in an input and
     returns an output.
     """
 
-    # TODO: Could cache the model and this conversion if the hash is the same.
-    model = request.model
-    output_info = None
-    if request.model.model_version.id != "":
-      output_info = json_format.MessageToDict(
-          model.model_version.output_info, preserving_proto_field_name=True)
+    inference_params = get_inference_params(request)
 
-    outputs = []
-    # TODO: parallelize this over inputs in a single request.
-    for inp in request.inputs:
-      output = resources_pb2.Output()
+    streams = []
+    for input in request.inputs:
 
-      data = inp.data
+      # it contains the input data for the model
+      input_data = input.data
 
-      # Optional use of output_info
-      inference_params = {}
-      if "params" in output_info:
-        inference_params = output_info["params"]
+      stream = stream_completion(input_data, inference_params)
 
-      messages = []
-      temperature = inference_params.get("temperature", 0.7)
-      max_tokens = inference_params.get("max_tokens", 100)
-      top_p = inference_params.get("top_p", 1.0)
+      streams.append(stream)
 
-      prompt = None
-      image_url = None
-      image_bytes = None
-      if data.text.raw != "":
-        prompt = data.text.raw
-      if data.image.url != "":
-        image_url = data.image.url
-      elif data.image.base64 != b"":
-        image_bytes = data.image.base64
-
-      if prompt is None:
-        prompt = "please describe the image."
-
-      if not image_url and not image_bytes:
-        output.status.code = status_code_pb2.MODEL_PREDICTION_FAILED
-        output.status.description = "No image provided, Model requires an image input."
-        outputs.append(output)
-        continue
-
-      if image_url:
-        message = {
-            "role":
-                "user",
-            "content": [{
-                "type": "text",
-                "text": prompt,
-            }, {
-                "type": "image_url",
-                "image_url": {
-                    "url": image_url,
-                }
-            }]
-        }
-      elif image_bytes:
-        image = "data:image/jpeg;base64," + base64.b64encode(image_bytes).decode("utf-8")
-        message = {
-            "role":
-                "user",
-            "content": [{
-                "type": "text",
-                "text": prompt,
-            }, {
-                "type": "image_url",
-                "image_url": {
-                    "url": image,
-                }
-            }]
-        }
-
-      messages.append(message)
-
-      chat_response = self.client.chat.completions.create(
-          model=self.model,
-          messages=messages,
-          temperature=temperature,
-          max_tokens=max_tokens,
-          top_p=top_p,
-          extra_body={"stop_token_ids": [151645, 151643]},
-      )
-
-      res = chat_response.choices[0].message.content
-
-      output.data.text.raw = res
+    outputs = [resources_pb2.Output() for _ in request.inputs]
+    for output in outputs:
       output.status.code = status_code_pb2.SUCCESS
-      outputs.append(output)
+
+    for idx, chunk_batch in enumerate(itertools.zip_longest(*streams, fillvalue=None)):
+      for chunk in chunk_batch:
+        outputs[idx].data.text.raw += chunk.choices[0].delta.content if chunk else ''
+
     return service_pb2.MultiOutputResponse(outputs=outputs,)
 
   def generate(self, request: service_pb2.PostModelOutputsRequest
               ) -> Iterator[service_pb2.MultiOutputResponse]:
     """Example yielding a whole batch of streamed stuff back."""
 
-    # TODO: Could cache the model and this conversion if the hash is the same.
-    model = request.model
-    output_info = None
-    if request.model.model_version.id != "":
-      output_info = json_format.MessageToDict(
-          model.model_version.output_info, preserving_proto_field_name=True)
+    # Get the inference params from the request
+    inference_params = get_inference_params(request)
 
-    # TODO: Could cache the model and this conversion if the hash is the same.
-    model = request.model
-    output_info = None
-    if request.model.model_version.id != "":
-      output_info = json_format.MessageToDict(
-          model.model_version.output_info, preserving_proto_field_name=True)
+    streams = []
+    for input in request.inputs:
 
-    # TODO: parallelize this over inputs in a single request.
-    for inp in request.inputs:
-      output = resources_pb2.Output()
+      # it contains the input data for the model
+      input_data = input.data
 
-      data = inp.data
+      stream = stream_completion(input_data, inference_params)
 
-      # Optional use of output_info
-      inference_params = {}
-      if "params" in output_info:
-        inference_params = output_info["params"]
+      streams.append(stream)
+    for chunk_batch in itertools.zip_longest(*streams, fillvalue=None):
+      resp = service_pb2.MultiOutputResponse()
 
-      messages = []
-      temperature = inference_params.get("temperature", 0.7)
-      max_tokens = inference_params.get("max_tokens", 100)
-      top_p = inference_params.get("top_p", 1.0)
-
-      prompt = None
-      image_url = None
-      image_bytes = None
-      if data.text.raw != "":
-        prompt = data.text.raw
-      if data.image.url != "":
-        image_url = data.image.url
-      elif data.image.base64 != b"":
-        image_bytes = data.image.base64
-
-      if prompt is None:
-        prompt = "please describe the image."
-
-      if not image_url and not image_bytes:
-        output.status.code = status_code_pb2.MODEL_PREDICTION_FAILED
-        output.status.description = "No image provided, Model requires an image input."
-        yield service_pb2.MultiOutputResponse(outputs=[output],)
-
-      if image_url:
-        message = {
-            "role":
-                "user",
-            "content": [{
-                "type": "text",
-                "text": prompt,
-            }, {
-                "type": "image_url",
-                "image_url": {
-                    "url": image_url,
-                }
-            }]
-        }
-      elif image_bytes:
-        image = "data:image/jpeg;base64," + base64.b64encode(image_bytes).decode("utf-8")
-        message = {
-            "role":
-                "user",
-            "content": [{
-                "type": "text",
-                "text": prompt,
-            }, {
-                "type": "image_url",
-                "image_url": {
-                    "url": image,
-                }
-            }]
-        }
-
-      messages.append(message)
-
-      stream = self.client.chat.completions.create(
-          model=self.model,
-          messages=messages,
-          temperature=temperature,
-          max_tokens=max_tokens,
-          top_p=top_p,
-          extra_body={"stop_token_ids": [151645, 151643]},
-          stream=True,
-      )
-
-      for chunk in stream:
-        if chunk.choices[0].delta.content is None:
-          continue
-        output.data.text.raw = chunk.choices[0].delta.content
+      for chunk in chunk_batch:
+        output = resp.outputs.add()
+        output.data.text.raw = (chunk.choices[0].delta.content
+                                if (chunk and chunk.choices[0].delta.content) is not None else '')
         output.status.code = status_code_pb2.SUCCESS
-        yield service_pb2.MultiOutputResponse(outputs=[output],)
+      yield resp
 
   def stream(self, request_iterator: Iterator[service_pb2.PostModelOutputsRequest]
             ) -> Iterator[service_pb2.MultiOutputResponse]:
     NotImplementedError("Stream method is not implemented for the models.")
-
-
-if __name__ == '__main__':
-  # Make sure you set these env vars before running the example.
-  # CLARIFAI_PAT
-  # CLARIFAI_USER_ID
-  # CLARIFAI_API_BASE
-  # CLARIFAI_RUNNER_ID
-  # CLARIFAI_NODEPOOL_ID
-  # CLARIFAI_COMPUTE_CLUSTER_ID
-
-  # You need to first create a runner in the Clarifai API and then use the ID here.
-  MyRunner(
-      runner_id=os.environ["CLARIFAI_RUNNER_ID"],
-      nodepool_id=os.environ["CLARIFAI_NODEPOOL_ID"],
-      compute_cluster_id=os.environ["CLARIFAI_COMPUTE_CLUSTER_ID"],
-      base_url=os.environ["CLARIFAI_API_BASE"],
-      num_parallel_polls=int(os.environ.get("CLARIFAI_NUM_THREADS", 1)),
-  ).start()
