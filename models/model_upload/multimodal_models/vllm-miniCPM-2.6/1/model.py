@@ -96,20 +96,20 @@ class VLLMServerManager:
           text=True,
       )
       for line in self.process.stderr:
+        logger.info(line.strip())
         if "Uvicorn running on http://localhost:" in line.strip():
           self.server_started_event.set()
           break
     except Exception as e:
-      raise RuntimeError(f"Failed to start vLLM server: {e}")
-    finally:
       if self.process:
         self.process.terminate()
+      raise RuntimeError(f"Failed to start vLLM server: {e}")
 
   def wait_for_startup(self):
     self.server_started_event.wait()
 
 
-def stream_completion(self, input_data, inference_params):
+def stream_completion(model, client, input_data, inference_params):
   """Stream iteratively generates completions for the input data."""
 
   temperature = inference_params.get("temperature", 0.7)
@@ -118,7 +118,7 @@ def stream_completion(self, input_data, inference_params):
 
   messages = construct_messages(input_data)
   kwargs = dict(
-      model=self.model,
+      model=model,
       messages=messages,
       temperature=temperature,
       max_tokens=max_tokens,
@@ -126,7 +126,7 @@ def stream_completion(self, input_data, inference_params):
       extra_body={"stop_token_ids": [151645, 151643]},
       stream=True,
   )
-  stream = self.client.chat.completions.create(**kwargs)
+  stream = client.chat.completions.create(**kwargs)
 
   return stream
 
@@ -144,8 +144,8 @@ class MyRunner(ModelRunner):
     self.gpu_memory_utilization = 0.8
     self.tensor_parallel_size = 1
     self.max_model_len = 2048
-    self.dtype = "auto"
-    self.port = 8000
+    self.dtype = "float16"
+    self.port = 7000
 
     self.server_manager = VLLMServerManager(self.port, self.gpu_memory_utilization,
                                             self.tensor_parallel_size, self.max_model_len,
@@ -194,7 +194,7 @@ class MyRunner(ModelRunner):
       # it contains the input data for the model
       input_data = input.data
 
-      stream = stream_completion(input_data, inference_params)
+      stream = stream_completion(self.model, self.client, input_data, inference_params)
 
       streams.append(stream)
 
@@ -202,9 +202,10 @@ class MyRunner(ModelRunner):
     for output in outputs:
       output.status.code = status_code_pb2.SUCCESS
 
-    for idx, chunk_batch in enumerate(itertools.zip_longest(*streams, fillvalue=None)):
-      for chunk in chunk_batch:
-        outputs[idx].data.text.raw += chunk.choices[0].delta.content if chunk else ''
+    for chunk_batch in itertools.zip_longest(*streams, fillvalue=None):
+      for idx, chunk in enumerate(chunk_batch):
+        outputs[idx].data.text.raw += chunk.choices[0].delta.content if (
+            chunk and chunk.choices[0].delta.content) is not None else ''
 
     return service_pb2.MultiOutputResponse(outputs=outputs,)
 
@@ -221,7 +222,7 @@ class MyRunner(ModelRunner):
       # it contains the input data for the model
       input_data = input.data
 
-      stream = stream_completion(input_data, inference_params)
+      stream = stream_completion(self.model, self.client, input_data, inference_params)
 
       streams.append(stream)
     for chunk_batch in itertools.zip_longest(*streams, fillvalue=None):
@@ -237,3 +238,22 @@ class MyRunner(ModelRunner):
   def stream(self, request_iterator: Iterator[service_pb2.PostModelOutputsRequest]
             ) -> Iterator[service_pb2.MultiOutputResponse]:
     NotImplementedError("Stream method is not implemented for the models.")
+
+
+if __name__ == '__main__':
+  # Make sure you set these env vars before running the example.
+  # CLARIFAI_PAT
+  # CLARIFAI_USER_ID
+  # CLARIFAI_API_BASE
+  # CLARIFAI_RUNNER_ID
+  # CLARIFAI_NODEPOOL_ID
+  # CLARIFAI_COMPUTE_CLUSTER_ID
+
+  # You need to first create a runner in the Clarifai API and then use the ID here.
+  MyRunner(
+      runner_id=os.environ["CLARIFAI_RUNNER_ID"],
+      nodepool_id=os.environ["CLARIFAI_NODEPOOL_ID"],
+      compute_cluster_id=os.environ["CLARIFAI_COMPUTE_CLUSTER_ID"],
+      base_url=os.environ["CLARIFAI_API_BASE"],
+      num_parallel_polls=int(os.environ.get("CLARIFAI_NUM_THREADS", 1)),
+  ).start()
