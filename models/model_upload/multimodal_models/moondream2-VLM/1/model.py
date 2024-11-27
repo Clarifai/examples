@@ -13,12 +13,54 @@ from PIL import Image
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
-def preprocess_image(image_url=None, image_base64=None):
-  if image_base64:
-    img = Image.open(BytesIO(image_base64))
-  elif image_url:
-    img = Image.open(BytesIO(requests.get(image_url).content))
-  return img
+def preprocess_image(image_url=None, image_bytes=None) -> Image.Image:
+  """Preprocess an image from a URL or byte input."""
+  try:
+    if image_bytes:
+      img = Image.open(BytesIO(image_bytes))
+    elif image_url:
+      img = Image.open(BytesIO(requests.get(image_url).content))
+    else:
+      raise ValueError("No valid image source provided.")
+    return img
+  except Exception as e:
+    raise ValueError(f"Error processing image: {str(e)}")
+
+
+def process_inputs(request, inference_params):
+  """Process inputs into batches of images and prompts."""
+  batch_images, batch_prompts = [], []
+  for input in request.inputs:
+    input_data = input.data
+    image = preprocess_image(
+        image_bytes=input_data.image.base64) if input_data.image.base64 else None
+    prompt = input_data.text.raw if input_data.text.raw else "Describe this image."
+    batch_images.append(image)
+    batch_prompts.append(prompt)
+  return batch_images, batch_prompts
+
+
+def get_inference_params(request) -> dict:
+  """Get the inference params from the request."""
+  inference_params = {}
+  if request.model.model_version.id != "":
+    output_info = request.model.model_version.output_info
+    output_info = json_format.MessageToDict(output_info, preserving_proto_field_name=True)
+
+    if "params" in output_info:
+      inference_params = output_info["params"]
+  return inference_params
+
+
+def validate_inputs(batch_images, batch_prompts, num_inputs):
+  if len(batch_images) == 0 and len(batch_prompts) == 0:
+    raise ValueError(
+        "No image or prompt provided. Moondream Model requires both image and prompt in all inputs to generate text."
+    )
+  if len(batch_images) != len(batch_prompts):
+    raise ValueError("Mismatch between the number of images and prompts provided.")
+
+  return True
 
 
 class MyRunner(ModelRunner):
@@ -31,7 +73,6 @@ class MyRunner(ModelRunner):
     logger.info(f"Running on device: {self.device}")
 
     revision = "2024-08-26"
-
     # if checkpoints section is in config.yaml file then checkpoints will be downloaded at this path during model upload time.
     checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
 
@@ -45,66 +86,37 @@ class MyRunner(ModelRunner):
 
   def predict(self,
               request: service_pb2.PostModelOutputsRequest) -> service_pb2.MultiOutputResponse:
-    """This is the method that will be called when the runner is run. It takes in an input and
-    returns an outputs the response using llama model.
-    """
+    """Generate predictions for the given inputs."""
+    inference_params = get_inference_params(request)
+    try:
+      batch_images, batch_prompts = process_inputs(request, inference_params)
+      validate_inputs(batch_images, batch_prompts, len(request.inputs))
 
-    # TODO: Could cache the model and this conversion if the hash is the same.
-    model = request.model
-    output_info = {}
-    if request.model.model_version.id != "":
-      output_info = json_format.MessageToDict(
-          model.model_version.output_info, preserving_proto_field_name=True)
+      kwargs = {
+          "max_new_tokens": inference_params.get("max_length", 128),
+          "temperature": inference_params.get("temperature", 0.8),
+          "top_k": inference_params.get("top_k", 50),
+          "top_p": inference_params.get("top_p", 0.95),
+          "repetition_penalty": inference_params.get("repetition_penalty", 1.0),
+          "num_beams": inference_params.get("num_beams", 1),
+          "do_sample": inference_params.get("do_sample", True),
+      }
 
-    outputs = []
-    # TODO: parallelize this over inputs in a single request.
-    for inp in request.inputs:
-      data = inp.data
+      model_responses = self.model.batch_answer(batch_images, batch_prompts, self.tokenizer,
+                                                **kwargs)
 
-      # Optional use of output_info
-      inference_params = {}
-      if "params" in output_info:
-        inference_params = output_info["params"]
-
-      temperature = inference_params.get("temperature", 0.7)
-      max_tokens = inference_params.get("max_tokens", 100)
-      max_tokens = int(max_tokens)
-
-      top_k = inference_params.get("top_k", 40)
-      top_k = int(top_k)
-      top_p = inference_params.get("top_p", 1.0)
-
-      kwargs = dict(temperature=temperature, top_p=top_p, max_new_tokens=max_tokens, top_k=top_k)
-
-      prompt = ""
-      image = None
-      if data.image.base64 != b"":
-        image = preprocess_image(image_base64=data.image.base64)
-      elif data.image.url != "":
-        image = preprocess_image(image_url=data.image.url)
-
-      if image is not None:
-        enc_image = self.model.encode_image(image)
-      else:
+      outputs = []
+      for response in model_responses:
         output = resources_pb2.Output()
-        output.status.code = status_code_pb2.MODEL_PREDICTION_FAILED
-        output.status.description = "No image provided, Moondream Model requires an image input."
+        output.data.text.raw = response
+        output.status.code = status_code_pb2.SUCCESS
         outputs.append(output)
-        continue
-
-      if data.text.raw != "":
-        prompt = data.text.raw
-      else:
-        prompt = "Describe this image."
-
-      model_response = self.model.answer_question(enc_image, prompt, self.tokenizer, **kwargs)
-
+      return service_pb2.MultiOutputResponse(outputs=outputs)
+    except ValueError as e:
       output = resources_pb2.Output()
-      output.data.text.raw = model_response
-
-      output.status.code = status_code_pb2.SUCCESS
-      outputs.append(output)
-    return service_pb2.MultiOutputResponse(outputs=outputs,)
+      output.status.code = status_code_pb2.MODEL_PREDICTION_FAILED
+      output.status.description = str(e)
+      return service_pb2.MultiOutputResponse(outputs=[output] * len(request.inputs))
 
   def generate(self, request: service_pb2.PostModelOutputsRequest
               ) -> Iterator[service_pb2.MultiOutputResponse]:
