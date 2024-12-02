@@ -21,8 +21,9 @@ def construct_messages(input_data: resources_pb2.Data) -> list[dict]:
   images = []
 
   if input_data.parts:
-    prompts = [part.text.raw for part in input_data.parts if part.text.raw] or [DEFAULT_PROMPT]
-    images = [part.image.base64 for part in input_data.parts if part.image.base64]
+    prompts = [part.data.text.raw for part in input_data.parts
+               if part.data.text.raw] or [DEFAULT_PROMPT]
+    images = [part.data.image.base64 for part in input_data.parts if part.data.image.base64]
 
     if not prompts:
       prompts.append(DEFAULT_PROMPT)
@@ -113,7 +114,7 @@ def stream_completion(model, client, input_data, inference_params):
   """Stream iteratively generates completions for the input data."""
 
   temperature = inference_params.get("temperature", 0.7)
-  max_tokens = inference_params.get("max_tokens", 100)
+  max_tokens = inference_params.get("max_tokens", 512)
   top_p = inference_params.get("top_p", 1.0)
 
   messages = construct_messages(input_data)
