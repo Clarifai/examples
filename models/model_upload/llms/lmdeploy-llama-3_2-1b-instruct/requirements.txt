@@ -1,0 +1,15 @@
+torch==2.4.0
+tokenizers==0.20.2
+transformers==4.46.2
+accelerate==0.34.2
+optimum==1.23.3
+xformers==0.0.27.post2
+einops==0.8.0
+requests==2.32.2
+packaging
+ninja
+protobuf==3.20.0
+
+openai==1.51.0
+qwen-vl-utils
+lmdeploy==0.6.3
