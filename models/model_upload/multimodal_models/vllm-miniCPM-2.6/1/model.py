@@ -141,7 +141,7 @@ class MyRunner(ModelRunner):
     """Load the model here and start the vllm server."""
 
     # vLLM parameters
-    self.gpu_memory_utilization = 0.8
+    self.gpu_memory_utilization = 0.9
     self.tensor_parallel_size = 1
     self.max_model_len = 2048
     self.dtype = "float16"
