@@ -10,7 +10,7 @@ pillow==10.4.0
 requests==2.32.3
 sentence_transformers==2.2.0
 sentencepiece==0.2.0
-openai==1.55.0
+openai==1.55.3
 vllm==0.6.0
 autoawq==0.2.7.post2
 decord
