@@ -123,6 +123,7 @@ class MyRunner(ModelRunner):
     logger.info(f"Running on device: {self.device}")
 
     # Load model and tokenizer
+    # if checkpoints section is in config.yaml file then checkpoints will be downloaded at this path during model upload time.
     checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
     self.tokenizer = AutoTokenizer.from_pretrained(checkpoints, pad_token=self.tokenizer.eos_token)
     self.model = AutoModelForCausalLM.from_pretrained(
