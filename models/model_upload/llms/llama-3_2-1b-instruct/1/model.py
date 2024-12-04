@@ -136,7 +136,7 @@ class MyRunner(ModelRunner):
 
   def predict(self,
               request: service_pb2.PostModelOutputsRequest) -> service_pb2.MultiOutputResponse:
-    """Handle non-streaming batch predictions."""
+    """This method generates outputs text for the given inputs using the model."""
 
     inference_params = parse_inference_params(request)
 
@@ -164,7 +164,7 @@ class MyRunner(ModelRunner):
 
   def generate(self, request: service_pb2.PostModelOutputsRequest
               ) -> Iterator[service_pb2.MultiOutputResponse]:
-    """Handle streaming batch predictions."""
+    """This method generates stream of outputs for the given batch of inputs using the model."""
     inference_params = parse_inference_params(request)
 
     prompts = [inp.data.text.raw for inp in request.inputs]
