@@ -124,7 +124,6 @@ class MyRunner(ModelRunner):
 
     # Load model and tokenizer
     checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
-    self.tokenizer = AutoTokenizer.from_pretrained(checkpoints)
     self.tokenizer = AutoTokenizer.from_pretrained(checkpoints, pad_token=self.tokenizer.eos_token)
     self.model = AutoModelForCausalLM.from_pretrained(
         checkpoints,
