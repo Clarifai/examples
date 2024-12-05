@@ -1,2 +1,2 @@
-openai==1.56.2
+openai==1.55.3
 tenacity==8.1.0
