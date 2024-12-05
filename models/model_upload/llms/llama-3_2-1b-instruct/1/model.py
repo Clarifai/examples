@@ -125,7 +125,8 @@ class MyRunner(ModelRunner):
     # Load model and tokenizer
     # if checkpoints section is in config.yaml file then checkpoints will be downloaded at this path during model upload time.
     checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
-    self.tokenizer = AutoTokenizer.from_pretrained(checkpoints, pad_token=self.tokenizer.eos_token)
+    self.tokenizer = AutoTokenizer.from_pretrained(checkpoints,)
+    self.tokenizer.pad_token = self.tokenizer.eos_token # Set pad token to eos token
     self.model = AutoModelForCausalLM.from_pretrained(
         checkpoints,
         low_cpu_mem_usage=True,
