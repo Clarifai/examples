@@ -2,7 +2,6 @@ import os
 from io import BytesIO
 from typing import Iterator
 
-import requests
 import torch
 from clarifai.runners.models.model_runner import ModelRunner
 from clarifai.utils.logging import logger
@@ -12,12 +11,9 @@ from PIL import Image
 from transformers import AutoModelForImageClassification, ViTImageProcessor
 
 
-def preprocess_image(image_url=None, image_base64=None):
-  if image_base64:
-    img = Image.open(BytesIO(image_base64))
-  elif image_url:
-    img = Image.open(BytesIO(requests.get(image_url).content))
-  return img
+def preprocess_image(image_bytes):
+  """Fetch and preprocess image data from bytes"""
+  return Image.open(BytesIO(image_bytes)).convert("RGB")
 
 
 class MyRunner(ModelRunner):
@@ -47,34 +43,30 @@ class MyRunner(ModelRunner):
     concept_protos = request.model.model_version.output_info.data.concepts
 
     outputs = []
-    # TODO: parallelize this over inputs in a single request.
-    for inp in request.inputs:
-      output = resources_pb2.Output()
+    images = []
+    for input in request.inputs:
+      input_data = input.data
+      image = preprocess_image(image_bytes=input_data.image.base64)
+      images.append(image)
 
-      data = inp.data
+    with torch.no_grad():
+      inputs = self.processor(images=images, return_tensors="pt")
+      inputs = {name: tensor.to(self.device) for name, tensor in inputs.items()}
+      logits = self.model(**inputs).logits
 
-      output_concepts = []
+      for logit in logits:
+        output_concepts = []
+        probs = torch.softmax(logit, dim=-1)
+        sorted_indices = torch.argsort(probs, dim=-1, descending=True)
+        for idx in sorted_indices:
+          concept_protos[idx.item()].value = probs[idx.item()].item()
+          output_concepts.append(concept_protos[idx.item()])
 
-      if data.image.base64 != b"":
-        img = preprocess_image(image_base64=data.image.base64)
-      elif data.image.url != "":
-        img = preprocess_image(image_url=data.image.url)
+        output = resources_pb2.Output()
+        output.data.concepts.extend(output_concepts)
+        output.status.code = status_code_pb2.SUCCESS
+        outputs.append(output)
 
-      with torch.no_grad():
-        inputs = self.processor(images=img, return_tensors="pt").to(self.device)
-        model_output = self.model(**inputs)
-        logits = model_output.logits
-
-      probs = torch.softmax(logits, dim=-1)[0]
-      sorted_indices = torch.argsort(probs, dim=-1, descending=True)
-      for idx in sorted_indices:
-        concept_protos[idx.item()].value = probs[idx.item()].item()
-        output_concepts.append(concept_protos[idx.item()])
-
-      output.data.concepts.extend(output_concepts)
-
-      output.status.code = status_code_pb2.SUCCESS
-      outputs.append(output)
     return service_pb2.MultiOutputResponse(outputs=outputs,)
 
   def generate(self, request: service_pb2.PostModelOutputsRequest
