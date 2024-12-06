@@ -14,7 +14,7 @@ inference_compute_info:
   cpu_memory: "12Gi"
   num_accelerators: 1
   accelerator_type: ["NVIDIA-A10G"]
-  accelerator_memory: "16Gi"
+  accelerator_memory: "12Gi"
 
 checkpoints:
   type: "huggingface"
