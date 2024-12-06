@@ -1,8 +1,9 @@
 import os
+import tempfile
 from io import BytesIO
 from typing import Iterator
 
-import requests
+import cv2
 import torch
 from clarifai.runners.models.model_runner import ModelRunner
 from clarifai.utils.logging import logger
@@ -12,12 +13,36 @@ from PIL import Image
 from transformers import AutoModelForImageClassification, ViTImageProcessor
 
 
-def preprocess_image(image_url=None, image_base64=None):
-  if image_base64:
-    img = Image.open(BytesIO(image_base64))
-  elif image_url:
-    img = Image.open(BytesIO(requests.get(image_url).content))
-  return img
+def preprocess_image(image_bytes):
+  """Fetch and preprocess image data from bytes"""
+  return Image.open(BytesIO(image_bytes)).convert("RGB")
+
+
+def video_to_frames(video_bytes):
+  """Convert video bytes to frames"""
+  # Write video bytes to a temporary file
+  with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as temp_video_file:
+    temp_video_file.write(video_bytes)
+    temp_video_path = temp_video_file.name
+
+  video = cv2.VideoCapture(temp_video_path)
+  print("video opened")
+  logger.info(f"video opened: {video.isOpened()}")
+  while video.isOpened():
+    ret, frame = video.read()
+    if not ret:
+      break
+    # Convert the frame to byte format
+    frame_bytes = cv2.imencode('.jpg', frame)[1].tobytes()
+    yield frame_bytes
+
+
+def classify_image(images, model, processor, device):
+  """Classify an image using the model and processor."""
+  inputs = processor(images=images, return_tensors="pt")
+  inputs = {name: tensor.to(device) for name, tensor in inputs.items()}
+  logits = model(**inputs).logits
+  return logits
 
 
 class MyRunner(ModelRunner):
@@ -43,45 +68,81 @@ class MyRunner(ModelRunner):
     returns an output.
     """
 
-    # Get the concept protos from the model.
-    concept_protos = request.model.model_version.output_info.data.concepts
-
     outputs = []
-    # TODO: parallelize this over inputs in a single request.
-    for inp in request.inputs:
-      output = resources_pb2.Output()
+    images = []
+    for input in request.inputs:
+      input_data = input.data
+      image = preprocess_image(image_bytes=input_data.image.base64)
+      images.append(image)
 
-      data = inp.data
+    with torch.no_grad():
+      logits = classify_image(images, self.model, self.processor, self.device)
 
-      output_concepts = []
+      for logit in logits:
+        output_concepts = []
+        probs = torch.softmax(logit, dim=-1)
+        sorted_indices = torch.argsort(probs, dim=-1, descending=True)
+        for idx in sorted_indices:
+          output_concepts.append(
+              resources_pb2.Concept(
+                  id=str(idx.item()),
+                  name=str(idx.item()),
+                  value=probs[idx].item(),
+              ))
 
-      if data.image.base64 != b"":
-        img = preprocess_image(image_base64=data.image.base64)
-      elif data.image.url != "":
-        img = preprocess_image(image_url=data.image.url)
+        output = resources_pb2.Output()
+        output.data.concepts.extend(output_concepts)
+        output.status.code = status_code_pb2.SUCCESS
+        outputs.append(output)
 
-      with torch.no_grad():
-        inputs = self.processor(images=img, return_tensors="pt").to(self.device)
-        model_output = self.model(**inputs)
-        logits = model_output.logits
-
-      probs = torch.softmax(logits, dim=-1)[0]
-      sorted_indices = torch.argsort(probs, dim=-1, descending=True)
-      for idx in sorted_indices:
-        concept_protos[idx.item()].value = probs[idx.item()].item()
-        output_concepts.append(concept_protos[idx.item()])
-
-      output.data.concepts.extend(output_concepts)
-
-      output.status.code = status_code_pb2.SUCCESS
-      outputs.append(output)
     return service_pb2.MultiOutputResponse(outputs=outputs,)
 
   def generate(self, request: service_pb2.PostModelOutputsRequest
               ) -> Iterator[service_pb2.MultiOutputResponse]:
-    raise NotImplementedError("Stream method is not implemented for image classification models.")
+
+    if len(request.inputs) != 1:
+      raise ValueError("Only one input is allowed for image classification models.")
+    for input in request.inputs:
+      input_data = input.data
+
+      if input_data.video.base64:
+        video_bytes = input_data.video.base64
+      elif input_data.image.base64:
+        logger.info("Image input")
+        logger.info(
+            f"len(input_data.image.base64): {len(input_data.image.base64)} start of image: {input_data.image.base64[:10]}"
+        )
+        video_bytes = input_data.image.base64
+
+      frame_generator = video_to_frames(video_bytes)
+      for frame in frame_generator:
+        image = preprocess_image(frame)
+        images = [image]
+
+        with torch.no_grad():
+          logits = classify_image(images, self.model, self.processor, self.device)
+
+          for logit in logits:
+            output_concepts = []
+            probs = torch.softmax(logit, dim=-1)
+            sorted_indices = torch.argsort(probs, dim=-1, descending=True)
+            for idx in sorted_indices:
+              output_concepts.append(
+                  resources_pb2.Concept(
+                      id=str(idx.item()),
+                      name=str(idx.item()),
+                      value=probs[idx].item(),
+                  ))
+            output = resources_pb2.Output()
+            output.data.image.base64 = frame
+            output.data.concepts.extend(output_concepts)
+            output.status.code = status_code_pb2.SUCCESS
+            yield service_pb2.MultiOutputResponse(outputs=[
+                output,
+            ])
 
   def stream(self, request_iterator: Iterator[service_pb2.PostModelOutputsRequest]
             ) -> Iterator[service_pb2.MultiOutputResponse]:
-    ## raise NotImplementedError
-    raise NotImplementedError("Stream method is not implemented for image classification models.")
+    for request in request_iterator:
+      for output in self.generate(request):
+        yield output
