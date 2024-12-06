@@ -150,22 +150,3 @@ class MyRunner(ModelRunner):
     for request in request_iterator:
       for output in self.generate(request):
         yield output
-
-
-if __name__ == '__main__':
-  # Make sure you set these env vars before running the example.
-  # CLARIFAI_PAT
-  # CLARIFAI_USER_ID
-  # CLARIFAI_API_BASE
-  # CLARIFAI_RUNNER_ID
-  # CLARIFAI_NODEPOOL_ID
-  # CLARIFAI_COMPUTE_CLUSTER_ID
-
-  # You need to first create a runner in the Clarifai API and then use the ID here.
-  MyRunner(
-      runner_id=os.environ["CLARIFAI_RUNNER_ID"],
-      nodepool_id=os.environ["CLARIFAI_NODEPOOL_ID"],
-      compute_cluster_id=os.environ["CLARIFAI_COMPUTE_CLUSTER_ID"],
-      base_url=os.environ["CLARIFAI_API_BASE"],
-      num_parallel_polls=int(os.environ.get("CLARIFAI_NUM_THREADS", 1)),
-  ).start()
