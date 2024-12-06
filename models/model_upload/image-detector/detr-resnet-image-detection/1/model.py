@@ -48,7 +48,7 @@ def detect_objects(images, model, processor, device):
   return results
 
 
-def process_bounding_boxes(results, images, id2label, threshold):
+def process_bounding_boxes(results, images, frame, id2label, threshold):
   outputs = []
   for i, result in enumerate(results):
     image = images[i]
@@ -73,6 +73,7 @@ def process_bounding_boxes(results, images, id2label, threshold):
             ))
         output_regions.append(output_region)
     output = resources_pb2.Output()
+    output.data.image.base64 = frame
     output.data.regions.extend(output_regions)
     output.status.code = status_code_pb2.SUCCESS
     outputs.append(output)
@@ -109,7 +110,8 @@ class MyRunner(ModelRunner):
     for input in request.inputs:
       input_data = input.data
 
-      image = preprocess_image(image_bytes=input_data.image.base64)
+      image_bytes = input_data.image.base64
+      image = preprocess_image(image_bytes=image_bytes)
       images.append(image)
 
     with torch.no_grad():
@@ -117,7 +119,7 @@ class MyRunner(ModelRunner):
 
       # convert outputs (bounding boxes and class logits) to COCO API
       # let's only keep detections with score > 0.7 (You can set it to any other value)
-      outputs = process_bounding_boxes(results, images, self.id2label, self.threshold)
+      outputs = process_bounding_boxes(results, images, image_bytes, self.id2label, self.threshold)
       return service_pb2.MultiOutputResponse(outputs=outputs,)
 
   def generate(self, request: service_pb2.PostModelOutputsRequest
@@ -142,7 +144,7 @@ class MyRunner(ModelRunner):
         images = [image]
         with torch.no_grad():
           results = detect_objects(images, self.model, self.processor, self.device)
-          outputs = process_bounding_boxes(results, images, self.id2label, self.threshold)
+          outputs = process_bounding_boxes(results, images, frame, self.id2label, self.threshold)
           yield service_pb2.MultiOutputResponse(outputs=outputs,)
 
   def stream(self, request_iterator: Iterator[service_pb2.PostModelOutputsRequest]
