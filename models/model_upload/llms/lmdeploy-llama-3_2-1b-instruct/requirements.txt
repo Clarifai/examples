@@ -11,5 +11,5 @@ ninja
 protobuf==3.20.0
 
 openai==1.51.0
-qwen-vl-utils
-lmdeploy==0.6.3
+qwen-vl-utils==0.0.8
+lmdeploy==0.6.4
