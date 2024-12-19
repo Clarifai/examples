@@ -9,7 +9,7 @@ from clarifai.runners.models.model_runner import ModelRunner
 from clarifai.runners.utils.loader import HuggingFaceLoader
 from clarifai.utils.logging import logger
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
-from clarifai_grpc.grpc.api.status import status_code_pb2
+from clarifai_grpc.grpc.api.status import status_code_pb2, status_pb2
 from PIL import Image
 from transformers import DetrForObjectDetection, DetrImageProcessor
 
@@ -48,7 +48,7 @@ def detect_objects(images, model, processor, device):
   return results
 
 
-def process_bounding_boxes(results, images, frame, id2label, threshold):
+def process_bounding_boxes(results, images, id2label, threshold):
   outputs = []
   for i, result in enumerate(results):
     image = images[i]
@@ -73,7 +73,7 @@ def process_bounding_boxes(results, images, frame, id2label, threshold):
             ))
         output_regions.append(output_region)
     output = resources_pb2.Output()
-    output.data.image.base64 = frame
+    output.data.image.base64 = images[i].tobytes()
     output.data.regions.extend(output_regions)
     output.status.code = status_code_pb2.SUCCESS
     outputs.append(output)
@@ -119,36 +119,37 @@ class MyRunner(ModelRunner):
 
       # convert outputs (bounding boxes and class logits) to COCO API
       # let's only keep detections with score > 0.7 (You can set it to any other value)
-      outputs = process_bounding_boxes(results, images, image_bytes, self.id2label, self.threshold)
-      return service_pb2.MultiOutputResponse(outputs=outputs,)
+      outputs = process_bounding_boxes(results, images, self.id2label, self.threshold)
+      return service_pb2.MultiOutputResponse(
+          outputs=outputs, status=status_pb2.Status(code=status_code_pb2.SUCCESS))
 
   def generate(self, request: service_pb2.PostModelOutputsRequest
               ) -> Iterator[service_pb2.MultiOutputResponse]:
     if len(request.inputs) != 1:
-      raise ValueError("Only one input is allowed for image classification models.")
+      raise ValueError("Only one input is allowed for image models for this method.")
     for input in request.inputs:
       input_data = input.data
+      video_bytes = None
       if input_data.video.base64:
         video_bytes = input_data.video.base64
-      elif input_data.image.base64:
-        logger.info("Image input")
-        logger.info(
-            f"len(input_data.image.base64): {len(input_data.image.base64)} start of image: {input_data.image.base64[:10]}"
-        )
-
-        video_bytes = input_data.image.base64
-
-      frame_generator = video_to_frames(video_bytes)
-      for frame in frame_generator:
-        image = preprocess_image(frame)
-        images = [image]
-        with torch.no_grad():
-          results = detect_objects(images, self.model, self.processor, self.device)
-          outputs = process_bounding_boxes(results, images, frame, self.id2label, self.threshold)
-          yield service_pb2.MultiOutputResponse(outputs=outputs,)
+      if video_bytes:
+        frame_generator = video_to_frames(video_bytes)
+        for frame in frame_generator:
+          image = preprocess_image(frame)
+          images = [image]
+          with torch.no_grad():
+            results = detect_objects(images, self.model, self.processor, self.device)
+            outputs = process_bounding_boxes(results, images, self.id2label, self.threshold)
+            yield service_pb2.MultiOutputResponse(
+                outputs=outputs, status=status_pb2.Status(code=status_code_pb2.SUCCESS))
+      else:
+        raise ValueError("Only video input is allowed for this method.")
 
   def stream(self, request_iterator: Iterator[service_pb2.PostModelOutputsRequest]
             ) -> Iterator[service_pb2.MultiOutputResponse]:
     for request in request_iterator:
-      for output in self.generate(request):
-        yield output
+      if request.inputs[0].data.video.base64:
+        for output in self.generate(request):
+          yield output
+      elif request.inputs[0].data.image.base64:
+        yield self.predict(request)
