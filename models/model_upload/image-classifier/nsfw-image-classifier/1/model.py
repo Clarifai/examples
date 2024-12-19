@@ -1,4 +1,3 @@
-import json
 import os
 import tempfile
 from io import BytesIO
@@ -48,7 +47,7 @@ def classify_image(images, model, processor, device):
   return logits
 
 
-def process_concepts(logits, images, labels):
+def process_concepts(logits, images, concept_protos):
   """Process the logits and return the concepts."""
   outputs = []
   for i, logit in enumerate(logits):
@@ -56,12 +55,8 @@ def process_concepts(logits, images, labels):
     probs = torch.softmax(logit, dim=-1)
     sorted_indices = torch.argsort(probs, dim=-1, descending=True)
     for idx in sorted_indices:
-      output_concepts.append(
-          resources_pb2.Concept(
-              id=str(idx.item()),
-              name=labels[str(idx.item())],
-              value=probs[idx].item(),
-          ))
+      concept_protos[idx.item()].value = probs[idx].item()
+      output_concepts.append(concept_protos[idx.item()])
     output = resources_pb2.Output()
     output.data.image.base64 = images[i].tobytes()
     output.data.concepts.extend(output_concepts)
@@ -85,11 +80,6 @@ class MyRunner(ModelRunner):
 
     self.model = AutoModelForImageClassification.from_pretrained(checkpoint_path,).to(self.device)
     self.processor = ViTImageProcessor.from_pretrained(checkpoint_path)
-    config_path = os.path.join(checkpoint_path, 'config.json')
-    with open(config_path, 'r') as f:
-      config = json.load(f)
-
-    self.labels = config['id2label']
     logger.info("Done loading!")
 
   def predict(self, request: service_pb2.PostModelOutputsRequest
@@ -100,6 +90,7 @@ class MyRunner(ModelRunner):
 
     outputs = []
     images = []
+    concept_protos = request.model.model_version.output_info.data.concepts
     for input in request.inputs:
       input_data = input.data
       image = preprocess_image(image_bytes=input_data.image.base64)
@@ -107,7 +98,7 @@ class MyRunner(ModelRunner):
 
     with torch.no_grad():
       logits = classify_image(images, self.model, self.processor, self.device)
-      outputs = process_concepts(logits, images, self.labels)
+      outputs = process_concepts(logits, images, concept_protos)
 
     return service_pb2.MultiOutputResponse(
         outputs=outputs, status=status_pb2.Status(code=status_code_pb2.SUCCESS))
@@ -117,6 +108,7 @@ class MyRunner(ModelRunner):
 
     if len(request.inputs) != 1:
       raise ValueError("Only one input is allowed for image models for this method.")
+    concept_protos = request.model.model_version.output_info.data.concepts
     for input in request.inputs:
       input_data = input.data
       video_bytes = None
@@ -130,7 +122,7 @@ class MyRunner(ModelRunner):
 
           with torch.no_grad():
             logits = classify_image(images, self.model, self.processor, self.device)
-            outputs = process_concepts(logits, images, self.labels)
+            outputs = process_concepts(logits, images, concept_protos)
             yield service_pb2.MultiOutputResponse(
                 outputs=outputs, status=status_pb2.Status(code=status_code_pb2.SUCCESS))
       else:

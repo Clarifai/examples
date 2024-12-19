@@ -6,7 +6,6 @@ from typing import Iterator
 import cv2
 import torch
 from clarifai.runners.models.model_runner import ModelRunner
-from clarifai.runners.utils.loader import HuggingFaceLoader
 from clarifai.utils.logging import logger
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2, status_pb2
@@ -48,7 +47,7 @@ def detect_objects(images, model, processor, device):
   return results
 
 
-def process_bounding_boxes(results, images, id2label, threshold):
+def process_bounding_boxes(results, images, concept_protos, threshold):
   outputs = []
   for i, result in enumerate(results):
     image = images[i]
@@ -65,12 +64,8 @@ def process_bounding_boxes(results, images, id2label, threshold):
                 bottom_row=ymax,
                 right_col=xmax,
             ),))
-        output_region.data.concepts.append(
-            resources_pb2.Concept(
-                id=str(label_idx.item()),
-                name=id2label[str(label_idx.item())],
-                value=score,
-            ))
+        concept_protos[label_idx.item()].value = score.item()
+        output_region.data.concepts.append(concept_protos[label_idx.item()])
         output_regions.append(output_region)
     output = resources_pb2.Output()
     output.data.image.base64 = images[i].tobytes()
@@ -95,7 +90,6 @@ class MyRunner(ModelRunner):
         checkpoint_path, revision="no_timm").to(self.device)
     self.processor = DetrImageProcessor.from_pretrained(checkpoint_path, revision="no_timm")
     self.model.eval()
-    self.id2label = HuggingFaceLoader.fetch_labels(checkpoint_path)
     self.threshold = 0.7
 
     logger.info("Done loading!")
@@ -107,6 +101,7 @@ class MyRunner(ModelRunner):
     """
     outputs = []
     images = []
+    concept_protos = request.model.model_version.output_info.data.concepts
     for input in request.inputs:
       input_data = input.data
 
@@ -119,7 +114,7 @@ class MyRunner(ModelRunner):
 
       # convert outputs (bounding boxes and class logits) to COCO API
       # let's only keep detections with score > 0.7 (You can set it to any other value)
-      outputs = process_bounding_boxes(results, images, self.id2label, self.threshold)
+      outputs = process_bounding_boxes(results, images, concept_protos, self.threshold)
       return service_pb2.MultiOutputResponse(
           outputs=outputs, status=status_pb2.Status(code=status_code_pb2.SUCCESS))
 
@@ -127,6 +122,7 @@ class MyRunner(ModelRunner):
               ) -> Iterator[service_pb2.MultiOutputResponse]:
     if len(request.inputs) != 1:
       raise ValueError("Only one input is allowed for image models for this method.")
+    concept_protos = request.model.model_version.output_info.data.concepts
     for input in request.inputs:
       input_data = input.data
       video_bytes = None
@@ -139,7 +135,7 @@ class MyRunner(ModelRunner):
           images = [image]
           with torch.no_grad():
             results = detect_objects(images, self.model, self.processor, self.device)
-            outputs = process_bounding_boxes(results, images, self.id2label, self.threshold)
+            outputs = process_bounding_boxes(results, images, concept_protos, self.threshold)
             yield service_pb2.MultiOutputResponse(
                 outputs=outputs, status=status_pb2.Status(code=status_code_pb2.SUCCESS))
       else:
