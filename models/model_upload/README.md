@@ -134,21 +134,21 @@ The `model.py` file contains the logic for your model, including how the model i
 from clarifai.runners.models.model_runner import ModelRunner
 
 class YourCustomModelRunner(ModelRunner):
-def load_model(self):
-  '''Initialize and load the model here'''
-  pass
+  def load_model(self):
+    '''Initialize and load the model here'''
+    pass
 
-def predict(self, request):
-  '''Define logic to handle input and return output'''
-  return output_data
+  def predict(self, request):
+    '''Define logic to handle input and return output'''
+    return output_data
 
-def generate(self, request):
-'''Define streaming output logic if needed'''
-  pass
+  def generate(self, request):
+    '''Define streaming output logic if needed'''
+    pass
 
-def stream(self, request):
-'''Handle both streaming input and output'''
-  pass
+  def stream(self, request):
+    '''Handle both streaming input and output'''
+    pass
 ```
 
 * **load_model()**: Loads the model, similar to an initialization step.
