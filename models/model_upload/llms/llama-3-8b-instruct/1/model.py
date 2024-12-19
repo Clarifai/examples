@@ -131,7 +131,7 @@ class MyRunner(ModelRunner):
         checkpoints,
         low_cpu_mem_usage=True,
         device_map=self.device,
-        torch_dtype=torch.bfloat16,
+        torch_dtype=torch.float16,
     )
     logger.info("Done loading!")
 
@@ -161,7 +161,7 @@ class MyRunner(ModelRunner):
     for text in outputs_text:
       outputs.append(create_output(text=text, code=status_code_pb2.SUCCESS))
 
-    return service_pb2.MultiOutputResponse(outputs=outputs)
+    return service_pb2.MultiOutputResponse(outputs=outputs, status=status_pb2.Status(code=status_code_pb2.SUCCESS))
 
   def generate(self, request: service_pb2.PostModelOutputsRequest
               ) -> Iterator[service_pb2.MultiOutputResponse]:
@@ -208,7 +208,7 @@ class MyRunner(ModelRunner):
           outputs[idx].data.text.raw = text  # Append new text to each output
           outputs[idx].status.code = status_code_pb2.SUCCESS
         # Yield the current outputs
-        yield service_pb2.MultiOutputResponse(outputs=outputs)
+        yield service_pb2.MultiOutputResponse(outputs=outputs, status=status_pb2.Status(code=status_code_pb2.SUCCESS))
     finally:
       thread.join()
 
