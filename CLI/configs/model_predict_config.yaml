@@ -1,0 +1,5 @@
+model_id: claude-v2
+user_id: anthropic
+app_id: completion
+bytes: 'Human: Write a tweet on future of AI\n\nAssistant:'
+input_type: text
