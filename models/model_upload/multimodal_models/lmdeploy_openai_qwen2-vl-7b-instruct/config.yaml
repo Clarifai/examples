@@ -1,0 +1,22 @@
+# Config file for the VLLM runner
+
+model:
+  id: "lmdeploy-Qwen_Qwen2-VL-7B-Instruct"
+  user_id: "your username"
+  app_id: ""
+  model_type_id: "text-to-text"
+
+build_info:
+  python_version: "3.10"
+
+inference_compute_info:
+  cpu_limit: "4"
+  cpu_memory: "16Gi"
+  num_accelerators: 1
+  accelerator_type: ["NVIDIA-A10G"]
+  accelerator_memory: "24Gi"
+
+checkpoints:
+  type: "huggingface"
+  repo_id: "Qwen/Qwen2-VL-7B-Instruct" # Or any vlm hf id supported by lmdeploy
+  hf_token: "your token"

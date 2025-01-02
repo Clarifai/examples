@@ -12,3 +12,4 @@ ninja
 qwen-vl-utils==0.0.8
 lmdeploy==0.6.4
 autoawq
+openai

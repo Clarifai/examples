@@ -1,0 +1,38 @@
+# Config file for the VLLM runner
+
+model:
+  id: "lmdeploy-minicpmv2d6-awq-ethnicity-classifier"
+  user_id: ""
+  app_id: ""
+  model_type_id: "visual-classifier"
+
+build_info:
+  python_version: "3.10"
+
+inference_compute_info:
+  cpu_limit: "4"
+  cpu_memory: "16Gi"
+  num_accelerators: 1
+  accelerator_type: ["NVIDIA-A10G"]
+  accelerator_memory: "24Gi"
+
+checkpoints:
+  type: "huggingface"
+  repo_id: "jfiekdjdk/MiniCPM-V-2_6-awq" # Or any vlm hf id supported by lmdeploy
+  hf_token: "your token"
+
+concepts:
+- id: 'ai_zcm624Hj'
+  name: Black
+- id: 'ai_H3Z5TwPR'
+  name: 'East Asian'
+- id: 'ai_wB5DLwCQ'
+  name: Indian
+- id: 'ai_l7P4N9H3'
+  name: Latino_Hispanic
+- id: 'ai_HQBNrsQF'
+  name: Middle Eastern
+- id: 'ai_Z9rhv1Wb'
+  name: Southeast Asian
+- id: 'ai_wRdd0JFh'
+  name: White

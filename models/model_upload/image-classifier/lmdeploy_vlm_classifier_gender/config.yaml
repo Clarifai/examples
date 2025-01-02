@@ -1,0 +1,28 @@
+# Config file for the VLLM runner
+
+model:
+  id: "lmdeploy-minicpmv2d6-awq-gender-classifier"
+  user_id: ""
+  app_id: ""
+  model_type_id: "visual-classifier"
+
+build_info:
+  python_version: "3.10"
+
+inference_compute_info:
+  cpu_limit: "4"
+  cpu_memory: "16Gi"
+  num_accelerators: 1
+  accelerator_type: ["NVIDIA-A10G"]
+  accelerator_memory: "24Gi"
+
+checkpoints:
+  type: "huggingface"
+  repo_id: "jfiekdjdk/MiniCPM-V-2_6-awq" # Or any vlm hf id supported by lmdeploy
+  hf_token: "your token"
+
+concepts:
+- id: 'Feminine'
+  name: Feminine
+- id: 'Masculine'
+  name: 'Masculine'

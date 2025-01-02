@@ -10,7 +10,7 @@ from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2, status_pb2
 from google.protobuf import json_format
 
-from lmdeploy import pipeline, GenerationConfig, TurbomindEngineConfig
+from lmdeploy import pipeline, GenerationConfig, TurbomindEngineConfig, ChatTemplateConfig
 from transformers import AutoTokenizer
 
 from PIL import Image
@@ -96,10 +96,15 @@ class MyRunner(ModelRunner):
     checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
     # Note that if the model is not supported by turbomind yet, lmdeploy will auto switch to pytorch engine
     backend_config = TurbomindEngineConfig(
-      tp=1, quant_policy=0, max_batch_size=16, dtype='float16', cache_max_entry_count=0.5, max_prefill_token_num=4096)
+      tp=1, quant_policy=0, 
+      max_batch_size=16, dtype='float16', 
+      cache_max_entry_count=0.5, max_prefill_token_num=4096
+    )
     self.pipe = pipeline(checkpoints,
-                    backend_config=backend_config)
-    self.tokenizer = AutoTokenizer.from_pretrained(checkpoints)
+                    backend_config=backend_config,
+                    chat_template_config=ChatTemplateConfig("qwen"),
+                    trust_remote_code=True)
+    self.tokenizer = AutoTokenizer.from_pretrained(checkpoints, trust_remote_code=True)
     
   def predict(self, request: service_pb2.PostModelOutputsRequest
              ) -> Iterator[service_pb2.MultiOutputResponse]:
@@ -133,6 +138,7 @@ class MyRunner(ModelRunner):
         ) for _ in range(batch_size)
       ]
     current_session_id = next(deepcopy(self.pipe._session_id))
+    print(">>> stream", messages)
     for item in self.pipe.stream_infer(messages, gen_config=gen_config):
       text = item.text
       running_idx = item.session_id
