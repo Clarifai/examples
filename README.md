@@ -63,7 +63,11 @@ dataset.upload_dataset(task="text_clf", split="train", module_dir="path_to_imdb_
 
 
 
-
+## CLI Notebooks
+| Function    | Notebook    | Description | Open in Colab |
+| ----------- | ----------- | -----------   | -----------   |
+| Compute Orchestration      | [Compute Orchestration](CLI/compute_orchestration.ipynb) | Functionalities of Compute Orchestration using CLI | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/CLI/compute_orchestration.ipynb) |
+|   Model   | [Model](CLI/model.ipynb) | Functionalities of Model using CLI | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/CLI/model.ipynb) |
 
 
 

@@ -44,3 +44,5 @@ dataset.upload_dataset(pipeline.run(files = file_path, loader = True))
 ## Supported File Formats
 - PDF
 - Text(.txt)
+- Docx
+- Markdown
