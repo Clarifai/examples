@@ -63,39 +63,16 @@ class SGLangServerManager:
     self.quantization = quantization
 
     self.dtype = dtype
-    self.server_started_event = threading.Event()
     self.process = None
 
   def start_server(self, python_executable, checkpoints):
     try:
-      self.process = execute_shell_command([
-          python_executable,
-          '-m',
-          'sglang.launch_server',
-          '--model-path',
-          checkpoints,
-          '--dtype',
-          str(self.dtype),
-          '--tensor-parallel-size',
-          str(self.tensor_parallel_size),
-          '--quantization',
-          self.quantization,
-          '--mem-fraction-static',
-          str(self.mem_fraction_static),
-          '--context-length',
-          str(self.context_length),
-          '--port',
-          str(self.port),
-          '--host',
-          'localhost',
-      ],)
-
-    except Exception:
+      self.process = execute_shell_command(f"{python_executable} -m sglang.launch_server --model-path {checkpoints} --dtype {self.dtype} --tensor-parallel-size {self.tensor_parallel_size} --quantization {self.quantization} --mem-fraction-static {self.mem_fraction_static} --context-length {self.context_length} --port {self.port} --host localhost")
+      wait_for_server(f'http://localhost:{self.port}')
+    except Exception as e:
       if self.process:
         terminate_process(self.process)
-
-  def wait_for_startup(self):
-    wait_for_server(f'http://localhost:{self.port}')
+      raise RuntimeError("Failed to start sglang server: " + str(e))
 
 
 class MyRunner(ModelRunner):
@@ -109,7 +86,7 @@ class MyRunner(ModelRunner):
     self.mem_fraction_static = 0.9
     self.tensor_parallel_size = 1
     self.dtype = "float16"
-    self.port = 4678
+    self.port = 4675
     self.context_length = 4096
     self.quantization = "awq"
 
@@ -131,12 +108,8 @@ class MyRunner(ModelRunner):
     checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
 
     try:
-      # Start the sglang server in a separate thread
-      sglang_server_thread = threading.Thread(
-          target=self.server_manager.start_server, args=(python_executable, checkpoints))
-      sglang_server_thread.start()
-      # Wait for the server to start
-      self.server_manager.wait_for_startup()
+      # Start the sglang server 
+      self.server_manager.start_server(python_executable, checkpoints)
     except Exception as e:
       logger.error(f"Error starting sglang server: {e}")
       raise Exception(f"Error starting sglang server: {e}")
