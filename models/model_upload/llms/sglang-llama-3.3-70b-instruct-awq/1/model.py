@@ -1,7 +1,5 @@
 import itertools
-import os
 import sys
-import threading
 from typing import Iterator
 
 from clarifai.runners.models.model_runner import ModelRunner
@@ -67,10 +65,13 @@ class SGLangServerManager:
 
   def start_server(self, python_executable, checkpoints):
     try:
-      self.process = execute_shell_command(f"{python_executable} -m sglang.launch_server --model-path {checkpoints} --dtype {self.dtype} --tensor-parallel-size {self.tensor_parallel_size} --quantization {self.quantization} --mem-fraction-static {self.mem_fraction_static} --context-length {self.context_length} --port {self.port} --host localhost")
+      self.process = execute_shell_command(
+          f"{python_executable} -m sglang.launch_server --model-path {checkpoints} --dtype {self.dtype} --tensor-parallel-size {self.tensor_parallel_size} --quantization {self.quantization} --mem-fraction-static {self.mem_fraction_static} --context-length {self.context_length} --port {self.port} --host localhost"
+      )
       wait_for_server(f'http://localhost:{self.port}')
     except Exception as e:
       if self.process:
+        logger.error("Terminating the sglang server process.")
         terminate_process(self.process)
       raise RuntimeError("Failed to start sglang server: " + str(e))
 
@@ -86,7 +87,7 @@ class MyRunner(ModelRunner):
     self.mem_fraction_static = 0.9
     self.tensor_parallel_size = 1
     self.dtype = "float16"
-    self.port = 4675
+    self.port = 8761
     self.context_length = 4096
     self.quantization = "awq"
 
@@ -105,10 +106,11 @@ class MyRunner(ModelRunner):
     python_executable = sys.executable
 
     # if checkpoints section is in config.yaml file then checkpoints will be downloaded at this path during model upload time.
-    checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
+    # checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
+    checkpoints = "casperhansen/llama-3.3-70b-instruct-awq"
 
     try:
-      # Start the sglang server 
+      # Start the sglang server
       self.server_manager.start_server(python_executable, checkpoints)
     except Exception as e:
       logger.error(f"Error starting sglang server: {e}")
