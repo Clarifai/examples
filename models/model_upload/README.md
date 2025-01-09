@@ -157,13 +157,85 @@ class YourCustomModelRunner(ModelRunner):
 * **stream(input_data)**: Manages streaming input and output (for more advanced use cases).
 
 ### Step 4: Test Model locally
-Before uploading your model to the Clarifai platform, test it locally to avoid upload failures due to typos or misconfigurations.
 
-```bash
-clarifai model test-locally --model_path <model_path>
+Before uploading your model to the Clarifai platform, it’s important to test it locally. This ensures that your model works as expected, avoids upload failures caused by typos, misconfigurations, or implementation errors, and saves valuable time during deployment.
 
-This prevents from model upload failure due to typos in model.py or wrong implementation of model
+You can test your model locally using **two methods**:
+
+1. **Test with the single CLI command:**
+
+This method runs the model locally and sends a sample request to verify that the model responds successfully.
+
+2. **Run the model locally and perform inference using the Clarifai client SDK:**
+
+This method runs the model locally and starts a local gRPC server at \`https://localhost:{port}\`, Once the server is running, you can perform inference on the model via the Clarifai client SDK
+
+
+You can test the model within a Docker container or a Python virtual environment.
+
+> **Recommendation:** If Docker is installed on your system, it is highly recommended to use Docker for testing or running the model, as it provides better isolation and avoids dependency conflicts.
+
+1. ### Testing the Model
+
+
+#### Testing the Model in a Container
+
+```python
+clarifai model test-locally --model_path {model_path} --mode container
 ```
+
+#### Testing the Model in a Virtual Environment
+
+```python
+clarifai model test-locally --model_path {model_path} --mode env
+```
+
+### 2\. Running the Model Locally
+
+#### Running the Model in a Docker Container
+
+```python
+clarifai model run-locally --model_path {model_path} --mode container --port 8000
+```
+
+#### Running the Model in a Virtual Environment
+
+```python
+clarifai model run-locally --model_path {model_path} --mode container --port 8000
+```
+
+#### Making Inference Requests to the Running Model
+
+Once the model is running locally, you need to configure the `CLARIFAI_API_BASE` environment variable to point to the localhost and the port where the gRPC server is running
+
+```python
+export CLARIFAI_API_BASE="localhost:{port}"
+```
+
+Then make `unary-unary`, `unary-stream` and `stream-stream` predict calls to the model
+
+#### unary-unary predict call
+
+```python
+from clarifai.client.model import Model
+model = Model(model_id='model_id', user_id='user_id', app_id='app_id') # no need to provide any actual values of `model_id`, `user_id` and `app_id`
+
+image_url = "https://samples.clarifai.com/metro-north.jpg"
+
+# Model Predict
+model_prediction = model.predict_by_url(image_url,)
+```
+
+#### CLI flags
+
+* `--model_path`: Path to the model directory.
+* `--mode`: Specify how to run the model: "env" for virtual environment or "container" for Docker container. Defaults to "env". \[default: env\]
+* `-p` or `--port`: The port to host the gRPC server for running the model locally. Defaults to 8000..
+* `--keep_env`: Keep the virtual environment after testing the model locally (applicable for `env` mode). Defaults to False.
+* `--keep_image`: Keep the Docker image after testing the model locally (applicable for container mode). Defaults to False.
+
+This prevents from model upload failure due to typos in model.py or wrong implementation of model.
+
 > Note: Ensure your local setup has enough memory to load and run the model for testing.
 
 ### Step 5: Upload the Model to Clarifai
