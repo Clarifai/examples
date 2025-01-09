@@ -23,6 +23,40 @@ def get_inference_params(request) -> dict:
       inference_params = output_info["params"]
   return inference_params
 
+def parse_request(request: service_pb2.PostModelOutputsRequest):
+  prompts = [inp.data.text.raw for inp in request.inputs]
+  inference_params = get_inference_params(request)
+  temperature = inference_params.get("temperature", 0.7)
+  max_tokens = inference_params.get("max_tokens", 256)
+  top_p = inference_params.get("top_p", .9)
+  
+  messages = []
+  for prompt in prompts:
+    try:
+      prompt = json.loads(prompt)
+    except:
+      prompt = [{"role": "user", "content": prompt}]
+    finally:
+      messages.append(prompt)
+  
+  gen_config = dict(temperature=temperature,
+    max_new_tokens=max_tokens,
+    top_p=top_p)
+
+  return messages, gen_config
+
+def set_output(texts: list):
+  assert isinstance(texts, list)
+  output_protos = []
+  for text in texts:
+    output_protos.append(
+      resources_pb2.Output(
+        data=resources_pb2.Data(text=resources_pb2.Text(raw=text)),
+        status=status_pb2.Status(code=status_code_pb2.SUCCESS)
+      )
+    )
+  return output_protos
+  
 
 class MyRunner(ModelRunner):
   """A custom runner that loads the model and generates text using lmdeploy inference.
@@ -34,7 +68,7 @@ class MyRunner(ModelRunner):
     # if checkpoints section is in config.yaml file then checkpoints will be downloaded at this path during model upload time.
     checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
     # Note that if the model is not supported by turbomind yet, lmdeploy will auto switch to pytorch engine
-    backend_config = TurbomindEngineConfig(tp=1)
+    backend_config = TurbomindEngineConfig(tp=1, quant_policy=0)
     self.pipe = pipeline(checkpoints,
                     backend_config=backend_config)
     self.tokenizer = AutoTokenizer.from_pretrained(checkpoints)
@@ -44,64 +78,24 @@ class MyRunner(ModelRunner):
     """This is the method that will be called when the runner is run. It takes in an input and
     returns an output.
     """
-    prompts = [inp.data.text.raw for inp in request.inputs]
-    inference_params = get_inference_params(request)
-    temperature = inference_params.get("temperature", 0.7)
-    max_tokens = inference_params.get("max_tokens", 256)
-    top_p = inference_params.get("top_p", .9)
-    
-    messages = []
-    for prompt in prompts:
-      try:
-        prompt = json.loads(prompt)
-      except:
-        prompt = [{"role": "user", "content": prompt}]
-      finally:
-        messages.append(prompt)
-    
+    messages, gen_config = parse_request(request)
     messages = self.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-    gen_config = GenerationConfig(temperature=temperature,
-                                  max_new_tokens=max_tokens,
-                                  top_p=top_p)
+    gen_config = GenerationConfig(**gen_config)
     list_generated_text = self.pipe(messages, gen_config=gen_config)
+    raw_texts = [each.text for each in list_generated_text]
+    output_protos = set_output(raw_texts)
 
-    outputs = []
-    for text in list_generated_text:
-      raw_text = text.text#.replace("<|start_header_id|>assistant<|end_header_id|>\n\n", "")
-      outputs.append(
-        resources_pb2.Output(
-          data=resources_pb2.Data(text=resources_pb2.Text(raw=raw_text)),
-          status=status_pb2.Status(code=status_code_pb2.SUCCESS)
-        )
-      )
-
-    return service_pb2.MultiOutputResponse(outputs=outputs)
+    return service_pb2.MultiOutputResponse(outputs=output_protos)
 
   def generate(self, request: service_pb2.PostModelOutputsRequest
               ) -> Iterator[service_pb2.MultiOutputResponse]:
     """Example yielding a whole batch of streamed stuff back."""
 
-    prompts = [inp.data.text.raw for inp in request.inputs]
-    inference_params = get_inference_params(request)
-    temperature = inference_params.get("temperature", 0.7)
-    max_tokens = inference_params.get("max_tokens", 256)
-    top_p = inference_params.get("top_p", .9)
-    
-    messages = []
-    for prompt in prompts:
-      try:
-        prompt = json.loads(prompt)
-      except:
-        prompt = [{"role": "user", "content": prompt}]
-      finally:
-        messages.append(prompt)
-    
+    messages, gen_config = parse_request(request)
     messages = self.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-    gen_config = GenerationConfig(temperature=temperature,
-                                  max_new_tokens=max_tokens,
-                                  top_p=top_p)
+    gen_config = GenerationConfig(**gen_config)
     
-    batch_size = len(prompts)
+    batch_size = len(messages)
     outputs = [
         resources_pb2.Output(
           data=resources_pb2.Data(text=resources_pb2.Text(raw="")),
@@ -110,7 +104,6 @@ class MyRunner(ModelRunner):
       ]
     self.pipe.running_session_ids
     current_session_id = next(deepcopy(self.pipe._session_id))
-    print("current_session_id", current_session_id)
     for item in self.pipe.stream_infer(messages, gen_config=gen_config):
       text = item.text
       running_idx = item.session_id
