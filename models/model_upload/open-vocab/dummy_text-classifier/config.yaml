@@ -16,3 +16,6 @@ inference_compute_info:
   accelerator_type: ["NVIDIA-A10G"]
   accelerator_memory: "1Gi"
 
+concepts:
+- id: none
+  name: none
