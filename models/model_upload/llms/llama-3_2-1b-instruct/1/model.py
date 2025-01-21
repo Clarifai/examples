@@ -126,11 +126,11 @@ class MyRunner(ModelRunner):
     # if checkpoints section is in config.yaml file then checkpoints will be downloaded at this path during model upload time.
     checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
     self.tokenizer = AutoTokenizer.from_pretrained(checkpoints,)
-    self.tokenizer.pad_token = self.tokenizer.eos_token # Set pad token to eos token
+    self.tokenizer.pad_token = self.tokenizer.eos_token  # Set pad token to eos token
     self.model = AutoModelForCausalLM.from_pretrained(
         checkpoints,
         low_cpu_mem_usage=True,
-        device_map="auto",
+        device_map=self.device,
         torch_dtype=torch.bfloat16,
     )
     logger.info("Done loading!")
@@ -161,7 +161,8 @@ class MyRunner(ModelRunner):
     for text in outputs_text:
       outputs.append(create_output(text=text, code=status_code_pb2.SUCCESS))
 
-    return service_pb2.MultiOutputResponse(outputs=outputs, status=status_pb2.Status(code=status_code_pb2.SUCCESS))
+    return service_pb2.MultiOutputResponse(
+        outputs=outputs, status=status_pb2.Status(code=status_code_pb2.SUCCESS))
 
   def generate(self, request: service_pb2.PostModelOutputsRequest
               ) -> Iterator[service_pb2.MultiOutputResponse]:
@@ -208,7 +209,8 @@ class MyRunner(ModelRunner):
           outputs[idx].data.text.raw = text  # Append new text to each output
           outputs[idx].status.code = status_code_pb2.SUCCESS
         # Yield the current outputs
-        yield service_pb2.MultiOutputResponse(outputs=outputs, status=status_pb2.Status(code=status_code_pb2.SUCCESS))
+        yield service_pb2.MultiOutputResponse(
+            outputs=outputs, status=status_pb2.Status(code=status_code_pb2.SUCCESS))
     finally:
       thread.join()
 

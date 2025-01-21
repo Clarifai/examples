@@ -38,10 +38,9 @@ class MyRunner(ModelRunner):
         checkpoint_path,
         trust_remote_code=True,
         use_safetensors=True,
-        device_map="cuda",
+        device_map= self.device,
         low_cpu_mem_usage=True,
         pad_token_id=self.tokenizer.eos_token_id)
-    self.model.eval().cuda()
     logger.info("Done loading Model checkpoints!")
 
   def predict(self, request: service_pb2.PostModelOutputsRequest
