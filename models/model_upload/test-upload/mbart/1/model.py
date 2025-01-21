@@ -39,7 +39,7 @@ class MyRunner(ModelRunner):
     # if checkpoints section is in config.yaml file then checkpoints will be downloaded at this path during model upload time.
     self.tokenizer = AutoTokenizer.from_pretrained(checkpoints)
     self.model = AutoModelForSeq2SeqLM.from_pretrained(
-        checkpoints, torch_dtype="auto", device_map="auto")
+        checkpoints, torch_dtype="auto", device_map=self.device)
 
   def predict(self, request: service_pb2.PostModelOutputsRequest
              ) -> Iterator[service_pb2.MultiOutputResponse]:
@@ -51,7 +51,6 @@ class MyRunner(ModelRunner):
     raw_texts = []
     for t in texts:
       inputs = self.tokenizer.encode(t, return_tensors="pt").to(self.device)
-      # inputs = self.tokenizer.encode("Translate to English: Je t'aime.", return_tensors="pt").to(self.device)
       outputs = self.model.generate(inputs)
       print(self.tokenizer.decode(outputs[0]))
       raw_texts.append(self.tokenizer.decode(outputs[0]))
