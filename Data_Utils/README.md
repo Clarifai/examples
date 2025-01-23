@@ -38,7 +38,7 @@ pip3 install -r requirements.txt
 ## Quick Usage
 ### Image Annotation Loader
 ```python
-from clarifai_datautils import ImageAnnotations
+from clarifai_datautils.image import ImageAnnotations
 #import from folder
 coco_dataset = ImageAnnotations.import_from(path='folder_path',format= 'coco_detection')
 
