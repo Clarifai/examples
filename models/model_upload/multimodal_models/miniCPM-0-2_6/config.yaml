@@ -1,0 +1,22 @@
+# This is the sample config file for the llama model.
+
+model:
+  id: "minicpm-o-2_6"
+  user_id: "openbmb"
+  app_id: "miniCPM"
+  model_type_id: "multimodal-to-text"
+
+build_info:
+  python_version: "3.11"
+
+inference_compute_info:
+  cpu_limit: "1"
+  cpu_memory: "15Gi"
+  num_accelerators: 1
+  accelerator_type: ["NVIDIA-L40S"]
+  accelerator_memory: "40Gi"
+
+checkpoints:
+  type: "huggingface"
+  repo_id: "openbmb/MiniCPM-o-2_6"
+  hf_token: "hf_token"
