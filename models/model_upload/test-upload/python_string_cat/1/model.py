@@ -1,4 +1,3 @@
-import hashlib
 from typing import Iterator
 
 from clarifai.runners.models.model_class import ModelClass
@@ -11,7 +10,8 @@ class PythonStringCat(ModelClass):
   """A custom runner that adds "Hello World" to the end of the text and replaces the domain of the
   image URL as an example.
   """
-  def __init__(self, prefix='Hello World'):
+
+  def __init__(self, prefix='Hello'):
     self.prefix = prefix
 
   def load_model(self):
@@ -42,7 +42,8 @@ class PythonStringCat(ModelClass):
       if "params" in output_info:
         params_dict = output_info["params"]
 
-      output.data.text.raw = self.prefix + " " + data.text.raw + " " + params_dict.get("testparam", "")
+      output.data.text.raw = self.prefix + " " + data.text.raw + " " + params_dict.get(
+          "testparam", "")
 
       output.status.code = status_code_pb2.SUCCESS
       outputs.append(output)
@@ -56,7 +57,7 @@ class PythonStringCat(ModelClass):
       outputs = []
       for inp in request.inputs:
         output = resources_pb2.Output()
-        output.data.text.raw = self.prefix + " " + inp.data.text.raw + f"generate {i}"
+        output.data.text.raw = self.prefix + " " + inp.data.text.raw + f" generate {i}"
         output.status.code = status_code_pb2.SUCCESS
         outputs.append(output)
       yield service_pb2.MultiOutputResponse(outputs=outputs,)
@@ -66,10 +67,10 @@ class PythonStringCat(ModelClass):
     """Example yielding a whole batch of streamed stuff back."""
 
     for i, request in enumerate(request_iterator):
-       outputs = []
-       for inp in request.inputs:
-         output = resources_pb2.Output()
-         output.data.text.raw = self.prefix + " " + inp.data.text.raw + f"stream {i}"
-         output.status.code = status_code_pb2.SUCCESS
-         outputs.append(output)
-       yield service_pb2.MultiOutputResponse(outputs=outputs,)
+      outputs = []
+      for inp in request.inputs:
+        output = resources_pb2.Output()
+        output.data.text.raw = self.prefix + " " + inp.data.text.raw + f" stream {i}"
+        output.status.code = status_code_pb2.SUCCESS
+        outputs.append(output)
+      yield service_pb2.MultiOutputResponse(outputs=outputs,)
