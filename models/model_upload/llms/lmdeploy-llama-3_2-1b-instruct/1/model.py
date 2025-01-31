@@ -1,14 +1,15 @@
 import os
 from typing import Iterator
 
-from clarifai.runners.models.model_runner import ModelRunner
+from clarifai.runners.models.model_class import ModelClass
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2
 from google.protobuf import json_format
-from lmdeploy import pipeline, GenerationConfig, TurbomindEngineConfig
+from lmdeploy import GenerationConfig, TurbomindEngineConfig, pipeline
 from transformers import AutoTokenizer
 
-class MyRunner(ModelRunner):
+
+class MyModel(ModelClass):
   """A custom runner that loads the model and generates text using lmdeploy inference.
   """
 
@@ -19,10 +20,9 @@ class MyRunner(ModelRunner):
     checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
     # Note that if the model is not supported by turbomind yet, lmdeploy will auto switch to pytorch engine
     backend_config = TurbomindEngineConfig(tp=1)
-    self.pipe = pipeline(checkpoints,
-                    backend_config=backend_config)
+    self.pipe = pipeline(checkpoints, backend_config=backend_config)
     self.tokenizer = AutoTokenizer.from_pretrained(checkpoints)
-    
+
   def predict(self, request: service_pb2.PostModelOutputsRequest
              ) -> Iterator[service_pb2.MultiOutputResponse]:
     """This is the method that will be called when the runner is run. It takes in an input and
@@ -55,12 +55,10 @@ class MyRunner(ModelRunner):
       if data.text.raw != "":
         prompt = data.text.raw
         messages = [{"role": "user", "content": prompt}]
-        gen_config = GenerationConfig(temperature=temperature,
-                                      max_new_tokens=max_tokens,
-                                      top_p=top_p)
+        gen_config = GenerationConfig(
+            temperature=temperature, max_new_tokens=max_tokens, top_p=top_p)
         prompt = self.tokenizer.apply_chat_template(messages, tokenize=False)
-        res = self.pipe(prompt,
-                   gen_config=gen_config)
+        res = self.pipe(prompt, gen_config=gen_config)
         text = res.text.replace("<|start_header_id|>assistant<|end_header_id|>", "")
         text = text.replace("\n\n", "")
         output.data.text.raw = text
@@ -114,13 +112,11 @@ class MyRunner(ModelRunner):
         gen_config = GenerationConfig(**kwargs)
         prompt = self.tokenizer.apply_chat_template(messages, tokenize=False)
         for item in self.pipe.stream_infer(prompt, gen_config=gen_config):
-          text = item.text.replace(
-              "<|start_header_id|>assistant<|end_header_id|>", "")
+          text = item.text.replace("<|start_header_id|>assistant<|end_header_id|>", "")
           text = text.replace("\n\n", "")
           output.data.text.raw = text
           output.status.code = status_code_pb2.SUCCESS
           yield service_pb2.MultiOutputResponse(outputs=[output],)
-        
 
   def stream(self, request_iterator: Iterator[service_pb2.PostModelOutputsRequest]
             ) -> Iterator[service_pb2.MultiOutputResponse]:

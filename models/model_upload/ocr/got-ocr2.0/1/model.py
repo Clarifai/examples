@@ -3,7 +3,7 @@ from io import BytesIO
 from typing import Iterator
 
 import torch
-from clarifai.runners.models.model_runner import ModelRunner
+from clarifai.runners.models.model_class import ModelClass
 from clarifai.utils.logging import logger
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2
@@ -19,7 +19,7 @@ def preprocess_image(image_bytes=None):
   return image_path
 
 
-class MyRunner(ModelRunner):
+class MyModel(ModelClass):
   """A custom runner that loads the OCR model and runs it on the input image.
   """
 
@@ -38,7 +38,7 @@ class MyRunner(ModelRunner):
         checkpoint_path,
         trust_remote_code=True,
         use_safetensors=True,
-        device_map= self.device,
+        device_map=self.device,
         low_cpu_mem_usage=True,
         pad_token_id=self.tokenizer.eos_token_id)
     logger.info("Done loading Model checkpoints!")
