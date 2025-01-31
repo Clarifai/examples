@@ -5,7 +5,7 @@ import sys
 import threading
 from typing import Iterator
 
-from clarifai.runners.models.model_runner import ModelRunner
+from clarifai.runners.models.model_class import ModelClass
 from clarifai.utils.logging import logger
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2
@@ -97,7 +97,7 @@ class VLLMServerManager:
     self.server_started_event.wait()
 
 
-class MyRunner(ModelRunner):
+class MyModel(ModelClass):
   """A custom runner that loads the model and generates text using vLLM Inference.
   """
 

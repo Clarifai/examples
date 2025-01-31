@@ -3,7 +3,7 @@ import itertools
 import wave
 from typing import Iterator
 
-from clarifai.runners.models.model_runner import ModelRunner
+from clarifai.runners.models.model_class import ModelClass
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2
 from google.protobuf import json_format
@@ -81,7 +81,7 @@ def get_inference_params(request) -> dict:
   return inference_params
 
 
-class MyRunner(ModelRunner):
+class MyModel(ModelClass):
   """A custom runner that used for transcribing audio."""
 
   def load_model(self):

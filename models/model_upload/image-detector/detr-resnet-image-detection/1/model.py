@@ -5,7 +5,7 @@ from typing import Iterator
 
 import cv2
 import torch
-from clarifai.runners.models.model_runner import ModelRunner
+from clarifai.runners.models.model_class import ModelClass
 from clarifai.utils.logging import logger
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2, status_pb2
@@ -97,8 +97,8 @@ class MyModel(ModelClass):
 
     logger.info("Done loading!")
 
-  def predict(self, request: service_pb2.PostModelOutputsRequest
-              ) -> service_pb2.MultiOutputResponse:
+  def predict(self,
+              request: service_pb2.PostModelOutputsRequest) -> service_pb2.MultiOutputResponse:
     """This is the method that will be called when the runner is run. It takes in an input and
     returns an output.
     """

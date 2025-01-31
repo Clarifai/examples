@@ -3,7 +3,7 @@ from threading import Thread
 from typing import Iterator, List, Optional
 
 import torch
-from clarifai.runners.models.model_runner import ModelRunner
+from clarifai.runners.models.model_class import ModelClass
 from clarifai.utils.logging import logger
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2, status_pb2
@@ -114,7 +114,7 @@ def parse_inference_params(request):
   }
 
 
-class MyRunner(ModelRunner):
+class MyModel(ModelClass):
   """A custom runner that loads the model and generates text using batched inference."""
 
   def load_model(self):
@@ -161,7 +161,8 @@ class MyRunner(ModelRunner):
     for text in outputs_text:
       outputs.append(create_output(text=text, code=status_code_pb2.SUCCESS))
 
-    return service_pb2.MultiOutputResponse(outputs=outputs, status=status_pb2.Status(code=status_code_pb2.SUCCESS))
+    return service_pb2.MultiOutputResponse(
+        outputs=outputs, status=status_pb2.Status(code=status_code_pb2.SUCCESS))
 
   def generate(self, request: service_pb2.PostModelOutputsRequest
               ) -> Iterator[service_pb2.MultiOutputResponse]:
@@ -208,7 +209,8 @@ class MyRunner(ModelRunner):
           outputs[idx].data.text.raw = text  # Append new text to each output
           outputs[idx].status.code = status_code_pb2.SUCCESS
         # Yield the current outputs
-        yield service_pb2.MultiOutputResponse(outputs=outputs, status=status_pb2.Status(code=status_code_pb2.SUCCESS))
+        yield service_pb2.MultiOutputResponse(
+            outputs=outputs, status=status_pb2.Status(code=status_code_pb2.SUCCESS))
     finally:
       thread.join()
 

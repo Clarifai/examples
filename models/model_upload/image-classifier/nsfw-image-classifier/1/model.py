@@ -5,7 +5,7 @@ from typing import Iterator
 
 import cv2
 import torch
-from clarifai.runners.models.model_runner import ModelRunner
+from clarifai.runners.models.model_class import ModelClass
 from clarifai.utils.logging import logger
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2, status_pb2
@@ -65,7 +65,7 @@ def process_concepts(logits, images, concept_protos):
   return outputs
 
 
-class MyRunner(ModelRunner):
+class MyModel(ModelClass):
   """A custom runner that loads the model and classifies images using it.
   """
 
