@@ -3,7 +3,7 @@ import itertools
 import sys
 from typing import Iterator
 
-from clarifai.runners.models.model_runner import ModelRunner
+from clarifai.runners.models.model_class import ModelClass
 from clarifai.utils.logging import logger
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2, status_pb2
@@ -131,8 +131,8 @@ def stream_completion(model, client, input_data, inference_params):
   return stream
 
 
-class MyRunner(ModelRunner):
-  """A custom runner that loads the model and generates text using SGLang Inference.
+class MyModel(ModelClass):
+  """A custom model that loads the model and generates text using SGLang Inference.
   """
 
   def load_model(self):
@@ -180,7 +180,7 @@ class MyRunner(ModelRunner):
 
   def predict(self,
               request: service_pb2.PostModelOutputsRequest) -> service_pb2.MultiOutputResponse:
-    """This is the method that will be called when the runner is run. It takes in an input and
+    """This is the method that will be called when the model is run. It takes in an input and
     returns an output.
     """
 
