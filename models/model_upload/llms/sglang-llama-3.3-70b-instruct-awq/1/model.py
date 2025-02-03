@@ -107,6 +107,7 @@ class MyRunner(ModelRunner):
 
     # if checkpoints section is in config.yaml file then checkpoints will be downloaded at this path during model upload time.
     # checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
+
     checkpoints = "casperhansen/llama-3.3-70b-instruct-awq"
 
     try:

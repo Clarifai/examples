@@ -2,21 +2,16 @@
 
 model:
   id: "sglang-llama-3_3-70b-instruct"
-  user_id: "user_id"
-  app_id: "app_id"
+  user_id: "meta"
+  app_id: "Llama-3"
   model_type_id: "text-to-text"
 
 build_info:
-  python_version: "3.10"
+  python_version: "3.11"
 
 inference_compute_info:
   cpu_limit: "2"
   cpu_memory: "16Gi"
   num_accelerators: 1
   accelerator_type: ["NVIDIA-L40S"]
-  accelerator_memory: "40Gi"
-
-# checkpoints:
-#   type: "huggingface"
-#   repo_id: "casperhansen/llama-3.3-70b-instruct-awq"
-#   hf_token: "token"
+  accelerator_memory: "42Gi"
