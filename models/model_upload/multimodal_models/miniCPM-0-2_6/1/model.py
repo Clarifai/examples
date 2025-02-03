@@ -68,11 +68,12 @@ def get_video_chunk_content(video_bytes, flatten=True):
 
     video = VideoFileClip(video_path)
     print('video_duration:', video.duration)
-    
-    with tempfile.NamedTemporaryFile(suffix=".wav", delete=True) as temp_audio_file:
-        temp_audio_file_path = temp_audio_file.name
-        video.audio.write_audiofile(temp_audio_file_path, codec="pcm_s16le", fps=16000)
-        audio_np, sr = librosa.load(temp_audio_file_path, sr=16000, mono=True)
+    audio_np = None
+    if video.audio:
+      with tempfile.NamedTemporaryFile(suffix=".wav", delete=True) as temp_audio_file:
+          temp_audio_file_path = temp_audio_file.name
+          video.audio.write_audiofile(temp_audio_file_path, codec="pcm_s16le", fps=16000)
+          audio_np, sr = librosa.load(temp_audio_file_path, sr=16000, mono=True)
     num_units = math.ceil(video.duration)
     
     # 1 frame + 1s audio chunk
@@ -80,11 +81,17 @@ def get_video_chunk_content(video_bytes, flatten=True):
     for i in range(num_units):
         frame = video.get_frame(i+1)
         image = Image.fromarray((frame).astype(np.uint8))
-        audio = audio_np[sr*i:sr*(i+1)]
-        if flatten:
-            contents.extend(["<unit>", image, audio])
+        if audio_np is not None:
+            audio = audio_np[sr*i:sr*(i+1)]
+            if flatten:
+                contents.extend(["<unit>", image, audio])
+            else:
+                contents.append(["<unit>", image, audio])
         else:
-            contents.append(["<unit>", image, audio])
+            if flatten:
+                contents.extend(["<unit>", image])
+            else:
+                contents.append(["<unit>", image])
     
     return contents
 
@@ -311,6 +318,8 @@ def construct_message_video_streaming(input_data: resources_pb2.Data) -> list[di
     """
     prompts = []
     videos_b = []
+    audio_b = []
+    images_b = []
 
     messages = []
 
@@ -321,15 +330,25 @@ def construct_message_video_streaming(input_data: resources_pb2.Data) -> list[di
                 prompts.append(part.data.text.raw)
             if part.data.video.base64:
                 videos_b.append(part.data.video.base64)
+            if part.data.audio.base64:
+                audio_b.append(part.data.audio.base64)
+            if part.data.image.base64:
+                images_b.append(part.data.image.base64)
     else:
         # fallback to top-level input_data
         if input_data.text.raw:
             prompts.append(input_data.text.raw)
         if input_data.video.base64:
             videos_b.append(input_data.video.base64)
+        if input_data.audio.base64:
+            audio_b.append(input_data.audio.base64)
+        if input_data.image.base64:
+            images_b.append(input_data.image.base64)
 
     if len(videos_b) > 1:
         raise ValueError("Only one video is supported at a time.")
+    if len(audio_b) > 1:
+        raise ValueError("Only one audio is supported at a time.")
 
     # 1) Add prompts/text
     if prompts:
@@ -340,8 +359,34 @@ def construct_message_video_streaming(input_data: resources_pb2.Data) -> list[di
 
     # 2) Convert video frames
     if videos_b:
-        contents = get_video_chunk_content(videos_b[0])
-        messages.extend([{"role": "user", "content": content} for content in contents])
+        try:
+            contents = get_video_chunk_content(videos_b[0], flatten=False)
+            messages.extend([{"role": "user", "content": content} for content in contents])
+        except Exception as e:
+            frames = encode_video(videos_b[0])
+            messages.append({
+                "role": "user",
+                "content": frames
+            })
+            
+            
+    if images_b:
+        for img_bytes in images_b:
+            try:
+                pil_img = image_bytes_to_pil(img_bytes)
+                messages.append({
+                    "role": "user",
+                    "content": [pil_img]
+                })
+            except Exception as e:
+                logger.error(f"Error decoding image: {e}")
+    if audio_b:
+        audio_np = decode_audio_from_bytes(audio_b[0], sr=AUDIO_SR)
+        messages.append({
+            "role": "user",
+            "content": [audio_np]
+        })
+        
     # Additional chat params for multi-modal
     chat_params = {}
     # If we have images/video, often we set:
@@ -498,30 +543,60 @@ class MyRunner(ModelRunner):
   def generate(self, request: service_pb2.PostModelOutputsRequest
               ) -> Iterator[service_pb2.MultiOutputResponse]:
     """This method generates stream of outputs for the given batch of inputs using the model."""
+
+    # Each new stream invocation can be considered a new conversation or session
+    session_id = "clarifai_mini_cpm_session"
+    self.model.reset_session()  # reset the KV cache for a new 
+
     inference_params = parse_inference_params(request)
     if len(request.inputs) > 1:
       raise ValueError("Batch generation is not supported in stream mode for this model.")
-    message, extra_chat_params = construct_message(request.inputs[0].data)
-    
-    generate_audio = inference_params["generate_audio"]
-    # Force streaming to True
-    # The model.chat can produce generator output if stream=True is supported in your model
-    chat_generator = self.model.chat(
-        msgs=message,
+    # We'll parse the single input as a chunk
+
+    # Each new stream invocation can be considered a new conversation or session
+    session_id = "clarifai_mini_cpm_session"
+    self.model.reset_session()  # reset the KV cache for a new 
+
+    # Default inference params
+    streaming_generate_audio = False
+    streaming_use_tts_template = False
+
+    inference_params = parse_inference_params(request)
+    streaming_generate_audio = inference_params.get("generate_audio", streaming_generate_audio)
+    streaming_use_tts_template = inference_params.get("use_tts_template", streaming_use_tts_template)
+    temperature = inference_params["temperature"]
+    max_new_tokens = inference_params["max_new_tokens"]
+    top_p = inference_params["top_p"]
+    top_k = inference_params["top_k"]
+    do_sample = inference_params["do_sample"]
+
+    audios = []
+    combine_text = ""
+
+    messages, chunk_chat_params = construct_message_video_streaming(request.inputs[0].data)
+
+    for message in messages:
+      _ = self.model.streaming_prefill(
+          session_id=session_id,
+          msgs=[message],
+          tokenizer=self.tokenizer,
+          **chunk_chat_params
+      )
+    # Now we call streaming_generate to get partial tokens or partial audio.
+    # This is the point where the model actually streams out an answer.
+    result_generator = self.model.streaming_generate(
+        session_id=session_id,
         tokenizer=self.tokenizer,
-        sampling=inference_params["do_sample"],
-        temperature=inference_params["temperature"],
-        max_new_tokens=inference_params["max_new_tokens"],
-        top_p=inference_params["top_p"],
-        top_k=inference_params["top_k"],
-        generate_audio=generate_audio,
-        return_dict= inference_params["return_dict"],
-        stream=True,
-        use_tts_template=inference_params.get("use_tts_template", False),
-        **extra_chat_params
+        sampling=do_sample,
+        temperature=temperature,
+        max_new_tokens=max_new_tokens,
+        top_p=top_p,
+        top_k=top_k,
+        generate_audio=streaming_generate_audio,
+        use_tts_template=streaming_use_tts_template,
     )
 
-    if not chat_generator:
+    if not result_generator:
         # If your model does not truly stream, just return everything at once
         yield service_pb2.MultiOutputResponse(
             outputs=[create_output("Model does not support streaming", code=status_code_pb2.FAILURE)],
@@ -529,43 +604,38 @@ class MyRunner(ModelRunner):
         )
         return
 
-    if generate_audio:
-        # If in TTS mode, the model might yield intermediate dicts with partial audio chunks
-        for partial_result in chat_generator:
-            if isinstance(partial_result, dict):
-                text_piece = partial_result.get("text", "")
-                audio_wav = partial_result.get("audio_wav", None)
-                sampling_rate = partial_result.get("sampling_rate", AUDIO_SR)
+    if streaming_generate_audio:
+        for r in result_generator:
+            # r is typically a partial result object with:
+            # r.text, r.audio_wav, r.sampling_rate
+            partial_text = r.text
 
-                # Return partial text (not partial audio, usually you combine at the end)
+            audio_wav = r.audio_wav
+            sampling_rate = r.sampling_rate
+
+            audios.append(audio_wav)
+            combine_text += partial_text
+            if partial_text:
                 yield service_pb2.MultiOutputResponse(
-                    outputs=[create_output(text=text_piece, audio_bytes= convert_audio_to_bytes(audio_wav, sampling_rate))],
+                    outputs=[create_output(text=partial_text,)],
                     status=status_pb2.Status(code=status_code_pb2.SUCCESS)
                 )
-
-            else:
-                # Fallback if it's a raw string chunk
-                chunk_str = str(partial_result)
-                yield service_pb2.MultiOutputResponse(
-                    outputs=[create_output(text=chunk_str)],
-                    status=status_pb2.Status(code=status_code_pb2.SUCCESS)
-                )
-
+        if audios:
+            # Combine all audio chunks into a single audio
+            combined_audio = np.concatenate(audios)
+            audio_bytes = convert_audio_to_bytes(combined_audio, sampling_rate)
+            yield service_pb2.MultiOutputResponse(
+                outputs=[create_output(audio_bytes=audio_bytes)],
+                status=status_pb2.Status(code=status_code_pb2.SUCCESS)
+            )
     else:
-        # Normal text-only streaming
-        for partial_result in chat_generator:
-            if isinstance(partial_result, dict):
-                text_piece = partial_result.get("text", "")
-                yield service_pb2.MultiOutputResponse(
-                    outputs=[create_output(text=text_piece)],
-                    status=status_pb2.Status(code=status_code_pb2.SUCCESS)
-                )
-            else:
-                chunk_str = str(partial_result)
-                yield service_pb2.MultiOutputResponse(
-                    outputs=[create_output(text=chunk_str)],
-                    status=status_pb2.Status(code=status_code_pb2.SUCCESS)
-                )
+        # Text-only streaming
+        for r in result_generator:
+            partial_text = r["text"]
+            yield service_pb2.MultiOutputResponse(
+                outputs=[create_output(text=partial_text)],
+                status=status_pb2.Status(code=status_code_pb2.SUCCESS)
+            )
 
 
   def stream(self, request_iterator: Iterator[service_pb2.PostModelOutputsRequest]
@@ -599,6 +669,7 @@ class MyRunner(ModelRunner):
 
     for request in request_iterator:
         # Parse inference_params from each chunk as well
+
         inference_params = parse_inference_params(request)
         streaming_generate_audio = inference_params.get("generate_audio", streaming_generate_audio)
         streaming_use_tts_template = inference_params.get("use_tts_template", streaming_use_tts_template)
@@ -608,31 +679,18 @@ class MyRunner(ModelRunner):
         top_k = inference_params["top_k"]
         do_sample = inference_params["do_sample"]
 
-        # We only handle the first or only input in streaming for now
-        if not request.inputs:
-            yield service_pb2.MultiOutputResponse(
-                outputs=[create_output("No inputs provided in streaming request.")],
-                status=status_pb2.Status(code=status_code_pb2.FAILURE)
-            )
-            continue
-        
-        if len(request.inputs) > 1:
-            yield service_pb2.MultiOutputResponse(
-                outputs=[create_output("Only one input is supported in streaming mode.")],
-                status=status_pb2.Status(code=status_code_pb2.FAILURE)
-            )
-            continue
+        audios = []
+        combine_text = ""
 
-        # We'll parse the single input as a chunk
-        chunk_message, chunk_chat_params = construct_message(request.inputs[0].data)
+        messages, chunk_chat_params = construct_message_video_streaming(request.inputs[0].data)
 
-            
-        _ = self.model.streaming_prefill(
-            session_id=session_id,
-            msgs=chunk_message,
-            tokenizer=self.tokenizer,
-            **chunk_chat_params
-        )
+        for message in messages:
+          _ = self.model.streaming_prefill(
+              session_id=session_id,
+              msgs=[message],
+              tokenizer=self.tokenizer,
+              **chunk_chat_params
+          )
         # Now we call streaming_generate to get partial tokens or partial audio.
         # This is the point where the model actually streams out an answer.
         result_generator = self.model.streaming_generate(
@@ -647,6 +705,14 @@ class MyRunner(ModelRunner):
             use_tts_template=streaming_use_tts_template,
         )
 
+        if not result_generator:
+            # If your model does not truly stream, just return everything at once
+            yield service_pb2.MultiOutputResponse(
+                outputs=[create_output("Model does not support streaming", code=status_code_pb2.FAILURE)],
+                status=status_pb2.Status(code=status_code_pb2.FAILURE)
+            )
+            return
+
         if streaming_generate_audio:
             for r in result_generator:
                 # r is typically a partial result object with:
@@ -660,7 +726,7 @@ class MyRunner(ModelRunner):
                 combine_text += partial_text
 
                 yield service_pb2.MultiOutputResponse(
-                    outputs=[create_output(text=partial_text, audio_bytes=convert_audio_to_bytes(r.audio_wav, r.sampling_rate))],
+                    outputs=[create_output(text=partial_text)],
                     status=status_pb2.Status(code=status_code_pb2.SUCCESS)
                 )
             if audios:
@@ -668,10 +734,9 @@ class MyRunner(ModelRunner):
                 combined_audio = np.concatenate(audios)
                 audio_bytes = convert_audio_to_bytes(combined_audio, sampling_rate)
                 yield service_pb2.MultiOutputResponse(
-                    outputs=[create_output(text = combine_text, audio_bytes=audio_bytes)],
+                    outputs=[create_output(audio_bytes=audio_bytes)],
                     status=status_pb2.Status(code=status_code_pb2.SUCCESS)
                 )
-
         else:
             # Text-only streaming
             for r in result_generator:
