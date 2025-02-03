@@ -15,14 +15,15 @@ pip install -r requirements-dev.txt
 ```
 
 ## Notebooks
-- [Ready to Use Pipelines](./Ready_to_use_foundational_pipelines.ipynb)
+- [Ready to Use Pipelines](Ready_to_use_foundational_pipelines.ipynb)
 - [Multimodal dataloader](Multimodal_dataloader.ipynb)
+- [Advanced Multimodal Ingestion with summarizer](Multimodal_ingest_RAG_notebook.ipynb)
 
 ## Quick Usage
 
 ```python
-from clarifai_datautils.text import Pipeline, PDFPartition
-from clarifai_datautils.text.pipeline.cleaners import Clean_extra_whitespace
+from clarifai_datautils.multimodal import Pipeline, PDFPartition
+from clarifai_datautils.multimodal.pipeline.cleaners import Clean_extra_whitespace
 
 # Define the pipeline
 pipeline = Pipeline(
