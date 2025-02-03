@@ -12,6 +12,7 @@ soundfile==0.12.1
 librosa==0.9.0
 Pillow==10.1.0
 decord
-moviepy
+moviepy==1.0.3
 soundfile
 aiohttp
+requests

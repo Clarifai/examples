@@ -2,8 +2,8 @@
 
 model:
   id: "minicpm-o-2_6"
-  user_id: "openbmb"
-  app_id: "miniCPM"
+  user_id: "user_id"
+  app_id: "app_id"
   model_type_id: "multimodal-to-text"
 
 build_info:
