@@ -1,8 +1,8 @@
-torch==2.4.0
-tokenizers==0.21.0
-transformers>=4.47
-accelerate==1.2.0
-optimum==1.23.3
-xformers==0.0.27.post2
+torch==2.5.1
+tokenizers>=0.21.0
+transformers>=4.47.0
+accelerate>=1.2.0
+optimum>=1.23.3
+xformers==0.0.28.post3
 sentencepiece==0.2.0
-requests==2.23.0
+requests==2.32.2
