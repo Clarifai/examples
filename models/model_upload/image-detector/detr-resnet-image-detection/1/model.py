@@ -80,12 +80,9 @@ class MyModel(ModelClass):
   image URL as an example.
   """
 
-  def __init__(self, checkpoint_path=None):
-    if checkpoint_path is None:
-      checkpoint_path = os.path.join(os.path.dirname(__file__), "checkpoints")
-
   def load_model(self):
     """Load the model here."""
+    checkpoint_path = os.path.join(os.path.dirname(__file__), "checkpoints")
     self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
     logger.info(f"Running on device: {self.device}")
 
@@ -98,7 +95,7 @@ class MyModel(ModelClass):
     logger.info("Done loading!")
 
   def predict(self, request: service_pb2.PostModelOutputsRequest
-              ) -> service_pb2.MultiOutputResponse:
+             ) -> Iterator[service_pb2.MultiOutputResponse]:
     """This is the method that will be called when the runner is run. It takes in an input and
     returns an output.
     """
