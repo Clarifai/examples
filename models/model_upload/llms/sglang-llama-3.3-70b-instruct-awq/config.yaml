@@ -2,8 +2,8 @@
 
 model:
   id: "sglang-llama-3_3-70b-instruct"
-  user_id: "meta"
-  app_id: "Llama-3"
+  user_id: "user_id"
+  app_id: "app_id"
   model_type_id: "text-to-text"
 
 build_info:

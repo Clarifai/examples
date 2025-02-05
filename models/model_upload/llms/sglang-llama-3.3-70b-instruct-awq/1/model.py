@@ -2,7 +2,7 @@ import itertools
 import sys
 from typing import Iterator
 
-from clarifai.runners.models.model_class import ModelClass
+from clarifai.runners.models.model_runner import ModelRunner
 from clarifai.utils.logging import logger
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2
@@ -76,12 +76,14 @@ class SGLangServerManager:
       raise RuntimeError("Failed to start sglang server: " + str(e))
 
 
-class MyModel(ModelClass):
+class MyModel(ModelRunner):
   """A custom runner that loads the model and generates text using SGLang Inference.
   """
 
   def load_model(self):
     """Load the model here and start the openai sglang server."""
+
+    checkpoints = "casperhansen/llama-3.3-70b-instruct-awq"
 
     # SGLang parameters
     self.mem_fraction_static = 0.9
@@ -104,11 +106,6 @@ class MyModel(ModelClass):
     )
 
     python_executable = sys.executable
-
-    # if checkpoints section is in config.yaml file then checkpoints will be downloaded at this path during model upload time.
-    # checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
-
-    checkpoints = "casperhansen/llama-3.3-70b-instruct-awq"
 
     try:
       # Start the sglang server
