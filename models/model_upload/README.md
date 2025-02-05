@@ -131,9 +131,9 @@ The `model.py` file contains the logic for your model, including how the model i
 #### Example Class Structure:
 
 ```python
-from clarifai.runners.models.model_runner import ModelRunner
+from clarifai.runners.models.model_class import ModelClass
 
-class YourCustomModelRunner(ModelRunner):
+class YourCustomModel(ModelClass):
   def load_model(self):
     '''Initialize and load the model here'''
     pass
