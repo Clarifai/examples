@@ -29,7 +29,7 @@ class VideoStreamModel(ModelClass):
     url = video.url
     assert url, "Video URL is required."
 
-    for frame in video_utils.stream_video_from_url(url, download_ok=True):
+    for frame in video_utils.stream_frames_from_url(url, download_ok=True):
       yield self._predict_frame(frame)
 
   def stream(self, request_iterator: Iterator[service_pb2.PostModelOutputsRequest]
@@ -46,7 +46,7 @@ class VideoStreamModel(ModelClass):
         assert video_bytes, "Video bytes are required."
         yield video_bytes
 
-    for frame in video_utils.stream_video_from_bytes(_bytes_iterator()):
+    for frame in video_utils.stream_frames_from_bytes(_bytes_iterator()):
       yield self._predict_frame(frame)
 
   def _predict_frame(self, frame):
