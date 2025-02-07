@@ -1,0 +1,18 @@
+torch==2.5.1
+tokenizers==0.21.0
+transformers>=4.47
+accelerate==1.2.0
+optimum==1.23.3
+xformers
+einops==0.8.0
+packaging
+ninja
+
+qwen-vl-utils==0.0.8
+timm
+openai
+clarifai==11.1.1
+
+# Uncomment one of below for your need.
+#vllm==0.7.2
+lmdeploy==0.7.0.post2
