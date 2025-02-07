@@ -65,7 +65,7 @@ def process_bounding_boxes(results, images, threshold:float=0.01):
     output_regions = []
     for score, label_name, box in zip(result["scores"], result["labels"], result["boxes"]):
       if score > threshold:
-        ymin, xmin, ymax, xmax = box
+        xmin, ymin, xmax, ymax = box
         xmin, ymin, xmax, ymax = xmin / width, ymin / height, xmax / width, ymax / height
         output_region = resources_pb2.Region(region_info=resources_pb2.RegionInfo(
             bounding_box=resources_pb2.BoundingBox(
@@ -175,7 +175,7 @@ class MyRunner(ModelRunner):
 
   
   def predict(self, request: service_pb2.PostModelOutputsRequest
-             ) -> Iterator[service_pb2.MultiOutputResponse]:
+             ) -> service_pb2.MultiOutputResponse:
     """This is the method that will be called when the runner is run. It takes in an input and
     returns an output.
     """
