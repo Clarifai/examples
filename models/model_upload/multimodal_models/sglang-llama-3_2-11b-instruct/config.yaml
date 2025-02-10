@@ -1,0 +1,17 @@
+# This is the sample config file for the llama model.
+
+model:
+  id: "llama3_2-11b-vision-instruct"
+  user_id: "meta"
+  app_id: "Llama-3"
+  model_type_id: "multimodal-to-text"
+
+build_info:
+  python_version: "3.11"
+
+inference_compute_info:
+  cpu_limit: "1"
+  cpu_memory: "15Gi"
+  num_accelerators: 1
+  accelerator_type: ["NVIDIA-L40S", "NVIDIA-A10G"]
+  accelerator_memory: "22Gi"
