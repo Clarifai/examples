@@ -1,0 +1,21 @@
+model:
+  id: ""
+  user_id: ""
+  app_id: ""
+  model_type_id: "multimodal-to-text" # temporary set as multimodal-to-text, wait for any-to-any
+
+build_info:
+  python_version: "3.12"
+
+inference_compute_info:
+  cpu_limit: "2"
+  cpu_memory: "8Gi"
+  num_accelerators: 1
+  accelerator_type: ["NVIDIA-A10G"]
+  accelerator_memory: "20Gi"
+
+
+checkpoints:
+  type: "huggingface"
+  repo_id: "microsoft/Florence-2-large-ft"
+  hf_token: "hf_xxx"
