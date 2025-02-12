@@ -13,3 +13,4 @@ vllm==0.7.1
 autoawq==0.2.7.post3
 pillow==10.4.0
 decord
+clarifai

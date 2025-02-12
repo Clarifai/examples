@@ -11,4 +11,4 @@ requests==2.32.2
 openai==1.61.0
 vllm==0.7.1
 autoawq==0.2.7.post3
-
+clarifai
