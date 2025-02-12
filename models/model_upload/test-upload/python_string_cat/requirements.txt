@@ -1,1 +1,1 @@
-# This simple example doesn't have any additional dependencies.
+clarifai

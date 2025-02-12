@@ -6,3 +6,4 @@ optimum>=1.23.3
 xformers==0.0.28.post3
 sentencepiece==0.2.0
 requests==2.32.2
+clarifai
