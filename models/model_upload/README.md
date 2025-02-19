@@ -78,7 +78,7 @@ inference_compute_info:
   cpu_limit: "2"
   cpu_memory: "13Gi"
   num_accelerators: 1
-  accelerator_type: ["NVIDIA-A10G"] # Specify GPU type if needed
+  accelerator_type: ["NVIDIA-T4", "NVIDIA-A10G","NVIDIA-L4","NVIDIA-L40S","NVIDIA-A100","NVIDIA-H100"] # Specify GPU types if needed
   accelerator_memory: "15Gi"
 ```
 This is the minimum required compute resource for this model for inference
