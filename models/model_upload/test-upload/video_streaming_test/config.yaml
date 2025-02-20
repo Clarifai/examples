@@ -1,7 +1,7 @@
 model:
-  id: "videomodel1"
-  user_id: "deigen"
-  app_id: "test5"
+  id: "video_streaming_test"
+  user_id: "user"
+  app_id: "app"
   model_type_id: "video-to-text"  # TODO?
 
 build_info:
