@@ -3,6 +3,7 @@ from typing import Iterator
 
 import torch
 from clarifai.runners.models.model_class import ModelClass
+from clarifai.runners.models.model_builder import ModelBuilder
 from clarifai.utils.logging import logger
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2, status_pb2
@@ -30,11 +31,14 @@ class MyModel(ModelClass):
     """Load the model here"""
     self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
     logger.info(f"Running on device: {self.device}")
-    checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
-    # print all files in the checkpoints folder recursively
-    for root, dirs, files in os.walk(checkpoints):
-      for f in files:
-        logger.info(os.path.join(root, f))
+    # Load checkpoints
+    model_path = os.path.dirname(os.path.dirname(__file__))
+    builder = ModelBuilder(model_path, download_validation_only=True)
+    checkpoints = builder.download_checkpoints(stage="runtime")
+   
+    #for root, dirs, files in os.walk(checkpoints):
+    #  for f in files:
+    #    logger.info(os.path.join(root, f))
 
     # if checkpoints section is in config.yaml file then checkpoints will be downloaded at this path during model upload time.
     self.tokenizer = AutoTokenizer.from_pretrained(checkpoints)

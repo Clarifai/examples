@@ -2,6 +2,7 @@ import os
 from typing import Iterator
 
 from clarifai.runners.models.model_class import ModelClass
+from clarifai.runners.models.model_builder import ModelBuilder
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2
 from google.protobuf import json_format
@@ -16,8 +17,10 @@ class MyModel(ModelClass):
   def load_model(self):
     """Load the model here"""
     os.path.join(os.path.dirname(__file__))
-    # if checkpoints section is in config.yaml file then checkpoints will be downloaded at this path during model upload time.
-    checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
+    # Load checkpoints
+    model_path = os.path.dirname(os.path.dirname(__file__))
+    builder = ModelBuilder(model_path, download_validation_only=True)
+    checkpoints = builder.download_checkpoints(stage="runtime")
     # Note that if the model is not supported by turbomind yet, lmdeploy will auto switch to pytorch engine
     backend_config = TurbomindEngineConfig(tp=1)
     self.pipe = pipeline(checkpoints, backend_config=backend_config)

@@ -132,6 +132,7 @@ The `model.py` file contains the logic for your model, including how the model i
 
 ```python
 from clarifai.runners.models.model_class import ModelClass
+from clarifai.runners.models.model_builder import ModelBuilder
 
 class YourCustomModel(ModelClass):
   def load_model(self):
