@@ -1,17 +1,51 @@
+import os
 import subprocess
 import sys
 import threading
 from typing import List
 
 from clarifai.utils.logging import logger
+import psutil
+import signal
 
 PYTHON_EXEC = sys.executable
+
+def kill_process_tree(parent_pid, include_parent: bool = True, skip_pid: int = None):
+  """Kill the process and all its child processes."""
+  if parent_pid is None:
+    parent_pid = os.getpid()
+    include_parent = False
+
+  try:
+    itself = psutil.Process(parent_pid)
+  except psutil.NoSuchProcess:
+    return
+
+  children = itself.children(recursive=True)
+  for child in children:
+    if child.pid == skip_pid:
+      continue
+    try:
+      child.kill()
+    except psutil.NoSuchProcess:
+      pass
+
+  if include_parent:
+    try:
+      itself.kill()
+
+      # Sometime processes cannot be killed with SIGKILL (e.g, PID=1 launched by kubernetes),
+      # so we send an additional signal to kill them.
+      itself.send_signal(signal.SIGQUIT)
+    except psutil.NoSuchProcess:
+      pass
 
 class OpenAI_APIServer:
   
   def __init__(self, **kwargs):
     self.server_started_event = threading.Event()
     self.process = None
+    self.backend = None
   
   def __del__ (self, *exc):
     # This is important
@@ -20,11 +54,10 @@ class OpenAI_APIServer:
 
   def close (self):
     if self.process:
-      self.process.kill()
+      kill_process_tree(self.process.pid)
   
   def wait_for_startup(self):
     self.server_started_event.wait()
-  
   
   def _start_server(self, cmds):  
     try:
@@ -72,7 +105,7 @@ class OpenAI_APIServer:
     quant_policy: int = 0,
     chat_template: str = None,
     max_batch_size=16,
-    server_name="localhost",
+    server_name="0.0.0.0",
     device="cuda",
     additional_list_args: List[str] = []
   ):
@@ -90,7 +123,7 @@ class OpenAI_APIServer:
         quant_policy (int, optional): KV cache quant policty {0, 4, 8} bits, 0 means not using quantization. Defaults to 0.
         chat_template (str, optional): Chat template. To see all chatempltes, run `lmdeploy list`. Defaults to None.
         max_batch_size (int, optional): batch size. Defaults to 16.
-        server_name (str, optional): host name. Defaults to "localhost".
+        server_name (str, optional): host name. Defaults to "0.0.0.0".
         device (str, optional): device. Defaults to "cuda".
         additional_list_args (List[str], optional): additional args to run subprocess cmd e.g. ["--arg-name", "arg value"]. Defaults to [].
 
@@ -134,11 +167,13 @@ class OpenAI_APIServer:
       cmds += [ '--max-prefill-token-num', str(max_prefill_token_num)]
     
     cmds += additional_list_args
+    print(f"CMDs to run lmdeploy server: {cmds}")
     
     _self = cls()
     
     _self.host = server_name
     _self.port = server_port
+    _self.backend = "lmdeploy"
     _self.start_server_thread(cmds)
     
     return _self
@@ -147,7 +182,7 @@ class OpenAI_APIServer:
   def from_vllm_backend(
     cls, 
     checkpoints,
-    dtype="float16",
+    dtype="auto",
     tensor_parallel_size=1,
     gpu_memory_utilization:float=0.8,
     port=23333,
@@ -183,19 +218,26 @@ class OpenAI_APIServer:
       '--port',
       str(port),
       '--host',
-      host,
+      str(host),
       "--trust-remote-code"
     ]
+    
     if quantization:
-      cmds += ['--quantization','awq',]
+      cmds += ['--quantization', quantization,]
 
-    cmds += additional_list_args
+    if additional_list_args != []:
+      cmds += additional_list_args
+    
+    print("CMDS to run vllm server: ", cmds)
     
     _self = cls()
     
     _self.host = host
     _self.port = port
+    _self.backend = "vllm"
     _self.start_server_thread(cmds)
+    import time
+    time.sleep(5)
     
     return _self
   
@@ -203,17 +245,18 @@ class OpenAI_APIServer:
   def from_sglang_backend(
     cls, 
     checkpoints,
-    dtype="float16",
+    dtype="auto",
     tp_size=1,
-    mem_fraction_static:float=0.8,
+    mem_fraction_static:float=0.7,
     port=23333,
-    host="localhost",
+    host="0.0.0.0",
     quantization:str=None,
     chat_template: str = None,
     additional_list_args: List[str] = [],
   ):
+    from sglang.utils import wait_for_server, execute_shell_command
+    import time, os
     
-    cmds += additional_list_args
     cmds = [
       PYTHON_EXEC,
       '-m',
@@ -224,8 +267,6 @@ class OpenAI_APIServer:
       str(dtype),
       '--tp-size',
       str(tp_size),
-      '--quantization',
-      str(quantization),
       '--mem-fraction-static',
       str(mem_fraction_static),
       '--port',
@@ -236,11 +277,27 @@ class OpenAI_APIServer:
     ]
     if chat_template:
       cmds += [
-        "--chat-template=", chat_template
+        "--chat-template", chat_template
       ]
+    if quantization:
+      cmds += ['--quantization', quantization,]
     
+    if additional_list_args:
+      cmds += additional_list_args
+    
+    print("CMDS to run sglang server: ", cmds)
     _self = cls()
     
     _self.host = host
     _self.port = port
-    _self.start_server_thread(cmds)
+    _self.backend = "sglang"
+    #_self.start_server_thread(cmds)
+    #new_path = os.environ["PATH"] + ":/sbin"
+    #_self.process = subprocess.Popen(cmds, text=True, stderr=subprocess.STDOUT, env={**os.environ, "PATH": new_path})
+    _self.process = execute_shell_command(" ".join(cmds))
+    
+    logger.info("Waiting for " + f"http://{_self.host}:{_self.port}")
+    wait_for_server(f"http://{_self.host}:{_self.port}")
+    logger.info("Done")
+    
+    return _self

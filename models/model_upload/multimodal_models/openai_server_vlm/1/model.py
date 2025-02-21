@@ -40,10 +40,20 @@ class MyRunner(ModelClass):
       chat_template="qwen"
     )
     
+    # Example of vllm
     #self.server = OpenAI_APIServer.from_vllm_backend(
     #  checkpoints=checkpoints,
     #  host=self.host,
     #  port=self.port,
+    #)
+    
+    # Example of Sglang
+    #self.server = OpenAI_APIServer.from_sglang_backend(
+    #  checkpoints=checkpoints,
+    #  chat_template="qwen2-vl",
+    #  host=self.host,
+    #  port=self.port,
+    #  additional_list_args=["--disable-cuda-graph"],
     #)
 
     # Create client

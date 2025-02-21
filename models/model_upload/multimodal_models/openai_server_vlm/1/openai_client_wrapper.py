@@ -1,70 +1,107 @@
 import base64
 import itertools
 import json
-from typing import Iterator
+from typing import Iterator, List, Union
 from clarifai.utils.logging import logger
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2, status_pb2
 from google.protobuf import json_format
 from openai import OpenAI
 
+SYSTEM = "system"
+USER = "user"
+ASSISTANT = "assistant"
+
 def get_inference_params(request) -> dict:
   """Get the inference params from the request."""
   inference_params = {}
-  if request.model.model_version.id != "":
-    output_info = request.model.model_version.output_info
-    output_info = json_format.MessageToDict(output_info, preserving_proto_field_name=True)
-
-    if "params" in output_info:
-      inference_params = output_info["params"]
+  output_info = request.model.model_version.output_info
+  output_info = json_format.MessageToDict(output_info, preserving_proto_field_name=True)
+  if "params" in output_info:
+    inference_params = output_info["params"]
+      
   return inference_params
 
-def parse_request(request: service_pb2.PostModelOutputsRequest):
-  prompts = [inp.data.text.raw for inp in request.inputs]
-  bytes_images  = [inp.data.image.base64 for inp in request.inputs]
+
+def image_proto_to_chat(image: resources_pb2.Image)-> Union[str, None]:
+  if image.base64:
+    image = "data:image/jpeg;base64," + base64.b64encode(image.base64).decode("utf-8")
+  elif image.url:
+    image = image.url
+  else:
+    image = None
   
+  return image
+
+
+def proto_to_chat(inp: resources_pb2.Input) -> List:
+  prompt = inp.data.text.raw
+  # extract role and content in text if possible
+  try:
+    prompt = json.loads(prompt)
+    role = prompt.get("role", USER).lower()
+    prompt = prompt.get("content", "")
+  except:
+    role = USER
+  image = image_proto_to_chat(inp.data.image)
+  if image and role != SYSTEM:
+    content = [
+          {'type': 'text', 'text': prompt},
+          {"type": "image_url", "image_url": {"url": image}},
+      ]
+    # each turn could have more than 1 image
+    for each_part in inp.data.parts:
+      sub_img = image_proto_to_chat(each_part.data.image)
+      if sub_img:
+        content.append({"type": "image_url", "image_url": {"url": sub_img}})
+    msg = {
+      'role': role,
+      'content': content
+    }
+    logger.info(f"N images = {len(content) - 1}")
+  elif prompt:
+    msg = {"role": role, "content": prompt}
+  else:
+    msg = None
+  
+  return msg
+  
+
+def parse_request(request: service_pb2.PostModelOutputsRequest):
   inference_params = get_inference_params(request)
+  logger.info(f"inference_params: {inference_params}")
   temperature = inference_params.pop("temperature", 0.7)
   max_tokens = inference_params.pop("max_tokens", 256)
   top_p = inference_params.pop("top_p", .95)
-  system_prompt = inference_params.pop("system_prompt", "You are a helpful assistant.")
   _ = inference_params.pop("stream", None)
+  chat_history = inference_params.pop("chat_history", False)
   
-  messages = []
-  for prompt, bytes_image in itertools.zip_longest(prompts, bytes_images):
-    try:
-      prompt = json.loads(prompt)
-    except:
-      if not bytes_image:
-        logger.info("No image")
-        logger.info(f"system: {system_prompt}")
-        logger.info(f"user: {prompt}")
-        prompt = [{"role": "system", "content": system_prompt}, {"role": "user", "content": prompt}]
-      else:
-        image = "data:image/jpeg;base64," + base64.b64encode(bytes_image).decode("utf-8")
-        logger.info("With image")
-        logger.info(f"system: {system_prompt}")
-        logger.info(f"user: {prompt}")
-        prompt = [
-          {"role": "system", "content": system_prompt},
-          {
-            'role': 'user',
-            'content': [
-                {'type': 'text', 'text': prompt},
-                {"type": "image_url", "image_url": {"url": image}},
-            ]
-        }]
-    finally:
-      messages.append(prompt)
+  batch_messages = []
+  for input_proto in request.inputs:
+    # Treat 'parts' as history [0:-1) chat + new chat [-1]
+    # And discard everything in input_proto.data
+    messages = []
+    if chat_history:
+      for each_part in input_proto.data.parts:
+        extrmsg = proto_to_chat(each_part)
+        if extrmsg:
+          messages.append(extrmsg)
+    # If not chat_history, input_proto.data as input
+    # And parts as sub data e.g. image1, image2
+    else:  
+      new_message = proto_to_chat(input_proto)
+      if new_message:
+        messages.append(new_message)
+    batch_messages.append(messages)
 
   gen_config = dict(
     temperature=temperature,
     max_tokens=max_tokens,
     top_p=top_p,
-    **inference_params
-  )
+    **inference_params)
   
-  return messages, gen_config
+  return batch_messages, gen_config
+
 
 class OpenAIWrapper():
   
