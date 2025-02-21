@@ -1,0 +1,15 @@
+# This is the sample config file for the llama model.
+
+model:
+  id: "luv-remote-runner-model-3"
+  user_id: "luv_2261"
+  app_id: "test-upload"
+  model_type_id: "text-to-text"
+
+build_info:
+  python_version: "3.11"
+
+inference_compute_info:
+  cpu_limit: "500m"
+  cpu_memory: "500Mi"
+  num_accelerators: 0
