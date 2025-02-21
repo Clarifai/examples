@@ -75,7 +75,7 @@ def predict(self, text: str = None, image: Image = None) -> Output:
 | **Audio** | **Audio.from\_url(audio.wav)** | Data.audio |
 | **List\[Image\], List\[Audio\], List\[Video\]** | **\[Image(...), Image(...)\]** | Repeated Data.parts |
 | **np.ndarray** | **np.array(\[\[1,2\],\[3,4\]\])** | Data.ndarray |
-| **Dict** (metadata) | **{"param": "value"}** | Data.metadata |
+| **Dict** | **{"param": "value"}** | Data.metadata |
 
 ### **Output Types**
 
@@ -104,11 +104,20 @@ def predict(self, text: str = None, image: Image = None) -> Output:
 ```python
 
 # Multi-modal output
+# we can use Output object or dict for Multi-modal output
+# 1
 Output(
     text="Result text",
     confidence=0.95,
     heatmap=Image.from_pil(heatmap_image)
 )
+
+# 2
+{
+    "text": "Result text",
+    "confidence": 0.95,
+    "heatmap": Image.from_pil(heatmap_image)
+}
 
 ```
 
@@ -146,6 +155,8 @@ req_id: "sdk-python-11.1.5-dec9f9995bac4d53ba30cbadac651ae2"
 
 ```python
 from clarifai.runners.models.model_class import ModelClass
+from clarifai.runners.utils.data_handler import Output
+
 class TextClassifier(ModelClass):
 def load_model(self):
     from transformers import pipeline
@@ -169,6 +180,7 @@ print(model.predict(text="I love this product!"))
 
 ```python
 from clarifai.runners.models.model_class import ModelClass
+from clarifai.runners.utils.data_handler import Image
 class StreamingModel(ModelClass):
     def generate(self, prompt: str, image: Image) -> Iterator[Output]:
         for token in stream_llm_response(prompt.text, image.to_pil()):
@@ -185,6 +197,8 @@ print(token, end="", flush=True)
 
 ```python
 from clarifai.runners.models.model_class import ModelClass
+from clarifai.runners.utils.data_handler import Image, Text
+
 class CaptionGenerator(ModelClass):
 def predict(self, image: Image, context: Text = None) -> Output:
     caption = generate_caption(image.to_pil())
