@@ -101,18 +101,15 @@ return prediction_text
 
 ### **Output object Construction**
 
-```plaintext
-# Single output
+```python
 
 # Multi-modal output
 Output(
-text="Result text",
-confidence=0.95,
-heatmap=Image.from_pil(heatmap_image)
+    text="Result text",
+    confidence=0.95,
+    heatmap=Image.from_pil(heatmap_image)
 )
 
-# Batch output
-[Output(result=i) for i in batch_predictions]
 ```
 
 ## **Edge Cases Error Handling**
@@ -147,7 +144,7 @@ req_id: "sdk-python-11.1.5-dec9f9995bac4d53ba30cbadac651ae2"
 
 ### **1\. Text Classification**
 
-```plaintext
+```python
 from clarifai.runners.models.model_class import ModelClass
 class TextClassifier(ModelClass):
 def load_model(self):
