@@ -151,15 +151,15 @@ req_id: "sdk-python-11.1.5-dec9f9995bac4d53ba30cbadac651ae2"
 from clarifai.runners.models.model_class import ModelClass
 class TextClassifier(ModelClass):
 def load_model(self):
-from transformers import pipeline
-self.classifier = pipeline("text-classification")
+    from transformers import pipeline
+    self.classifier = pipeline("text-classification")
 
 def predict(self, text: str) -> Output:
-result = self.classifier(text.text)[0]
-return Output(
-label=result['label'],
-confidence=result['score']
-)
+    result = self.classifier(text.text)[0]
+    return Output(
+    label=result['label'],
+    confidence=result['score']
+    )
 
 # Usage
 from clarifai.client import Model
@@ -170,12 +170,12 @@ print(model.predict(text="I love this product!"))
 
 **Text streaming Model**
 
-```plaintext
+```python
 from clarifai.runners.models.model_class import ModelClass
 class StreamingModel(ModelClass):
-def generate(self, prompt: str, image: Image) -> Iterator[Output]:
-for token in stream_llm_response(prompt.text, image.to_pil()):
-yield token
+    def generate(self, prompt: str, image: Image) -> Iterator[Output]:
+        for token in stream_llm_response(prompt.text, image.to_pil()):
+            yield token
 
 # Client usage
 from clarifai.client import Model
@@ -186,14 +186,14 @@ print(token, end="", flush=True)
 
 ### **3\. Image to text Model**
 
-```plaintext
+```python
 from clarifai.runners.models.model_class import ModelClass
 class CaptionGenerator(ModelClass):
 def predict(self, image: Image, context: Text = None) -> Output:
-caption = generate_caption(image.to_pil())
-if context:
-caption = f"{context.text}: {caption}"
-return caption
+    caption = generate_caption(image.to_pil())
+    if context:
+        caption = f"{context.text}: {caption}"
+    return caption
 
 # Usage
 from clarifai.client import Model
