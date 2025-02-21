@@ -28,23 +28,23 @@ my\_model/
 
 ### **Basic Template**
 
-```plaintext
+```python
 from clarifai.runners.models import ModelClass
 from clarifai.runners.utils import Image, Text, Output
 
 class CustomModel(ModelClass):
 def load_model(self):
-"""Initialize model weights and resources"""
-self.model = load_your_model()
+    """Initialize model weights and resources"""
+    self.model = load_your_model()
 
-def predict(self, text: Text = None, image: Image = None) -> Output:
-"""Single prediction handling"""
-# Process inputs
-prediction_text = self.model.predict(
-text=text.text if text else None,
-image=image.to_pil() if image else None
-)
-return prediction_text
+def predict(self, text: str = None, image: Image = None) -> Output:
+    """Single prediction handling"""
+    # Process inputs
+    prediction_text = self.model.predict(
+        text=text if text else None,
+        image=image.to_pil() if image else None
+    )
+    return prediction_text
 ```
 
 ### **Required Methods**
