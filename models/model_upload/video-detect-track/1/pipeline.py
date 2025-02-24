@@ -3,6 +3,7 @@ import logging
 import queue
 import threading
 import time
+import types
 
 _thread_local = threading.local()
 
@@ -13,16 +14,21 @@ class Drop(Exception):
   '''
 
 
+class States(enum.Enum):
+  NONE = 0
+  QUEUED = 1
+  STARTED = 2
+  DROPPED = 3
+  COMPLETED = 4
+  FAILED = 5
+
+
 class State:
 
   def __init__(self):
-    self.queued = set()
-    self.started = set()
-    self.completed = set()
-    self.dropped = set()
-    self.failed = set()
-    self.data = {}
+    self.component_states = {}
     self.error = None
+    self.data = types.SimpleNamespace()
 
 
 class Pipeline:
@@ -49,8 +55,8 @@ class Pipeline:
     assert _thread_local.pipeline is self
     _thread_local.pipeline = None
 
-  def completed_callback(self, state, component_id):
-    # called upon state completion, failure, or drop by a component
+  def callback(self, state, component_id):
+    # called upon state completion, failure, or drop by a component to signal a state change
     self.changed_event.set()
 
   def run(self):
@@ -59,15 +65,34 @@ class Pipeline:
     while True:
       self.changed_event.wait()
       self.changed_event.clear()
-      for component in self.components:
-        # go through states oldest to most recent
-        for state in self.state_buffer:
-          if component in state.queued:  # already scheduled or completed
-            continue
-          if all(dep in state.completed for dep in component.dependencies):
-            component.enqueue(state)
-          else:
-            break  # go to next component, this one is blocked for the next state
+      self._queue_components()
+      self._cleanup_states()
+
+  def _queue_components(self):
+    for component in self.components:
+      component_id = component.id
+      # go through states oldest to most recent to check if the component can be scheduled
+      for state in self.state_buffer:
+        if state.component_states.get(component_id, 0) >= States.QUEUED:
+          # already scheduled this state
+          continue
+        if all(dep in state.completed for dep in component.dependencies):
+          component.enqueue(state)
+        else:
+          break  # go to next component, this one is blocked for the next state
+
+  def _cleanup_states(self):
+    # cleanup all states that have no work left
+    while self.state_buffer:
+      state = self.state_buffer[0]
+      if any(s in (States.QUEUED, States.STARTED) for s in state.component_states.values()):
+        # this state, or others after it that are blocked by ordering, can still be processed
+        break
+      if state.error:
+        logging.error("State failed with error: %s", state.error)
+      # remove state from buffer
+      logging.debug("Cleaning up state %s", state)
+      self.state_buffer.pop(0)
 
 
 class Component:
@@ -99,29 +124,29 @@ class Component:
     return other
 
   def enqueue(self, state):
-    state.queued.add(self.id)
+    state.component_states[self.id] = States.QUEUED
     self.queue.put(state)
 
   def run(self):
     while True:
       try:
         state = self.queue.get()  # blocking get for the next state
-        state.started.add(self.id)
+        state.states[self.id] = States.STARTED
         try:
-          self.process(state)
+          self.process(state.data)
         except Drop:
-          state.dropped.add(self.id)
+          state.states[self.id] = States.DROPPED
         except Exception as e:
-          state.failed.add(self.id)
           state.error = e
+          state.states[self.id] = States.FAILED
         else:
-          state.completed.add(self.id)
+          state.states[self.id] = States.COMPLETED
         finally:
+          self.pipeline.callback(state, self.id)
           self.queue.task_done()
-          self.pipeline.completed_callback(state, self.id)
       except Exception:
         logging.exception('Internal error in component %s', self.id)
         time.sleep(1)
 
-  def process(self, state):
+  def process(self, state_data):
     raise NotImplementedError("Subclasses must implement this method.")
