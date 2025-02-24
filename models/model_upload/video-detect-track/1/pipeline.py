@@ -1,12 +1,15 @@
 import enum
 import itertools
 import logging
+import os
 import queue
 import threading
 import time
 import types
 
 _thread_local = threading.local()
+
+logging.basicConfig(level=os.environ.get('LOGLEVEL', 'INFO').upper())
 
 
 class Drop(Exception):
@@ -30,12 +33,26 @@ class State(enum.Enum):
     return self.value >= other.value
 
 
+_START_TIME = time.monotonic()
+
+
+def monotonic():
+  return time.monotonic() - _START_TIME
+
+
 class Item:
 
+  _ID_COUNTER = itertools.count()
+
   def __init__(self):
+    self.num = next(Item._ID_COUNTER)
     self.states = {}
     self.error = None
     self.data = types.SimpleNamespace()
+
+  def set_state(self, component_id, state):
+    logging.debug("%f %s %d, -> %s", monotonic(), component_id, self.num, state)
+    self.states[component_id] = state
 
 
 class Pipeline:
@@ -69,6 +86,7 @@ class Pipeline:
 
   def run(self):
     for component in self.components:
+      logging.debug("Starting component %s", component.id)
       component.start()
     self.changed_event.set()
     while True:
@@ -139,23 +157,27 @@ class Component:
     return other
 
   def enqueue(self, item):
-    item.states[self.id] = State.QUEUED
-    self.queue.put(item)
+    try:
+      self.queue.put(item, block=False)
+    except queue.Full:
+      pass
+    else:
+      item.set_state(self.id, State.QUEUED)
 
   def run(self):
     while True:
       try:
         item = self.queue.get()  # blocking get for the next item
-        item.states[self.id] = State.STARTED
+        item.set_state(self.id, State.STARTED)
         try:
           self.process(item.data)
         except Drop:
-          item.states[self.id] = State.DROPPED
+          item.set_state(self.id, State.DROPPED)
         except Exception as e:
           item.error = e
-          item.states[self.id] = State.FAILED
+          item.set_state(self.id, State.FAILED)
         else:
-          item.states[self.id] = State.COMPLETED
+          item.set_state(self.id, State.COMPLETED)
         finally:
           self.pipeline.callback(item, self.id)
           self.queue.task_done()
