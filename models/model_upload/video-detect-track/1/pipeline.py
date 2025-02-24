@@ -1,3 +1,4 @@
+import enum
 import itertools
 import logging
 import queue
@@ -22,6 +23,12 @@ class State(enum.Enum):
   COMPLETED = 4
   FAILED = 5
 
+  def __gt__(self, other):
+    return self.value > other.value
+
+  def __ge__(self, other):
+    return self.value >= other.value
+
 
 class Item:
 
@@ -33,17 +40,22 @@ class Item:
 
 class Pipeline:
 
-  def __init__(self, components=None):
+  def __init__(self, components=[]):
     self.work_buffer = []  # buffer for work items
     self.components = []  # list of all components
     self.changed_event = threading.Event()
+    self.max_buffer_size = 10  # TODO how to add elements?
     for component in components:
-      self.add(component)
+      self.add_component(component)
 
-  def add(self, component):
+  def add_component(self, component):
     if component not in self.components:
       self.components.append(component)
       component.pipeline = self
+
+  def put(self, item):
+    self.work_buffer.append(item)
+    self.changed_event.set()
 
   def __enter__(self):
     if getattr(_thread_local, 'pipeline', None) is not None:
@@ -55,28 +67,31 @@ class Pipeline:
     assert _thread_local.pipeline is self
     _thread_local.pipeline = None
 
-  def callback(self, item, component_id):
-    # called upon item completion, failure, or drop by a component to signal a state change
-    self.changed_event.set()
-
   def run(self):
     for component in self.components:
       component.start()
+    self.changed_event.set()
     while True:
       self.changed_event.wait()
       self.changed_event.clear()
+      while len(self.work_buffer) < self.max_buffer_size:
+        self.put(Item())  # add new items; TODO how to add elements?
       self._queue_components()
       self._cleanup()
+
+  def callback(self, item, component_id):
+    # called upon item completion, failure, or drop by a component to signal a state change
+    self.changed_event.set()
 
   def _queue_components(self):
     for component in self.components:
       component_id = component.id
       # go through items oldest to most recent to check if the component can be scheduled
       for item in self.work_buffer:
-        if item.states.get(component_id, 0) >= State.QUEUED:
+        if item.states.get(component_id, State.NONE) >= State.QUEUED:
           # already scheduled this item, check next in buffer list
           continue
-        if all(item.states[dep] == State.COMPLETED for dep in component.dependencies):
+        if all(item.states.get(dep) == State.COMPLETED for dep in component.dependencies):
           component.enqueue(item)
         else:
           break  # go to next component, this one is blocked
@@ -97,7 +112,7 @@ class Pipeline:
 
 class Component:
 
-  _ID_COUNTER = itertools.count()
+  _ID_COUNTER = map(str, itertools.count())
 
   def __init__(self, num_threads=1, queue_size=1):
     self.id = self.__class__.__name__ + '-' + next(Component._ID_COUNTER)
@@ -106,7 +121,7 @@ class Component:
     self.num_threads = num_threads
     self.threads = []
     if getattr(_thread_local, 'pipeline', None) is not None:
-      _thread_local.pipeline.add(self)
+      _thread_local.pipeline.add_component(self)
 
   def start(self):
     for i in range(self.num_threads):
@@ -117,7 +132,7 @@ class Component:
   def depends_on(self, other):
     self.dependencies.add(other.id)
     if getattr(_thread_local, 'pipeline', None) is not None:
-      _thread_local.pipeline.add(self)
+      _thread_local.pipeline.add_component(self)
 
   def __rshift__(self, other):
     other.depends_on(self)
