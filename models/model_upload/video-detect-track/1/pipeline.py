@@ -74,12 +74,12 @@ class Pipeline:
       # go through items oldest to most recent to check if the component can be scheduled
       for item in self.work_buffer:
         if item.states.get(component_id, 0) >= State.QUEUED:
-          # already scheduled this item
+          # already scheduled this item, check next in buffer list
           continue
         if all(item.states[dep] == State.COMPLETED for dep in component.dependencies):
-          component.enqueue(state)
+          component.enqueue(item)
         else:
-          break  # go to next component, this one is blocked for the next state
+          break  # go to next component, this one is blocked
 
   def _cleanup(self):
     # cleanup all items that have no work left
@@ -99,9 +99,9 @@ class Component:
 
   _ID_COUNTER = itertools.count()
 
-  def __init__(self, num_threads=1):
+  def __init__(self, num_threads=1, queue_size=1):
     self.id = self.__class__.__name__ + '-' + next(Component._ID_COUNTER)
-    self.queue = queue.Queue()
+    self.queue = queue.Queue(maxsize=queue_size)
     self.dependencies = set()
     self.num_threads = num_threads
     self.threads = []
