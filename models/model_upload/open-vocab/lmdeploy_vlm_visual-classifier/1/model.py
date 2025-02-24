@@ -9,7 +9,7 @@ from typing import Iterator, List
 from collections import Counter
 from itertools import zip_longest
 
-from clarifai.runners.models.model_runner import ModelRunner
+from clarifai.runners.models.model_class import ModelClass
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 
 from clarifai_grpc.grpc.api.status import status_code_pb2, status_pb2
@@ -113,7 +113,7 @@ def concept_name_to_id(name:str):
   
   return "id-" + name.lower()
 
-class MyRunner(ModelRunner):
+class MyRunner(ModelClass):
   """A custom runner that loads the model and generates text using lmdeploy inference.
   """
 
@@ -121,7 +121,7 @@ class MyRunner(ModelRunner):
     """Load the model here"""
     os.path.join(os.path.dirname(__file__))
     # if checkpoints section is in config.yaml file then checkpoints will be downloaded at this path during model upload time.
-    checkpoints = os.path.join(os.path.dirname(__file__), "checkpoints")
+    checkpoints = "jfiekdjdk/MiniCPM-V-2_6-awq"
     # Note that if the model is not supported by turbomind yet, lmdeploy will auto switch to pytorch engine
     backend_config = TurbomindEngineConfig(
       tp=1, quant_policy=0, 

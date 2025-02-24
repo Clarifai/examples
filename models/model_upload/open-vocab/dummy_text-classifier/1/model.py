@@ -9,7 +9,7 @@ from typing import Iterator, List
 from collections import Counter
 from itertools import zip_longest
 
-from clarifai.runners.models.model_runner import ModelRunner
+from clarifai.runners.models.model_class import ModelClass
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 
 from clarifai_grpc.grpc.api.status import status_code_pb2, status_pb2
@@ -37,7 +37,7 @@ def parse_text_request(
   return messages
 
 
-class MyRunner(ModelRunner):
+class MyRunner(ModelClass):
   """A custom runner that loads the model and generates text using lmdeploy inference.
   """
 

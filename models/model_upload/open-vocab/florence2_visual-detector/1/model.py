@@ -6,7 +6,7 @@ from typing import Iterator, List
 
 import cv2
 import torch
-from clarifai.runners.models.model_runner import ModelRunner
+from clarifai.runners.models.model_class import ModelClass
 from clarifai.utils.logging import logger
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2
 from clarifai_grpc.grpc.api.status import status_code_pb2, status_pb2
@@ -96,14 +96,14 @@ def get_inference_params(request) -> dict:
       inference_params = output_info["params"]
   return inference_params
 
-class MyRunner(ModelRunner):
+class MyRunner(ModelClass):
   """A custom runner that adds "Hello World" to the end of the text and replaces the domain of the
   image URL as an example.
   """
 
   def load_model(self):
     """Load the model here."""
-    checkpoint_path = os.path.join(os.path.dirname(__file__), "checkpoints")
+    checkpoint_path = "microsoft/Florence-2-large"
     self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
     self.torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
     logger.info(f"Running on device: {self.device}")

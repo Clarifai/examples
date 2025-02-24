@@ -13,3 +13,4 @@ aiohttp
 packaging
 timm
 torch==2.5.1
+clarifai==11.1.5

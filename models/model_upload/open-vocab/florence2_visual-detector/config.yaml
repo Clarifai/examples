@@ -1,7 +1,7 @@
 # This is the sample config file for the image-detection model.
 
 model:
-  id: "florence2-openvocab-visual-detector"
+  id: "florence2-large"
   user_id: ""
   app_id: ""
   model_type_id: "visual-detector"
@@ -16,11 +16,6 @@ inference_compute_info:
   accelerator_type: ["NVIDIA-A10G"]
   accelerator_memory: "20Gi"
 
-
-checkpoints:
-  type: "huggingface"
-  repo_id: "microsoft/Florence-2-large"
-  hf_token: "hf_token"
 
 concepts:
   - id: none

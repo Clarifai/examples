@@ -16,11 +16,6 @@ inference_compute_info:
   accelerator_type: ["NVIDIA-A10G"]
   accelerator_memory: "24Gi"
 
-checkpoints:
-  type: "huggingface"
-  repo_id: "jfiekdjdk/MiniCPM-V-2_6-awq" # Or any vlm hf id supported by lmdeploy
-  hf_token: "your token"
-
 concepts:
 - id: none
   name: none
