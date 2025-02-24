@@ -14,7 +14,7 @@ class Drop(Exception):
   '''
 
 
-class States(enum.Enum):
+class State(enum.Enum):
   NONE = 0
   QUEUED = 1
   STARTED = 2
@@ -26,7 +26,7 @@ class States(enum.Enum):
 class Item:
 
   def __init__(self):
-    self.component_states = {}
+    self.states = {}
     self.error = None
     self.data = types.SimpleNamespace()
 
@@ -73,10 +73,10 @@ class Pipeline:
       component_id = component.id
       # go through items oldest to most recent to check if the component can be scheduled
       for item in self.work_buffer:
-        if item.component_states.get(component_id, 0) >= States.QUEUED:
+        if item.states.get(component_id, 0) >= State.QUEUED:
           # already scheduled this item
           continue
-        if all(item.component_states[dep] == States.COMPLETED for dep in component.dependencies):
+        if all(item.states[dep] == State.COMPLETED for dep in component.dependencies):
           component.enqueue(state)
         else:
           break  # go to next component, this one is blocked for the next state
@@ -85,7 +85,7 @@ class Pipeline:
     # cleanup all items that have no work left
     while self.work_buffer:
       item = self.work_buffer[0]
-      if any(s in (States.QUEUED, States.STARTED) for s in item.component_states.values()):
+      if any(s in (State.QUEUED, State.STARTED) for s in item.states.values()):
         # this item, or others after it that are blocked by ordering, can still be processed
         break
       if item.error:
@@ -124,23 +124,23 @@ class Component:
     return other
 
   def enqueue(self, item):
-    item.component_states[self.id] = States.QUEUED
+    item.states[self.id] = State.QUEUED
     self.queue.put(item)
 
   def run(self):
     while True:
       try:
         item = self.queue.get()  # blocking get for the next item
-        item.component_states[self.id] = States.STARTED
+        item.states[self.id] = State.STARTED
         try:
           self.process(item.data)
         except Drop:
-          item.component_states[self.id] = States.DROPPED
+          item.states[self.id] = State.DROPPED
         except Exception as e:
           item.error = e
-          item.component_states[self.id] = States.FAILED
+          item.states[self.id] = State.FAILED
         else:
-          item.component_states[self.id] = States.COMPLETED
+          item.states[self.id] = State.COMPLETED
         finally:
           self.pipeline.callback(item, self.id)
           self.queue.task_done()
