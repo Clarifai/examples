@@ -8,6 +8,7 @@ import threading
 import time
 import traceback
 import types
+import weakref
 
 _thread_local = threading.local()
 
@@ -70,9 +71,14 @@ class PipelineEngine:
     self.running = True
 
   def add_component(self, component):
-    if component not in self.components:
-      self.components.append(component)
-      component.engine = self
+    if component in self.components:
+      assert component.engine is self
+      return
+    assert component.engine is None, "Component is already part of another pipeline engine."
+    component.engine = self
+    self.components.append(component)
+    for c in component.dependencies:
+      self.add_component(c)
 
   def __enter__(self):
     if getattr(_thread_local, 'engine', None) is not None:
@@ -120,7 +126,7 @@ class PipelineEngine:
         if item.states.get(component_id, State.NONE) >= State.QUEUED:
           # already scheduled this item, check next in buffer list
           continue
-        if all(item.states.get(dep) == State.COMPLETED for dep in component.dependencies):
+        if all(item.states.get(dep.id) == State.COMPLETED for dep in component.dependencies):
           component.enqueue(item)
         else:
           break  # go to next component, this one is blocked
@@ -145,8 +151,8 @@ class PipelineEngine:
     # check dependency ids for unknown components outside of the engine context
     all_ids = {c.id for c in self.components}
     for component in self.components:
-      for dep_id in component.dependencies:
-        if dep_id not in all_ids:
+      for dep in component.dependencies:
+        if dep.id not in all_ids:
           raise Exception(
               f"Component {component.id} depends on unknown component {dep_id} not part of the engine."
           )
@@ -155,18 +161,17 @@ class PipelineEngine:
 
   def _check_cycles(self):
     # https://en.wikipedia.org/wiki/Topological_sorting#Kahn's_algorithm
-    in_degree = {c.id: 0 for c in self.components}
+    in_degree = {c: 0 for c in self.components}
     for c in self.components:
-      for dep_id in c.dependencies:
-        in_degree[dep_id] += 1
-    queue = [cid for cid, d in in_degree.items() if d == 0]
+      for dep in c.dependencies:
+        in_degree[dep] += 1
+    queue = [c for c, d in in_degree.items() if d == 0]
     while queue:
-      cid = queue.pop()
-      c = next(c for c in self.components if c.id == cid)
-      for dep_id in c.dependencies:
-        in_degree[dep_id] -= 1
-        if in_degree[dep_id] == 0:
-          queue.append(dep_id)
+      c = queue.pop()
+      for dep in c.dependencies:
+        in_degree[dep] -= 1
+        if in_degree[dep] == 0:
+          queue.append(dep)
     if any(d != 0 for d in in_degree.values()):
       raise Exception("Dependency cycle detected.")
 
@@ -179,8 +184,6 @@ class PipelineEngine:
     visited = set()
 
     def dfs(node, path):
-      if isinstance(node, str):
-        node = next(c for c in self.components if c.id == node)
       if node in visited:
         return
       visited.add(node)
@@ -206,16 +209,17 @@ class PipelineEngine:
 class Component:
 
   _ID_COUNTER = map(str, itertools.count())
+  _ALL_COMPONENTS = {}
 
   def __init__(self, num_threads=1, queue_size=2):
     self.id = self.__class__.__name__ + '-' + next(Component._ID_COUNTER)
+    Component._ALL_COMPONENTS[self.id] = weakref.ref(self)
+    self.engine = None
     self.queue = queue.Queue(maxsize=queue_size)
     self.dependencies = set()
     self.num_threads = num_threads
     self.average_qsize = 0
     self.threads = []
-    if getattr(_thread_local, 'engine', None) is not None:
-      _thread_local.engine.add_component(self)
 
   def start(self):
     for i in range(self.num_threads):
@@ -224,9 +228,7 @@ class Component:
       thread.start()
 
   def depends_on(self, other):
-    self.dependencies.add(other.id)
-    if getattr(_thread_local, 'engine', None) is not None:
-      _thread_local.engine.add_component(self)
+    self.dependencies.add(other)
 
   def __rshift__(self, other):
     other.depends_on(self)
@@ -305,7 +307,6 @@ class FixedRateLimiter(Component):
 
   def __init__(self, rate=30, drop=False):
     super().__init__()
-    self.engine = getattr(_thread_local, 'engine', None)
     self.rate = rate
     self.drop = drop
     self.last_time = 0
