@@ -107,8 +107,10 @@ class PipelineEngine:
     # called upon item completion, failure, or drop by a component to signal a state change
     self.changed_event.set()
 
-  def _start_items(self):
-    while len(self.work_buffer) < self.max_buffer_size:
+  def _start_items(self, new=1):
+    while (len(self.work_buffer) < self.max_buffer_size and
+           (len(self.work_buffer) < new or
+            any(s.value for s in self.work_buffer[-new].states.values()))):
       self.work_buffer.append(Item())
 
   def _schedule_components(self):
