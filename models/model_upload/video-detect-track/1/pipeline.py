@@ -65,7 +65,7 @@ class Pipeline:
     self.components = []  # list of all components
     self.changed_event = threading.Event()
     self.max_buffer_size = 10
-    self.throughput_counter = ThroughputCounter()
+    self.throughput_meter = ThroughputMeter()
     self.running = True
     for component in components:
       self.add_component(component)
@@ -83,7 +83,7 @@ class Pipeline:
 
   @property
   def throughput(self):
-    return self.throughput_counter.throughput
+    return self.throughput_meter.throughput
 
   def __enter__(self):
     if getattr(_thread_local, 'pipeline', None) is not None:
@@ -139,34 +139,35 @@ class Pipeline:
     if num_remove:
       logging.debug("cleaning %s", self.work_buffer[:num_remove])
       del self.work_buffer[:num_remove]
-      self.throughput_counter.update(num_remove)
+      self.throughput_meter.update(num_remove)
 
 
-class ThroughputCounter:
+class ThroughputMeter:
 
-  def __init__(self, window_size=1):
+  def __init__(self, alpha=0.01):
     self.lock = threading.Lock()
-    self.window_size = window_size
+    self.alpha = alpha
+    self.alpha_inv = 1 / alpha
     self.reset()
 
   def reset(self):
     self.start_time = ts()
-    self.count = 0
     self.throughput = 0
-    self.total_count = 0
+    self.num_updates = 0
 
   def update(self, count):
+    if not count: return
+    now = ts()
     with self.lock:
-      self.count += count
-      self.total_count += count
-      if self.count >= self.window_size:
-        now = ts()
-        t = self.count / (now - self.start_time)
-        #a = 0.99
-        a = 1 / min(100, self.total_count)
-        self.throughput = self.throughput * (1 - a) + t * a
-        self.count = 0
-        self.start_time = now
+      current = count / (now - self.start_time)
+      # a increases to alpha according to schedule for unbiased sample (i.e. not influenced by 0 init throughput value)
+      if self.num_updates > self.alpha_inv:
+        a = self.alpha
+      else:
+        a = 1 / min(self.alpha_inv, self.num_updates + 1)  # 1 -> alpha
+      self.throughput = self.throughput * (1 - a) + current * a
+      self.num_updates += 1
+      self.start_time = now
 
 
 class Component:
