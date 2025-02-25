@@ -5,6 +5,7 @@ import os
 import queue
 import threading
 import time
+import traceback
 import types
 
 _thread_local = threading.local()
@@ -58,7 +59,7 @@ class Item:
     self.states[component_id] = state
 
 
-class Pipeline:
+class PipelineEngine:
 
   def __init__(self, components=[]):
     self.work_buffer = []  # buffer for work items
@@ -73,7 +74,7 @@ class Pipeline:
   def add_component(self, component):
     if component not in self.components:
       self.components.append(component)
-      component.pipeline = self
+      component.engine = self
 
   def start_item(self):
     # TODO block?
@@ -86,14 +87,14 @@ class Pipeline:
     return self.throughput_meter.get()
 
   def __enter__(self):
-    if getattr(_thread_local, 'pipeline', None) is not None:
-      raise Exception("Nested pipelines are not supported.")
-    _thread_local.pipeline = self
+    if getattr(_thread_local, 'engine', None) is not None:
+      raise Exception("Nested pipeline engines are not supported.")
+    _thread_local.engine = self
     return self
 
   def __exit__(self, exc_type, exc_val, exc_tb):
-    assert _thread_local.pipeline is self
-    _thread_local.pipeline = None
+    assert _thread_local.engine is self
+    _thread_local.engine = None
 
   def run(self):
     try:
@@ -134,7 +135,9 @@ class Pipeline:
         # this item, or others after it that are blocked by ordering, can still be processed
         break
       if item.error:
-        logging.error("State failed with error: %s", item.error)
+        logging.error(
+            f"Error in component:\n{''.join(traceback.format_exception(None, item.error, item.error.__traceback__))}"
+        )
       num_remove += 1
     if num_remove:
       logging.debug("cleaning %s", self.work_buffer[:num_remove])
@@ -184,8 +187,8 @@ class Component:
     self.num_threads = num_threads
     self.average_qsize = 0
     self.threads = []
-    if getattr(_thread_local, 'pipeline', None) is not None:
-      _thread_local.pipeline.add_component(self)
+    if getattr(_thread_local, 'engine', None) is not None:
+      _thread_local.engine.add_component(self)
 
   def start(self):
     for i in range(self.num_threads):
@@ -195,8 +198,8 @@ class Component:
 
   def depends_on(self, other):
     self.dependencies.add(other.id)
-    if getattr(_thread_local, 'pipeline', None) is not None:
-      _thread_local.pipeline.add_component(self)
+    if getattr(_thread_local, 'engine', None) is not None:
+      _thread_local.engine.add_component(self)
 
   def __rshift__(self, other):
     other.depends_on(self)
@@ -226,7 +229,7 @@ class Component:
         else:
           item.set_state(self.id, State.COMPLETED)
         finally:
-          self.pipeline.callback(item, self.id)
+          self.engine.callback(item, self.id)
           self.queue.task_done()
       except Exception:
         logging.exception('Internal error in component %s', self.id)
@@ -236,42 +239,49 @@ class Component:
     raise NotImplementedError("Subclasses must implement this method.")
 
 
-class FixedRateScheduler:
+class _ItemSource(Component):
+
+  def start(self):
+    super().start()
+    self.thread = threading.Thread(target=self.run, daemon=True)
+    self.thread.start()
+
+  def process(self, item_data):
+    pass
+
+
+class FixedRateSource(_ItemSource):
 
   def __init__(self, rate=15):
     super().__init__()
-    self.pipeline = getattr(_thread_local, 'pipeline', None)
-    self.thread = threading.Thread(target=self.run, daemon=True)
-    self.thread.start()
+    self.engine = getattr(_thread_local, 'engine', None)
     self.rate = rate
 
   def run(self):
-    assert self.pipeline is not None, 'Pipeline was not set before starting'
-    while self.pipeline.running:
+    assert self.engine is not None, 'Pipeline was not set before starting'
+    while self.engine.running:
       try:
         time.sleep(1.0 / self.rate)
-        self.pipeline.start_item()
+        self.engine.start_item()
       except Exception:
         logging.exception('Error in run')
 
 
-class AdaptiveRateScheduler:
+class AdaptiveRateSource(_ItemSource):
 
   def __init__(self, initial_rate=15, delta=0.1, target_qsize=0.1):
     super().__init__()
-    self.pipeline = getattr(_thread_local, 'pipeline', None)
+    self.engine = getattr(_thread_local, 'engine', None)
     self.rate = initial_rate
     self.delta = delta
     self.target_qsize = target_qsize
-    self.thread = threading.Thread(target=self.run, daemon=True)
-    self.thread.start()
 
   def run(self):
-    assert self.pipeline is not None, 'Pipeline was not set before starting'
-    while self.pipeline.running:
+    assert self.engine is not None, 'Pipeline was not set before starting'
+    while self.engine.running:
       try:
-        throughput = self.pipeline.throughput
-        qsize = max(c.average_qsize for c in self.pipeline.components)
+        throughput = self.engine.throughput
+        qsize = max(c.average_qsize for c in self.engine.components)
 
         logging.debug("RATE: %s  THROUGHPUT: %s  QSIZE: %s", self.rate, throughput, qsize)
 
@@ -282,6 +292,6 @@ class AdaptiveRateScheduler:
             self.rate = throughput * (1 - self.delta)
 
         time.sleep(1.0 / self.rate)
-        self.pipeline.start_item()
+        self.engine.start_item()
       except Exception:
         logging.exception('Error in run')
