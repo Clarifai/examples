@@ -61,26 +61,18 @@ class Item:
 
 class PipelineEngine:
 
-  def __init__(self, components=[]):
+  def __init__(self, max_buffer_size=100):
     self.work_buffer = []  # buffer for work items
     self.components = []  # list of all components
     self.changed_event = threading.Event()
-    self.max_buffer_size = 10
+    self.max_buffer_size = max_buffer_size
     self.throughput_meter = ThroughputMeter()
     self.running = True
-    for component in components:
-      self.add_component(component)
 
   def add_component(self, component):
     if component not in self.components:
       self.components.append(component)
       component.engine = self
-
-  def start_item(self):
-    # TODO block?
-    if len(self.work_buffer) < self.max_buffer_size:
-      self.work_buffer.append(Item())
-      self.changed_event.set()
 
   @property
   def throughput(self):
@@ -105,6 +97,7 @@ class PipelineEngine:
       while True:
         self.changed_event.wait()
         self.changed_event.clear()
+        self._start_items()
         self._schedule_components()
         self._cleanup()
     finally:
@@ -113,6 +106,10 @@ class PipelineEngine:
   def callback(self, item, component_id):
     # called upon item completion, failure, or drop by a component to signal a state change
     self.changed_event.set()
+
+  def _start_items(self):
+    while len(self.work_buffer) < self.max_buffer_size:
+      self.work_buffer.append(Item())
 
   def _schedule_components(self):
     for component in self.components:
@@ -239,35 +236,23 @@ class Component:
     raise NotImplementedError("Subclasses must implement this method.")
 
 
-class _ItemSource(Component):
-
-  def start(self):
-    super().start()
-    self.thread = threading.Thread(target=self.run, daemon=True)
-    self.thread.start()
-
-  def process(self, item_data):
-    pass
-
-
-class FixedRateSource(_ItemSource):
+class FixedRateLimiter(Component):
 
   def __init__(self, rate=15):
     super().__init__()
     self.engine = getattr(_thread_local, 'engine', None)
     self.rate = rate
+    self.last_time = 0
 
-  def run(self):
-    assert self.engine is not None, 'Pipeline was not set before starting'
-    while self.engine.running:
-      try:
-        time.sleep(1.0 / self.rate)
-        self.engine.start_item()
-      except Exception:
-        logging.exception('Error in run')
+  def process(self, data):
+    elapsed = ts() - self.last_time
+    interval = 1.0 / self.rate
+    if elapsed < interval:
+      time.sleep(interval - elapsed)
+    self.last_time = ts()
 
 
-class AdaptiveRateSource(_ItemSource):
+class AdaptiveRateLimiter(Component):
 
   def __init__(self, initial_rate=30, delta=0.1, target_qsize=0.1):
     super().__init__()
@@ -275,23 +260,26 @@ class AdaptiveRateSource(_ItemSource):
     self.rate = initial_rate
     self.delta = delta
     self.target_qsize = target_qsize
+    self.last_time = 0
 
-  def run(self):
-    assert self.engine is not None, 'Pipeline was not set before starting'
-    while self.engine.running:
-      try:
-        throughput = self.engine.throughput
-        qsize = max(c.average_qsize for c in self.engine.components)
+  def process(self, data):
+    elapsed = ts() - self.last_time
 
-        logging.debug("RATE: %s  THROUGHPUT: %s  QSIZE: %s", self.rate, throughput, qsize)
+    throughput = self.engine.throughput
+    qsize = max(c.average_qsize for c in self.engine.components
+                if c is not self)  # TODO downstream comps only
 
-        if throughput != 0:
-          if qsize < self.target_qsize:
-            self.rate = throughput * (1 + self.delta)
-          else:
-            self.rate = throughput * (1 - self.delta)
+    logging.debug("RATE: %s  THROUGHPUT: %s  QSIZE: %s", self.rate, throughput, qsize)
 
-        time.sleep(1.0 / self.rate)
-        self.engine.start_item()
-      except Exception:
-        logging.exception('Error in run')
+    # adjust rate based on throughput and queue size
+    if throughput != 0:
+      if qsize < self.target_qsize:
+        self.rate = throughput * (1 + self.delta)
+      else:
+        self.rate = throughput * (1 - self.delta)
+
+    # sleep for the remaining time according to the rate
+    interval = 1.0 / self.rate
+    if elapsed < interval:
+      time.sleep(interval - elapsed)
+    self.last_time = ts()
