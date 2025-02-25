@@ -269,7 +269,7 @@ class FixedRateSource(_ItemSource):
 
 class AdaptiveRateSource(_ItemSource):
 
-  def __init__(self, initial_rate=15, delta=0.1, target_qsize=0.1):
+  def __init__(self, initial_rate=30, delta=0.1, target_qsize=0.1):
     super().__init__()
     self.engine = getattr(_thread_local, 'engine', None)
     self.rate = initial_rate
