@@ -3,6 +3,7 @@ import itertools
 import logging
 import os
 import queue
+import random
 import threading
 import time
 import traceback
@@ -206,7 +207,7 @@ class Component:
 
   _ID_COUNTER = map(str, itertools.count())
 
-  def __init__(self, num_threads=1, queue_size=1):
+  def __init__(self, num_threads=1, queue_size=2):
     self.id = self.__class__.__name__ + '-' + next(Component._ID_COUNTER)
     self.queue = queue.Queue(maxsize=queue_size)
     self.dependencies = set()
@@ -302,17 +303,23 @@ class ThroughputMeter(Component):
 
 class FixedRateLimiter(Component):
 
-  def __init__(self, rate=15):
+  def __init__(self, rate=30, drop=False):
     super().__init__()
     self.engine = getattr(_thread_local, 'engine', None)
     self.rate = rate
+    self.drop = drop
     self.last_time = 0
 
   def process(self, data):
     elapsed = ts() - self.last_time
     interval = 1.0 / self.rate
-    if elapsed < interval:
-      time.sleep(interval - elapsed)
+    remaining = interval - elapsed
+    if remaining > 0:
+      if self.drop:
+        if random.random() < remaining / interval:
+          raise Drop
+      else:
+        time.sleep(interval - elapsed)
     self.last_time = ts()
 
 
@@ -349,8 +356,11 @@ class AdaptiveRateLimiter(Component):
 
     # sleep for the remaining time according to the rate
     interval = 1.0 / self.rate
-    if elapsed < interval:
+    remaining = interval - elapsed
+    if remaining > 0:
       if self.drop:
-        raise Drop("Dropping item")
-      time.sleep(interval - elapsed)
+        if random.random() < remaining / interval:
+          raise Drop
+      else:
+        time.sleep(remaining)
     self.last_time = ts()
