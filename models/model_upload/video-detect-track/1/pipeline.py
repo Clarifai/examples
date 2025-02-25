@@ -233,7 +233,7 @@ class Component:
     raise NotImplementedError("Subclasses must implement this method.")
 
 
-class FixedRateSource:
+class FixedRateScheduler:
 
   def __init__(self, pipeline, rate=15):
     super().__init__()
@@ -248,10 +248,10 @@ class FixedRateSource:
         time.sleep(1.0 / self.rate)
         self.pipeline.start_item()
       except Exception:
-        logger.exception('Error in FixedRateSource.run')
+        logger.exception('Error in run')
 
 
-class CodelRateSource:
+class AdaptiveRateScheduler:
 
   def __init__(self, pipeline, initial_rate=15, delta=0.1, target_qsize=0.01):
     super().__init__()
@@ -279,4 +279,4 @@ class CodelRateSource:
         time.sleep(1.0 / self.rate)
         self.pipeline.start_item()
       except Exception:
-        logger.exception('Error in CodelRateSource.run')
+        logger.exception('Error in run')
