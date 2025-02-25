@@ -231,3 +231,52 @@ class Component:
 
   def process(self, item_data):
     raise NotImplementedError("Subclasses must implement this method.")
+
+
+class FixedRateSource:
+
+  def __init__(self, pipeline, rate=15):
+    super().__init__()
+    self.pipeline = pipeline
+    self.thread = threading.Thread(target=self.run, daemon=True)
+    self.thread.start()
+    self.rate = rate
+
+  def run(self):
+    while self.pipeline.running:
+      try:
+        time.sleep(1.0 / self.rate)
+        self.pipeline.start_item()
+      except Exception:
+        logger.exception('Error in FixedRateSource.run')
+
+
+class CodelRateSource:
+
+  def __init__(self, pipeline, initial_rate=15, delta=0.1, target_qsize=0.01):
+    super().__init__()
+    self.pipeline = pipeline
+    self.thread = threading.Thread(target=self.run, daemon=True)
+    self.thread.start()
+    self.rate = initial_rate
+    self.delta = delta
+    self.target_qsize = target_qsize
+
+  def run(self):
+    while self.pipeline.running:
+      try:
+        throughput = self.pipeline.throughput
+        qsize = max(c.average_qsize for c in self.pipeline.components)
+
+        logger.debug("RATE: %s  THROUGHPUT: %s  QSIZE: %s", self.rate, throughput, qsize)
+
+        if throughput != 0:
+          if qsize < self.target_qsize:
+            self.rate = throughput * (1 + self.delta)
+          else:
+            self.rate = throughput * (1 - self.delta)
+
+        time.sleep(1.0 / self.rate)
+        self.pipeline.start_item()
+      except Exception:
+        logger.exception('Error in CodelRateSource.run')
