@@ -84,6 +84,7 @@ class PipelineEngine:
     _thread_local.engine = None
 
   def run(self):
+    self._verify_components()
     try:
       for component in self.components:
         logging.debug("Starting component %s", component.id)
@@ -138,6 +139,67 @@ class PipelineEngine:
     if num_remove:
       logging.debug("cleaning %s", self.work_buffer[:num_remove])
       del self.work_buffer[:num_remove]
+
+  def _verify_components(self):
+    # check dependency ids for unknown components outside of the engine context
+    all_ids = {c.id for c in self.components}
+    for component in self.components:
+      for dep_id in component.dependencies:
+        if dep_id not in all_ids:
+          raise Exception(
+              f"Component {component.id} depends on unknown component {dep_id} not part of the engine."
+          )
+    # check for cycles
+    self._check_cycles()
+
+  def _check_cycles(self):
+    # https://en.wikipedia.org/wiki/Topological_sorting#Kahn's_algorithm
+    in_degree = {c.id: 0 for c in self.components}
+    for c in self.components:
+      for dep_id in c.dependencies:
+        in_degree[dep_id] += 1
+    queue = [cid for cid, d in in_degree.items() if d == 0]
+    while queue:
+      cid = queue.pop()
+      c = next(c for c in self.components if c.id == cid)
+      for dep_id in c.dependencies:
+        in_degree[dep_id] -= 1
+        if in_degree[dep_id] == 0:
+          queue.append(dep_id)
+    if any(d != 0 for d in in_degree.values()):
+      raise Exception("Dependency cycle detected.")
+
+  def components_between(self, a, b=None):
+    '''
+    Return list of components between a and b (exclusive) according to the dependency graph.
+    If b is None, return all components downstream of a.
+    '''
+    nodes = {a}
+    visited = set()
+
+    def dfs(node, path):
+      if isinstance(node, str):
+        node = next(c for c in self.components if c.id == node)
+      if node in visited:
+        return
+      visited.add(node)
+      if node in nodes:  # found a path that leads to a node that leads to a
+        nodes.update(path)
+        return
+      path.append(node)
+      for c in node.dependencies:
+        dfs(c, path)
+      path.pop()
+
+    if b is not None:
+      dfs(b, [])
+    else:
+      for c in self.components:
+        dfs(c, [])
+
+    nodes.discard(a)
+    nodes.discard(b)
+    return [c for c in self.components if c in nodes]
 
 
 class Component:
@@ -264,13 +326,17 @@ class AdaptiveRateLimiter(Component):
     self.target_qsize = target_qsize
     self.drop = drop
     self.last_time = 0
+    self._downstream_components = None
 
   def process(self, data):
+    if self._downstream_components is None:
+      self._downstream_components = self.engine.components_between(self, self.meter)
+      assert self not in self._downstream_components
+
     elapsed = ts() - self.last_time
 
     throughput = self.meter.get()
-    qsize = max(c.average_qsize for c in self.engine.components
-                if c is not self)  # TODO downstream comps only
+    qsize = max(c.average_qsize for c in self._downstream_components)
 
     logging.debug("RATE: %s  THROUGHPUT: %s  QSIZE: %s", self.rate, throughput, qsize)
 
