@@ -83,7 +83,7 @@ class Pipeline:
 
   @property
   def throughput(self):
-    return self.throughput_meter.throughput
+    return self.throughput_meter.get()
 
   def __enter__(self):
     if getattr(_thread_local, 'pipeline', None) is not None:
@@ -154,6 +154,9 @@ class ThroughputMeter:
     self.start_time = ts()
     self.throughput = 0
     self.num_updates = 0
+
+  def get(self):
+    return self.throughput
 
   def update(self, count):
     if not count: return
@@ -235,40 +238,42 @@ class Component:
 
 class FixedRateScheduler:
 
-  def __init__(self, pipeline, rate=15):
+  def __init__(self, rate=15):
     super().__init__()
-    self.pipeline = pipeline
+    self.pipeline = getattr(_thread_local, 'pipeline', None)
     self.thread = threading.Thread(target=self.run, daemon=True)
     self.thread.start()
     self.rate = rate
 
   def run(self):
+    assert self.pipeline is not None, 'Pipeline was not set before starting'
     while self.pipeline.running:
       try:
         time.sleep(1.0 / self.rate)
         self.pipeline.start_item()
       except Exception:
-        logger.exception('Error in run')
+        logging.exception('Error in run')
 
 
 class AdaptiveRateScheduler:
 
-  def __init__(self, pipeline, initial_rate=15, delta=0.1, target_qsize=0.01):
+  def __init__(self, initial_rate=15, delta=0.1, target_qsize=0.1):
     super().__init__()
-    self.pipeline = pipeline
-    self.thread = threading.Thread(target=self.run, daemon=True)
-    self.thread.start()
+    self.pipeline = getattr(_thread_local, 'pipeline', None)
     self.rate = initial_rate
     self.delta = delta
     self.target_qsize = target_qsize
+    self.thread = threading.Thread(target=self.run, daemon=True)
+    self.thread.start()
 
   def run(self):
+    assert self.pipeline is not None, 'Pipeline was not set before starting'
     while self.pipeline.running:
       try:
         throughput = self.pipeline.throughput
         qsize = max(c.average_qsize for c in self.pipeline.components)
 
-        logger.debug("RATE: %s  THROUGHPUT: %s  QSIZE: %s", self.rate, throughput, qsize)
+        logging.debug("RATE: %s  THROUGHPUT: %s  QSIZE: %s", self.rate, throughput, qsize)
 
         if throughput != 0:
           if qsize < self.target_qsize:
@@ -279,4 +284,4 @@ class AdaptiveRateScheduler:
         time.sleep(1.0 / self.rate)
         self.pipeline.start_item()
       except Exception:
-        logger.exception('Error in run')
+        logging.exception('Error in run')
