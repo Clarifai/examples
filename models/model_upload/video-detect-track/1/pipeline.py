@@ -66,17 +66,12 @@ class PipelineEngine:
     self.components = []  # list of all components
     self.changed_event = threading.Event()
     self.max_buffer_size = max_buffer_size
-    self.throughput_meter = ThroughputMeter()
     self.running = True
 
   def add_component(self, component):
     if component not in self.components:
       self.components.append(component)
       component.engine = self
-
-  @property
-  def throughput(self):
-    return self.throughput_meter.get()
 
   def __enter__(self):
     if getattr(_thread_local, 'engine', None) is not None:
@@ -100,6 +95,7 @@ class PipelineEngine:
         self._start_items()
         self._schedule_components()
         self._cleanup()
+        self._start_items()
     finally:
       self.running = False
 
@@ -112,6 +108,7 @@ class PipelineEngine:
            (len(self.work_buffer) < new or
             any(s.value for s in self.work_buffer[-new].states.values()))):
       self.work_buffer.append(Item())
+      self.changed_event.set()
 
   def _schedule_components(self):
     for component in self.components:
@@ -141,38 +138,6 @@ class PipelineEngine:
     if num_remove:
       logging.debug("cleaning %s", self.work_buffer[:num_remove])
       del self.work_buffer[:num_remove]
-      self.throughput_meter.update(num_remove)
-
-
-class ThroughputMeter:
-
-  def __init__(self, alpha=0.01):
-    self.lock = threading.Lock()
-    self.alpha = alpha
-    self.alpha_inv = 1 / alpha
-    self.reset()
-
-  def reset(self):
-    self.start_time = ts()
-    self.throughput = 0
-    self.num_updates = 0
-
-  def get(self):
-    return self.throughput
-
-  def update(self, count):
-    if not count: return
-    now = ts()
-    with self.lock:
-      current = count / (now - self.start_time)
-      # a increases to alpha according to schedule for unbiased sample (i.e. not influenced by 0 init throughput value)
-      if self.num_updates > self.alpha_inv:
-        a = self.alpha
-      else:
-        a = 1 / min(self.alpha_inv, self.num_updates + 1)  # 1 -> alpha
-      self.throughput = self.throughput * (1 - a) + current * a
-      self.num_updates += 1
-      self.start_time = now
 
 
 class Component:
@@ -238,6 +203,41 @@ class Component:
     raise NotImplementedError("Subclasses must implement this method.")
 
 
+class ThroughputMeter(Component):
+
+  def __init__(self, alpha=0.01):
+    super().__init__()
+    self.lock = threading.Lock()
+    self.alpha = alpha
+    self.alpha_inv = 1 / alpha
+    self.reset()
+
+  def process(self, data):
+    self.update(1)
+
+  def reset(self):
+    self.start_time = ts()
+    self.throughput = 0
+    self.num_updates = 0
+
+  def get(self):
+    return self.throughput
+
+  def update(self, count):
+    if not count: return
+    now = ts()
+    with self.lock:
+      current = count / (now - self.start_time)
+      # a increases to alpha according to schedule for unbiased sample (i.e. not influenced by 0 init throughput value)
+      if self.num_updates > self.alpha_inv:
+        a = self.alpha
+      else:
+        a = 1 / min(self.alpha_inv, self.num_updates + 1)  # 1 -> alpha
+      self.throughput = self.throughput * (1 - a) + current * a
+      self.num_updates += 1
+      self.start_time = now
+
+
 class FixedRateLimiter(Component):
 
   def __init__(self, rate=15):
@@ -256,18 +256,19 @@ class FixedRateLimiter(Component):
 
 class AdaptiveRateLimiter(Component):
 
-  def __init__(self, initial_rate=30, delta=0.1, target_qsize=0.1):
+  def __init__(self, meter, initial_rate=30, delta=0.1, target_qsize=0.1, drop=False):
     super().__init__()
-    self.engine = getattr(_thread_local, 'engine', None)
+    self.meter = meter
     self.rate = initial_rate
     self.delta = delta
     self.target_qsize = target_qsize
+    self.drop = drop
     self.last_time = 0
 
   def process(self, data):
     elapsed = ts() - self.last_time
 
-    throughput = self.engine.throughput
+    throughput = self.meter.get()
     qsize = max(c.average_qsize for c in self.engine.components
                 if c is not self)  # TODO downstream comps only
 
@@ -283,5 +284,7 @@ class AdaptiveRateLimiter(Component):
     # sleep for the remaining time according to the rate
     interval = 1.0 / self.rate
     if elapsed < interval:
+      if self.drop:
+        raise Drop("Dropping item")
       time.sleep(interval - elapsed)
     self.last_time = ts()
