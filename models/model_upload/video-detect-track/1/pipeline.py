@@ -36,7 +36,7 @@ class State(enum.Enum):
 _START_TIME = time.monotonic()
 
 
-def monotonic():
+def ts():
   return time.monotonic() - _START_TIME
 
 
@@ -45,13 +45,16 @@ class Item:
   _ID_COUNTER = itertools.count()
 
   def __init__(self):
-    self.num = next(Item._ID_COUNTER)
+    self.id = next(Item._ID_COUNTER)
     self.states = {}
     self.error = None
     self.data = types.SimpleNamespace()
 
+  def __repr__(self):
+    return f'Item({self.id})'
+
   def set_state(self, component_id, state):
-    logging.debug("%f %s %d, -> %s", monotonic(), component_id, self.num, state)
+    logging.debug("%f %s %s, -> %s", ts(), component_id, self, state)
     self.states[component_id] = state
 
 
@@ -61,7 +64,9 @@ class Pipeline:
     self.work_buffer = []  # buffer for work items
     self.components = []  # list of all components
     self.changed_event = threading.Event()
-    self.max_buffer_size = 10  # TODO how to add elements?
+    self.max_buffer_size = 10
+    self.throughput_counter = ThroughputCounter()
+    self.running = True
     for component in components:
       self.add_component(component)
 
@@ -70,9 +75,15 @@ class Pipeline:
       self.components.append(component)
       component.pipeline = self
 
-  def put(self, item):
-    self.work_buffer.append(item)
-    self.changed_event.set()
+  def start_item(self):
+    # TODO block?
+    if len(self.work_buffer) < self.max_buffer_size:
+      self.work_buffer.append(Item())
+      self.changed_event.set()
+
+  @property
+  def throughput(self):
+    return self.throughput_counter.throughput
 
   def __enter__(self):
     if getattr(_thread_local, 'pipeline', None) is not None:
@@ -85,23 +96,24 @@ class Pipeline:
     _thread_local.pipeline = None
 
   def run(self):
-    for component in self.components:
-      logging.debug("Starting component %s", component.id)
-      component.start()
-    self.changed_event.set()
-    while True:
-      self.changed_event.wait()
-      self.changed_event.clear()
-      while len(self.work_buffer) < self.max_buffer_size:
-        self.put(Item())  # add new items; TODO how to add elements?
-      self._queue_components()
-      self._cleanup()
+    try:
+      for component in self.components:
+        logging.debug("Starting component %s", component.id)
+        component.start()
+      self.changed_event.set()
+      while True:
+        self.changed_event.wait()
+        self.changed_event.clear()
+        self._schedule_components()
+        self._cleanup()
+    finally:
+      self.running = False
 
   def callback(self, item, component_id):
     # called upon item completion, failure, or drop by a component to signal a state change
     self.changed_event.set()
 
-  def _queue_components(self):
+  def _schedule_components(self):
     for component in self.components:
       component_id = component.id
       # go through items oldest to most recent to check if the component can be scheduled
@@ -116,16 +128,45 @@ class Pipeline:
 
   def _cleanup(self):
     # cleanup all items that have no work left
-    while self.work_buffer:
-      item = self.work_buffer[0]
+    num_remove = 0
+    for item in self.work_buffer:
       if any(s in (State.QUEUED, State.STARTED) for s in item.states.values()):
         # this item, or others after it that are blocked by ordering, can still be processed
         break
       if item.error:
         logging.error("State failed with error: %s", item.error)
-      # remove item from buffer
-      logging.debug("Cleaning up item %s", item)
-      self.work_buffer.pop(0)
+      num_remove += 1
+    if num_remove:
+      logging.debug("cleaning %s", self.work_buffer[:num_remove])
+      del self.work_buffer[:num_remove]
+      self.throughput_counter.update(num_remove)
+
+
+class ThroughputCounter:
+
+  def __init__(self, window_size=1):
+    self.lock = threading.Lock()
+    self.window_size = window_size
+    self.reset()
+
+  def reset(self):
+    self.start_time = ts()
+    self.count = 0
+    self.throughput = 0
+    self.total_count = 0
+
+  def update(self, count):
+    with self.lock:
+      self.count += count
+      self.total_count += count
+      if self.count >= self.window_size:
+        now = ts()
+        t = self.count / (now - self.start_time)
+        #a = 0.99
+        a = 1 / min(100, self.total_count)
+        self.throughput = self.throughput * (1 - a) + t * a
+        self.count = 0
+        self.start_time = now
 
 
 class Component:
@@ -137,13 +178,14 @@ class Component:
     self.queue = queue.Queue(maxsize=queue_size)
     self.dependencies = set()
     self.num_threads = num_threads
+    self.average_qsize = 0
     self.threads = []
     if getattr(_thread_local, 'pipeline', None) is not None:
       _thread_local.pipeline.add_component(self)
 
   def start(self):
     for i in range(self.num_threads):
-      thread = threading.Thread(target=self.run, daemon=True, name=self.id + '-' + str(i))
+      thread = threading.Thread(target=self.run_loop, daemon=True, name=self.id + '-' + str(i))
       self.threads.append(thread)
       thread.start()
 
@@ -158,13 +200,14 @@ class Component:
 
   def enqueue(self, item):
     try:
+      self.average_qsize = self.average_qsize * 0.9 + self.queue.qsize() * 0.1
       self.queue.put(item, block=False)
     except queue.Full:
       pass
     else:
       item.set_state(self.id, State.QUEUED)
 
-  def run(self):
+  def run_loop(self):
     while True:
       try:
         item = self.queue.get()  # blocking get for the next item
