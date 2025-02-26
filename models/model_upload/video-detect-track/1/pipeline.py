@@ -207,21 +207,23 @@ class Component:
     self.id = self.__class__.__name__ + '-' + next(Component._ID_COUNTER)
     Component._ALL_COMPONENTS[self.id] = weakref.ref(self)
     self.engine = None
-    queue_size = queue_size or 2 * num_threads
-    self.queue = queue.Queue(maxsize=queue_size)
+    self.queue_size = queue_size
+    self.num_threads(num_threads)  # sets num_threads and self.queue
     self.dependencies = set()
-    self.num_threads = num_threads
     self.average_qsize = 0
     self.threads = []
 
-  def start(self):
-    for i in range(self.num_threads):
-      thread = threading.Thread(target=self.run_loop, daemon=True, name=self.id + '-' + str(i))
-      self.threads.append(thread)
-      thread.start()
+  def num_threads(self, num_threads):
+    assert num_threads > 0
+    assert not self.engine, "Cannot change number of threads after component has been added to an engine."
+    self._num_threads = num_threads
+    queue_size = self.queue_size or 2 * num_threads
+    self.queue = queue.Queue(maxsize=queue_size)
+    return self
 
   def depends_on(self, other):
     self.dependencies.add(other)
+    return self
 
   def __rshift__(self, other):
     other.depends_on(self)
@@ -236,6 +238,12 @@ class Component:
     else:
       item.set_state(self.id, State.QUEUED)
       #self.engine.callback(item, self.id)  # should need cb only for done transitions
+
+  def start(self):
+    for i in range(self._num_threads):
+      thread = threading.Thread(target=self.run_loop, daemon=True, name=self.id + '-' + str(i))
+      self.threads.append(thread)
+      thread.start()
 
   def run_loop(self):
     while True:
@@ -333,16 +341,16 @@ class AdaptiveRateLimiter(Component):
   def __init__(self, downstream_meter, initial_rate=30, delta=0.1, target_qsize=0.1, drop=False):
     super().__init__()
     self.downstream_meter = downstream_meter
-    self.rate = initial_rate
+    self.initial_rate = initial_rate
     self.delta = delta
     self.target_qsize = target_qsize
     self.drop = drop
     self.last_time = 0
     self._downstream_components = None
-    self._debug_stats = False
+    self._debug_stats = True
     self._debug_print_time = 0
-    self._incoming_meter = ThroughputMeter(alpha=0.1)
-    self._outgoing_meter = ThroughputMeter(alpha=0.1)
+    self._incoming_meter = ThroughputMeter()
+    self._outgoing_meter = ThroughputMeter()
 
   def process(self, data):
     if self._downstream_components is None:
@@ -353,23 +361,20 @@ class AdaptiveRateLimiter(Component):
 
     elapsed = ts() - self.last_time
 
-    throughput = self.downstream_meter.get()
+    achieved_throughput = self.downstream_meter.get()
     qsize = max(c.average_qsize for c in self._downstream_components)
 
-    if self._debug_stats and ts() - self._debug_print_time > 1:
-      self._debug_print_time = ts()
-      logging.info("RATE: %s  THROUGHPUT: %s  QSIZE: %s, IN: %s, OUT: %s", self.rate, throughput,
-                   qsize, self._incoming_meter.get(), self._outgoing_meter.get())
-
     # adjust rate based on throughput and queue size
-    if throughput != 0:
+    if achieved_throughput == 0:
+      rate = self.initial_rate
+    else:
       if qsize < self.target_qsize:
-        self.rate = throughput * (1 + self.delta)
+        rate = achieved_throughput * (1 + self.delta)
       else:
-        self.rate = throughput * (1 - self.delta)
+        rate = achieved_throughput * (1 - self.delta)
 
     # sleep for the remaining time according to the rate
-    interval = 1.0 / self.rate
+    interval = 1.0 / rate
     remaining = interval - elapsed
     incoming_rate = self._incoming_meter.get()
     if remaining > 0:
@@ -381,5 +386,11 @@ class AdaptiveRateLimiter(Component):
 
     if self._debug_stats:
       self._outgoing_meter.update()
+
+    if self._debug_stats and ts() - self._debug_print_time > 1:
+      self._debug_print_time = ts()
+      logging.info("RATE: %s  THROUGHPUT: %s  QSIZE: %s, IN: %s, OUT: %s", rate,
+                   achieved_throughput, qsize,
+                   self._incoming_meter.get(), self._outgoing_meter.get())
 
     self.last_time = ts()
