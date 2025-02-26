@@ -61,7 +61,7 @@ class Item:
 
 class PipelineEngine:
 
-  def __init__(self, max_buffer_size=100):
+  def __init__(self, max_buffer_size=None):
     self.work_buffer = []  # buffer for work items
     self.components = []  # list of all components
     self.changed_event = threading.Event()
@@ -81,6 +81,8 @@ class PipelineEngine:
 
   def run(self):
     self._verify_components()
+    if self.max_buffer_size is None:
+      self.max_buffer_size = sum(c.queue.maxsize for c in self.components)
     try:
       for component in self.components:
         logging.debug("Starting component %s", component.id)
@@ -201,10 +203,11 @@ class Component:
   _ID_COUNTER = map(str, itertools.count())
   _ALL_COMPONENTS = {}
 
-  def __init__(self, num_threads=1, queue_size=2):
+  def __init__(self, num_threads=1, queue_size=None):
     self.id = self.__class__.__name__ + '-' + next(Component._ID_COUNTER)
     Component._ALL_COMPONENTS[self.id] = weakref.ref(self)
     self.engine = None
+    queue_size = queue_size or 2 * num_threads
     self.queue = queue.Queue(maxsize=queue_size)
     self.dependencies = set()
     self.num_threads = num_threads
