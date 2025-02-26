@@ -235,6 +235,7 @@ class Component:
       pass
     else:
       item.set_state(self.id, State.QUEUED)
+      #self.engine.callback(item, self.id)  # should need cb only for done transitions
 
   def run_loop(self):
     while True:
@@ -334,18 +335,28 @@ class AdaptiveRateLimiter(Component):
     self.drop = drop
     self.last_time = 0
     self._downstream_components = None
+    self._debug_stats = True
+    self._debug_print_time = 0
+    self._incoming_meter = ThroughputMeter(alpha=0.1)
+    self._outgoing_meter = ThroughputMeter(alpha=0.1)
 
   def process(self, data):
     if self._downstream_components is None:
       self._downstream_components = self.engine.components_between(self, self.meter)
-      assert self not in self._downstream_components
+      self._downstream_components.remove(self)
+
+    if self._debug_stats:
+      self._incoming_meter.update(1)
 
     elapsed = ts() - self.last_time
 
     throughput = self.meter.get()
     qsize = max(c.average_qsize for c in self._downstream_components)
 
-    logging.debug("RATE: %s  THROUGHPUT: %s  QSIZE: %s", self.rate, throughput, qsize)
+    if self._debug_stats and ts() - self._debug_print_time > 1:
+      self._debug_print_time = ts()
+      logging.info("RATE: %s  THROUGHPUT: %s  QSIZE: %s, IN: %s, OUT: %s", self.rate, throughput,
+                   qsize, self._incoming_meter.get(), self._outgoing_meter.get())
 
     # adjust rate based on throughput and queue size
     if throughput != 0:
@@ -364,3 +375,5 @@ class AdaptiveRateLimiter(Component):
       else:
         time.sleep(remaining)
     self.last_time = ts()
+    if self._debug_stats:
+      self._outgoing_meter.update(1)
