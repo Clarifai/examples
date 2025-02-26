@@ -264,16 +264,17 @@ class Component:
 
 class ThroughputMeter(Component):
 
-  def __init__(self, alpha=0.01, print=False):
+  def __init__(self, alpha=0.01, update_interval=0.1, print=False):
     super().__init__()
     self.lock = threading.Lock()
     self.alpha = alpha
     self.alpha_inv = 1 / alpha
+    self.update_interval = update_interval
     self.print = print
     self.reset()
 
   def process(self, data):
-    self.update(1)
+    self.update()
     if self.print:
       logging.info("%s throughput: %s", str(self.print), self.get())
 
@@ -286,15 +287,18 @@ class ThroughputMeter(Component):
   def get(self):
     return self.throughput
 
-  def update(self, count):
+  def update(self, count=1):
     with self.lock:
       now = ts()
       self.count += count
-      if now - self.start_time > 0.1 or self.count >= 10:
-        current = self.count / (now - self.start_time)
+      T = self.update_interval
+      if now - self.start_time > T:
+        dt = now - self.start_time
+        current = self.count / dt
         # a increases to alpha according to schedule for unbiased sample (i.e. not influenced by 0 init throughput value)
         if self.num_updates > self.alpha_inv:
           a = self.alpha
+          #a = 1 - (1-a)**(dt/T)  # continuous time adjustment (probably not needed)
         else:
           a = 1 / min(self.alpha_inv, self.num_updates + 1)  # 1 -> alpha
         self.throughput = self.throughput * (1 - a) + current * a
@@ -326,31 +330,30 @@ class FixedRateLimiter(Component):
 
 class AdaptiveRateLimiter(Component):
 
-  def __init__(self, meter, initial_rate=30, delta=0.1, target_qsize=0.1, drop=False):
+  def __init__(self, downstream_meter, initial_rate=30, delta=0.1, target_qsize=0.1, drop=False):
     super().__init__()
-    self.meter = meter
+    self.downstream_meter = downstream_meter
     self.rate = initial_rate
     self.delta = delta
     self.target_qsize = target_qsize
     self.drop = drop
     self.last_time = 0
     self._downstream_components = None
-    self._debug_stats = True
+    self._debug_stats = False
     self._debug_print_time = 0
     self._incoming_meter = ThroughputMeter(alpha=0.1)
     self._outgoing_meter = ThroughputMeter(alpha=0.1)
 
   def process(self, data):
     if self._downstream_components is None:
-      self._downstream_components = self.engine.components_between(self, self.meter)
+      self._downstream_components = self.engine.components_between(self, self.downstream_meter)
       self._downstream_components.remove(self)
 
-    if self._debug_stats:
-      self._incoming_meter.update(1)
+    self._incoming_meter.update()
 
     elapsed = ts() - self.last_time
 
-    throughput = self.meter.get()
+    throughput = self.downstream_meter.get()
     qsize = max(c.average_qsize for c in self._downstream_components)
 
     if self._debug_stats and ts() - self._debug_print_time > 1:
@@ -368,12 +371,15 @@ class AdaptiveRateLimiter(Component):
     # sleep for the remaining time according to the rate
     interval = 1.0 / self.rate
     remaining = interval - elapsed
+    incoming_rate = self._incoming_meter.get()
     if remaining > 0:
       if self.drop:
-        if random.random() < remaining / interval:
+        if random.random() < (remaining * incoming_rate if incoming_rate > 0 else 1):
           raise Drop
       else:
         time.sleep(remaining)
-    self.last_time = ts()
+
     if self._debug_stats:
-      self._outgoing_meter.update(1)
+      self._outgoing_meter.update()
+
+    self.last_time = ts()
