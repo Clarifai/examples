@@ -379,7 +379,7 @@ class AdaptiveRateLimiter(Component):
     incoming_rate = self._incoming_meter.get()
     if remaining > 0:
       if self.drop:
-        if random.random() < (remaining * incoming_rate if incoming_rate > 0 else 1):
+        if random.random() < (remaining * incoming_rate if incoming_rate else 1):
           raise Drop
       else:
         time.sleep(remaining)
