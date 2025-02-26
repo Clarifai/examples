@@ -166,7 +166,7 @@ class PipelineEngine:
 
   def components_between(self, a, b=None):
     '''
-    Return list of components between a and b (exclusive) according to the dependency graph.
+    Return list of components between a and b (inclusive) according to the dependency graph.
     If b is None, return all components downstream of a.
     '''
     nodes = {a}
@@ -190,8 +190,9 @@ class PipelineEngine:
       for c in self.components:
         dfs(c, [])
 
-    nodes.discard(a)
-    nodes.discard(b)
+    assert a in nodes
+    if b is not None:
+      assert b in nodes
     return [c for c in self.components if c in nodes]
 
 
@@ -259,18 +260,22 @@ class Component:
 
 class ThroughputMeter(Component):
 
-  def __init__(self, alpha=0.01):
+  def __init__(self, alpha=0.01, print=False):
     super().__init__()
     self.lock = threading.Lock()
     self.alpha = alpha
     self.alpha_inv = 1 / alpha
+    self.print = print
     self.reset()
 
   def process(self, data):
     self.update(1)
+    if self.print:
+      logging.info("%s throughput: %s", str(self.print), self.get())
 
   def reset(self):
     self.start_time = ts()
+    self.count = 0
     self.throughput = 0
     self.num_updates = 0
 
@@ -278,18 +283,20 @@ class ThroughputMeter(Component):
     return self.throughput
 
   def update(self, count):
-    if not count: return
-    now = ts()
     with self.lock:
-      current = count / (now - self.start_time)
-      # a increases to alpha according to schedule for unbiased sample (i.e. not influenced by 0 init throughput value)
-      if self.num_updates > self.alpha_inv:
-        a = self.alpha
-      else:
-        a = 1 / min(self.alpha_inv, self.num_updates + 1)  # 1 -> alpha
-      self.throughput = self.throughput * (1 - a) + current * a
-      self.num_updates += 1
-      self.start_time = now
+      now = ts()
+      self.count += count
+      if now - self.start_time > 0.1 or self.count >= 10:
+        current = self.count / (now - self.start_time)
+        # a increases to alpha according to schedule for unbiased sample (i.e. not influenced by 0 init throughput value)
+        if self.num_updates > self.alpha_inv:
+          a = self.alpha
+        else:
+          a = 1 / min(self.alpha_inv, self.num_updates + 1)  # 1 -> alpha
+        self.throughput = self.throughput * (1 - a) + current * a
+        self.num_updates += 1
+        self.start_time = now
+        self.count = 0
 
 
 class FixedRateLimiter(Component):
