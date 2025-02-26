@@ -10,8 +10,6 @@ import traceback
 import types
 import weakref
 
-_thread_local = threading.local()
-
 logging.basicConfig(level=os.environ.get('LOGLEVEL', 'INFO').upper())
 
 
@@ -70,25 +68,16 @@ class PipelineEngine:
     self.max_buffer_size = max_buffer_size
     self.running = True
 
-  def add_component(self, component):
+  def add_component(self, component, recursive=True):
     if component in self.components:
       assert component.engine is self
       return
     assert component.engine is None, "Component is already part of another pipeline engine."
     component.engine = self
     self.components.append(component)
-    for c in component.dependencies:
-      self.add_component(c)
-
-  def __enter__(self):
-    if getattr(_thread_local, 'engine', None) is not None:
-      raise Exception("Nested pipeline engines are not supported.")
-    _thread_local.engine = self
-    return self
-
-  def __exit__(self, exc_type, exc_val, exc_tb):
-    assert _thread_local.engine is self
-    _thread_local.engine = None
+    if recursive:
+      for c in component.dependencies:
+        self.add_component(c)
 
   def run(self):
     self._verify_components()
