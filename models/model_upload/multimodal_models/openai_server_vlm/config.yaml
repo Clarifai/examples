@@ -1,0 +1,20 @@
+model:
+  id: ""
+  user_id: ""
+  app_id: ""
+  model_type_id: "multimodal-to-text"
+
+build_info:
+  python_version: "3.12"
+
+inference_compute_info:
+  cpu_limit: "4"
+  cpu_memory: "16Gi"
+  num_accelerators: 1
+  accelerator_type: ["NVIDIA-A10G"]
+  accelerator_memory: "24Gi"
+
+checkpoints:
+  type: "huggingface"
+  repo_id: "Put HF ID here"
+  hf_token: "hf_xxxx"
