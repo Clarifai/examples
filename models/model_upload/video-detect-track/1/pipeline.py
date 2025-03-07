@@ -347,7 +347,7 @@ class AdaptiveRateLimiter(Component):
     self.drop = drop
     self.last_time = 0
     self._downstream_components = None
-    self._debug_stats = True
+    self._debug_stats = False
     self._debug_print_time = 0
     self._incoming_meter = ThroughputMeter()
     self._outgoing_meter = ThroughputMeter()
