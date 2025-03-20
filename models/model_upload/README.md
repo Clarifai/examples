@@ -294,13 +294,13 @@ You can test the model within a Docker container or a Python virtual environment
 #### Testing the Model in a Container
 
 ```python
-clarifai model test-locally --model_path {model_path} --mode container
+clarifai model test-locally {model_path} --mode container
 ```
 
 #### Testing the Model in a Virtual Environment
 
 ```python
-clarifai model test-locally --model_path {model_path} --mode env
+clarifai model test-locally {model_path} --mode env
 ```
 
 ### 2\. Running the Model Locally
@@ -308,13 +308,13 @@ clarifai model test-locally --model_path {model_path} --mode env
 #### Running the Model in a Docker Container
 
 ```python
-clarifai model run-locally --model_path {model_path} --mode container --port 8000
+clarifai model run-locally {model_path} --mode container --port 8000
 ```
 
 #### Running the Model in a Virtual Environment
 
 ```python
-clarifai model run-locally --model_path {model_path} --mode container --port 8000
+clarifai model run-locally {model_path} --mode container --port 8000
 ```
 
 #### Making Inference Requests to the Running Model
@@ -356,7 +356,7 @@ This prevents from model upload failure due to typos in model.py or wrong implem
 Now that your custom model is ready, you can serve the model in production using:
 
 ```bash
-clarifai model upload --model_path {model_directory_path}
+clarifai model upload {model_directory_path}
 ```
 
 This command builds the model Docker image based on the specified compute resources and uploads it to the Clarifai platform.
