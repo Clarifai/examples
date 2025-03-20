@@ -6,6 +6,43 @@
 
 This guide will walk you through the process of uploading custom models to the Clarifai platform, leveraging pre-built model examples for different tasks. You'll also learn to customize models and adjust configurations for deployment.
 
+## Contents
+
+- [Clarifai Model Upload](#clarifai-model-upload)
+  - [Contents](#contents)
+    - [Available Model Examples](#available-model-examples)
+  - [Installation](#installation)
+    - [Environment Setup](#environment-setup)
+  - [Model Folder Structure](#model-folder-structure)
+    - [Example Directory Structure:](#example-directory-structure)
+  - [Model Upload Guide](#model-upload-guide)
+    - [Step 1: Define the `config.yaml` File](#step-1-define-the-configyaml-file)
+      - [Model Info](#model-info)
+      - [Compute Resources](#compute-resources)
+      - [Model Checkpoints](#model-checkpoints)
+      - [Model concepts/ labels](#model-concepts-labels)
+    - [Step 2: Define dependencies in requirements.txt](#step-2-define-dependencies-in-requirementstxt)
+    - [Step 3: Prepare the `model.py` File](#step-3-prepare-the-modelpy-file)
+    - [Core Model Class Structure\*\*](#core-model-class-structure)
+      - [Example Class Structure:](#example-class-structure)
+      - [load\_model() (Optional):](#load_model-optional)
+      - [Method Decorators](#method-decorators)
+      - [Supported Input and Output Data Types](#supported-input-and-output-data-types)
+    - [Step 4: Test Model locally](#step-4-test-model-locally)
+      - [Testing the Model in a Container](#testing-the-model-in-a-container)
+      - [Testing the Model in a Virtual Environment](#testing-the-model-in-a-virtual-environment)
+    - [2. Running the Model Locally](#2-running-the-model-locally)
+      - [Running the Model in a Docker Container](#running-the-model-in-a-docker-container)
+      - [Running the Model in a Virtual Environment](#running-the-model-in-a-virtual-environment)
+      - [Making Inference Requests to the Running Model](#making-inference-requests-to-the-running-model)
+      - [unary-unary predict call](#unary-unary-predict-call)
+      - [CLI flags](#cli-flags)
+    - [Step 5: Upload the Model to Clarifai](#step-5-upload-the-model-to-clarifai)
+    - [Step 6: Model Prediction](#step-6-model-prediction)
+      - [unary-unary predict call](#unary-unary-predict-call-1)
+      - [unary-stream predict call](#unary-stream-predict-call)
+      - [stream-stream predict call](#stream-stream-predict-call)
+
 ### Available Model Examples
 Clarifai provides a collection of pre-built model examples designed for different tasks. You can leverage these examples to streamline the model upload and deployment process.
 
@@ -100,7 +137,20 @@ checkpoints:
   type: "huggingface"
   repo_id: "meta-llama/Meta-Llama-3-8B-Instruct"
   hf_token: "your_hf_token" # Required for private models
+  when: "runtime"
 ```
+
+> `when` in the checkpoints section defines when checkpoints for the model should be downloaded and stored. The `when` parameter must be one of `['upload', 'build', 'runtime']`. 
+>
+> * **runtime**: Downloads checkpoints at runtime when loading the model in the `load_model` method.
+> * **build**: Downloads checkpoints at build time, while the image is being built.
+> * **upload**: Downloads checkpoints before uploading the model.
+>
+> For larger models, we highly recommend downloading checkpoints at `runtime`. Downloading them during the `upload` or `build` stages can significantly increase the Docker image size, leading to longer upload times and increased cold start time for the model. while downloading checkpoints at `runtime` has some advantages:
+>
+> * Smaller image sizes
+> * Faster build times
+> * Faster pushes and inference on Clarifai platform
 
 #### Model concepts/ labels
 > Important: This section is necessary if your model outputs concepts/labels (e.g., for classification or detection) and is not directly loaded from Hugging Face.
@@ -124,38 +174,101 @@ concepts:
 ### Step 2: Define dependencies in requirements.txt
 List all required Python dependencies for your model in `requirements.txt` file. This ensures that all necessary libraries are installed in the runtime environment
 
+
+> If your model requires `Torch`, we provide optimized pre-built Torch images as the base for machine learning and inference tasks. These images include all necessary dependencies, ensuring efficient execution. 
+>
+>
+> The available pre-built Torch images are:
+> • `2.4.1-py3.11-cuda124`: Based on PyTorch 2.4.1, Python 3.11, and CUDA 12.4.
+> • `2.5.1-py3.11-cuda124`: Based on PyTorch 2.5.1, Python 3.11, and CUDA 12.4.
+> • `2.4.1-py3.12-cuda124`: Based on PyTorch 2.4.1, Python 3.12, and CUDA 12.4.
+> • `2.5.1-py3.12-cuda124`: Based on PyTorch 2.5.1, Python 3.12, and CUDA 12.4.
+>
+> To use a specific Torch version, define it in your `requirements.txt` file like this: `torch==2.5.1` This ensures the correct pre-built image is pulled from Clarifai's container registry, ensuring the correct environment is used. This minimizes cold start times and speeds up model uploads and runtime execution — avoiding the overhead of building images from scratch or pulling and configuring them from external sources.
+> We recommend using either `torch==2.5.1` or `torch==2.4.1`. If your model requires a different Torch version, you can specify it in requirements.txt, but this may slightly increase the model upload time.
+
 ### Step 3: Prepare the `model.py` File
 
-The `model.py` file contains the logic for your model, including how the model is loaded and how predictions are made. This file must implement a class that inherits from `ModelRunner`, which should define the following methods:
+The `model.py` file contains the logic for your model, including how the model is loaded and how predictions are made. This file must implement a class that inherits from `ModelClass`.
+
+### Core Model Class Structure**
+
+To define a custom model, you need to create a class that inherits from **ModelClass** and implements the **load\_model** method and at least one method decorated with **@ModelClass.method** to define prediction endpoints
+
+> Each parameter of the Class method must be annotated with a type. The method's return type must also be annotated. The supported types are described [here](SUPPORTED_DATATYPE.md):
 
 #### Example Class Structure:
 
 ```python
 from clarifai.runners.models.model_class import ModelClass
-from clarifai.runners.models.model_builder import ModelBuilder
+from clarifai.runners.utils.data_types import Stream, Text
 
-class YourCustomModel(ModelClass):
+
+class MyModel(ModelClass):
+  """A custom runner that adds "Hello World" to the end of the text."""
+
   def load_model(self):
-    '''Initialize and load the model here'''
-    pass
+    """Load the model here."""
 
-  def predict(self, request):
-    '''Define logic to handle input and return output'''
-    return output_data
+  @ModelClass.method
+  def predict(self, text1: Text = "") -> Text:
+    """This is the method that will be called when the runner is run. It takes in an input and
+    returns an output.
+    """
 
-  def generate(self, request):
-    '''Define streaming output logic if needed'''
-    pass
+    output_text = text1.text + "Hello World"
 
-  def stream(self, request):
-    '''Handle both streaming input and output'''
-    pass
+    return Text(output_text)
+
+  @ModelClass.method
+  def generate(self, text1: Text = Text("")) -> Stream[Text]:
+    """Example yielding a whole batch of streamed stuff back."""
+
+    for i in range(10):  # fake something iterating generating 10 times.
+      output_text = text1.text + f"Generate Hello World {i}"
+      yield Text(output_text)
+
+  @ModelClass.method
+  def stream(self, input_iterator: Stream[Text]) -> Stream[Text]:
+    """Example yielding a whole batch of streamed stuff back."""
+
+    for i, input in enumerate(input_iterator):
+      output_text = input.text + f"Stream Hello World {i}"
+      yield Text(output_text)
 ```
 
-* **load_model()**: Loads the model, similar to an initialization step.
-* **predict(input_data)**: Handles the core logic for making a prediction with the model. It processes input data and returns a output reponse.
-* **generate(input_data)**: Returns output in a streaming manner (if applicable).
-* **stream(input_data)**: Manages streaming input and output (for more advanced use cases).
+#### load\_model() (Optional):
+
+Use this _optional_ method to include any expensive one-off operations in here like loading trained models, instantiate data transformations, etc.
+
+* One-time initialization of heavy resources
+* Called during model container startup
+* Ideal for loading model:
+
+```python
+def load_model(self):
+  self.tokenizer = AutoTokenizer.from_pretrained("model/")
+  self.pipeline = transformers.pipeline(...)
+```
+
+#### Method Decorators
+
+* **@ModelClass.method** registers prediction endpoints
+* Supports three method types via type hints:
+
+```python
+# Unary-Unary (Standard request-response)
+def predict(self, input: Image) -> Text
+
+# Unary-Stream (Server-side streaming)
+def generate(self, prompt: Text) -> Stream[Text]
+
+# Stream-Stream (Bidirectional streaming)
+def analyze_video(self, frames: Stream[Image]) -> Stream[str]
+```
+
+#### [Supported Input and Output Data Types](SUPPORTED_DATATYPE.md)
+Clarifai's model framework supports rich data typing for both inputs and outputs. [Here](SUPPORTED_DATATYPE.md) is a comprehensive guide to supported types with usage examples.
 
 ### Step 4: Test Model locally
 
@@ -171,13 +284,11 @@ This method runs the model locally and sends a sample request to verify that the
 
 This method runs the model locally and starts a local gRPC server at \`https://localhost:{port}\`, Once the server is running, you can perform inference on the model via the Clarifai client SDK
 
-
 You can test the model within a Docker container or a Python virtual environment.
 
 > **Recommendation:** If Docker is installed on your system, it is highly recommended to use Docker for testing or running the model, as it provides better isolation and avoids dependency conflicts.
 
 1. ### Testing the Model
-
 
 #### Testing the Model in a Container
 
@@ -250,7 +361,7 @@ clarifai model upload --model_path {model_directory_path}
 This command builds the model Docker image based on the specified compute resources and uploads it to the Clarifai platform.
 
 
-### Model Prediction
+### Step 6: Model Prediction
 
 Once the model is uploaded, you can easily make the prediction to the model using Clarifai SDK.
 
@@ -260,25 +371,25 @@ Once the model is uploaded, you can easily make the prediction to the model usin
 
 ```python
 from clarifai.client.model import Model
-model = Model("url") # Example URL: https://clarifai.com/stepfun-ai/ocr/models/got-ocr-2_0
+model = Model("url", , compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
             or
-model = Model(model_id='model_id', user_id='user_id', app_id='app_id')
-
-image_url = "https://samples.clarifai.com/metro-north.jpg"
+model = Model(model_id='model_id', user_id='user_id', app_id='app_id', compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
 
 # Model Predict
-model_prediction = model.predict_by_url(image_url, compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
+model_prediction = model.f(text1= "test")
 ```
 
 #### unary-stream predict call
 
 ```python
 from clarifai.client.model import Model
-model = Model("url") # Example URL: https://clarifai.com/meta/Llama-3/models/llama-3_2-3b-instruct
+model = Model("url", compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
             or
-model = Model(model_id='model_id', user_id='user_id', app_id='app_id')
-stream_response = model.generate_by_url('url', compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
-list_stream_response = [response for response in stream_response]
+model = Model(model_id='model_id', user_id='user_id', app_id='app_id', compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
+
+res = model.g('test')
+for i, r in enumerate(res):
+    print(r)
 ```
 
 
@@ -286,9 +397,11 @@ list_stream_response = [response for response in stream_response]
 
 ```python
 from clarifai.client.model import Model
-model = Model("url") # Example URL: https://clarifai.com/meta/Llama-3/models/llama-3_2-3b-instruct
+model = Model("url", , compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
             or
-model = Model(model_id='model_id', user_id='user_id', app_id='app_id')
-stream_response = model.stream_by_url(iter(['url']), compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
-list_stream_response = [response for response in stream_response]
+model = Model(model_id='model_id', user_id='user_id', app_id='app_id', , compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
+
+res = model.s(iter(['test']))
+for i, r in enumerate(res):
+     print(r)
 ```
