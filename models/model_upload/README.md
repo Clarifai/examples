@@ -42,6 +42,7 @@ This guide will walk you through the process of uploading custom models to the C
       - [unary-unary predict call](#unary-unary-predict-call-1)
       - [unary-stream predict call](#unary-stream-predict-call)
       - [stream-stream predict call](#stream-stream-predict-call)
+      - [Dynamic Batch Prediction Handling](#dynamic-batch-prediction-handling)
 
 ### Available Model Examples
 Clarifai provides a collection of pre-built model examples designed for different tasks. You can leverage these examples to streamline the model upload and deployment process.
@@ -404,4 +405,40 @@ model = Model(model_id='model_id', user_id='user_id', app_id='app_id', , compute
 res = model.s(iter(['test']))
 for i, r in enumerate(res):
      print(r)
+```
+
+
+#### Dynamic Batch Prediction Handling
+
+Clarifai's model framework automatically handles both single and batch predictions through a unified interface, dynamically adapting to input formats without requiring code changes.
+
+**Automatic Input Detection**
+
+* Single input: Processed as singleton batch
+* Multiple inputs in a list: Handled as parallel batch
+
+Therefore, when a user passes multiple inputs as a list, the system automatically handles them as a batch. This means users can pass a single input or a list, and the system adapts accordingly.
+
+**Model Implementation:**
+
+```python
+class TextClassifier(ModelClass):
+  @ModelClass.method
+  def predict(self, text: Text) -> float:
+    """Single text classification (automatically batched)"""
+    return self.model(text.text)
+```
+
+**Client Usage:**
+
+```python
+# Single prediction
+single_result = model.predict(Text("Positive review"))
+
+# Batch prediction
+batch_results = model.predict([
+  Text("Great product"),
+  Text("Terrible service"),
+  Text("Average experience")
+  ])
 ```
