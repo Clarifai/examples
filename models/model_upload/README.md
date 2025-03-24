@@ -23,7 +23,7 @@ This guide will walk you through the process of uploading custom models to the C
       - [Model concepts/ labels](#model-concepts-labels)
     - [Step 2: Define dependencies in requirements.txt](#step-2-define-dependencies-in-requirementstxt)
     - [Step 3: Prepare the `model.py` File](#step-3-prepare-the-modelpy-file)
-    - [Core Model Class Structure\*\*](#core-model-class-structure)
+      - [Core Model Class Structure\*\*](#core-model-class-structure)
       - [Example Class Structure:](#example-class-structure)
       - [load\_model() (Optional):](#load_model-optional)
       - [Method Decorators](#method-decorators)
@@ -31,11 +31,10 @@ This guide will walk you through the process of uploading custom models to the C
     - [Step 4: Test Model locally](#step-4-test-model-locally)
       - [Testing the Model in a Container](#testing-the-model-in-a-container)
       - [Testing the Model in a Virtual Environment](#testing-the-model-in-a-virtual-environment)
-    - [2. Running the Model Locally](#2-running-the-model-locally)
       - [Running the Model in a Docker Container](#running-the-model-in-a-docker-container)
       - [Running the Model in a Virtual Environment](#running-the-model-in-a-virtual-environment)
       - [Making Inference Requests to the Running Model](#making-inference-requests-to-the-running-model)
-      - [unary-unary predict call](#unary-unary-predict-call)
+        - [unary-unary predict call](#unary-unary-predict-call)
       - [CLI flags](#cli-flags)
     - [Step 5: Upload the Model to Clarifai](#step-5-upload-the-model-to-clarifai)
     - [Step 6: Model Prediction](#step-6-model-prediction)
@@ -194,7 +193,7 @@ List all required Python dependencies for your model in `requirements.txt` file.
 
 The `model.py` file contains the logic for your model, including how the model is loaded and how predictions are made. This file must implement a class that inherits from `ModelClass`.
 
-### Core Model Class Structure**
+#### Core Model Class Structure**
 
 To define a custom model, you need to create a class that inherits from **ModelClass** and implements the **load\_model** method and at least one method decorated with **@ModelClass.method** to define prediction endpoints
 
@@ -305,8 +304,6 @@ clarifai model test-locally {model_path} --mode container
 clarifai model test-locally {model_path} --mode env
 ```
 
-### 2\. Running the Model Locally
-
 #### Running the Model in a Docker Container
 
 ```python
@@ -329,7 +326,7 @@ export CLARIFAI_API_BASE="localhost:{port}"
 
 Then make `unary-unary`, `unary-stream` and `stream-stream` predict calls to the model
 
-#### unary-unary predict call
+##### unary-unary predict call
 
 ```python
 from clarifai.client.model import Model
