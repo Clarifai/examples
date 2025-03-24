@@ -147,10 +147,10 @@ checkpoints:
 > * **build**: Downloads checkpoints at build time, while the image is being built.
 > * **upload**: Downloads checkpoints before uploading the model.
 >
-> For larger models, we highly recommend downloading checkpoints at `runtime`. Downloading them during the `upload` or `build` stages can significantly increase the Docker image size, leading to longer upload times and increased cold start time for the model. Downloading checkpoints at `runtime` has some advantages:
+> For larger models, we recommend downloading checkpoints at `runtime`. Downloading them during the `upload` or `build` stages can significantly increase the Docker image size, leading to longer upload times and increased cold start time for the model. Downloading checkpoints at `runtime` has some advantages:
 >
 > * Smaller image sizes
-> * Faster build times
+> * Decreases the model-build duration
 > * Faster pushes and inference on Clarifai platform
 
 #### Model concepts/ labels
