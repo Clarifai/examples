@@ -39,9 +39,11 @@ This guide will walk you through the process of uploading custom models to the C
       - [CLI flags](#cli-flags)
     - [Step 5: Upload the Model to Clarifai](#step-5-upload-the-model-to-clarifai)
     - [Step 6: Model Prediction](#step-6-model-prediction)
-      - [unary-unary predict call](#unary-unary-predict-call-1)
-      - [unary-stream predict call](#unary-stream-predict-call)
-      - [stream-stream predict call](#stream-stream-predict-call)
+      - [Prediction Method Structure](#prediction-method-structure)
+      - [Initializing the Model Client](#initializing-the-model-client)
+      - [Unary Prediction](#unary-prediction)
+      - [Unary-Stream Prediction](#unary-stream-prediction)
+      - [Stream-Stream Prediction](#stream-stream-prediction)
       - [Dynamic Batch Prediction Handling](#dynamic-batch-prediction-handling)
 
 ### Available Model Examples
@@ -368,43 +370,109 @@ Once the model is uploaded, you can easily make the prediction to the model usin
 
 > Make sure to create compute cluster and nodepool before making predict call
 
-#### unary-unary predict call
+#### Prediction Method Structure
+
+The client **exactly mirrors** the method signatures defined in your model's **model.py**:
+
+| Model Implementation | Client Usage Pattern |
+| --- | --- |
+| **@ModelClass.method def func(...)** | **model.func(...)** |
+| **@ModelClass.method def generate(...)** | **model.generate(...)** |
+| **@ModelClass.method def analyze(...)** | **model.analyze(...)** |
+
+**Key Characteristics:**
+
+* Method names match exactly what's defined in **model.py**
+* Arguments/parameters preserve the same names and types
+* Return types mirror the model's output definitions
+
+#### Initializing the Model Client
+First, instantiate your model with proper credentials:
 
 ```python
 from clarifai.client.model import Model
-model = Model("url", , compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
-            or
-model = Model(model_id='model_id', user_id='user_id', app_id='app_id', compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
 
-# Model Predict
-model_prediction = model.f(text1= "test")
+# Initialize with explicit IDs
+model = Model(
+    user_id="model_user_id",
+    app_id="model_app_id",
+    model_id="model_id",
+    compute_cluster_id="cluster_id",
+    nodepool_id="nodepool_id"
+)
+
+# Or initialize with model URL
+model = Model(
+    model_url="https://clarifai.com/model_user_id/model_app_id/models/model_id",
+    compute_cluster_id="your_cluster_id",
+    nodepool_id="your_nodepool_id"
+)
+```
+> Make sure to create compute cluster and nodepool before making predict call and if you don't provide `compute_cluster_id` and `nodepool_id` or `deployment_id` while initializing the Model Client, model will use the Clarifai Shared Nodepool.
+
+#### Unary Prediction
+
+_**Model Method Signature (server-side):**_
+
+```python
+@ModelClass.method
+def predict_image(self, image: Image) -> Dict[str, float]:
 ```
 
-#### unary-stream predict call
+_**unary-unary predict call (Client Usage:)**_
 
 ```python
-from clarifai.client.model import Model
-model = Model("url", compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
-            or
-model = Model(model_id='model_id', user_id='user_id', app_id='app_id', compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
+# Single input
+result = model.predict_image(
+image=Image(url="https://example.com/pet1.jpg")
+)
+print(f"Cat confidence: {result['cat']:.2%}")
 
-res = model.g('test')
-for i, r in enumerate(res):
-    print(r)
+# Batch processing (automatically handled)
+batch_results = model.predict_image([
+Image(url="https://example.com/pet1.jpg"),
+Image(url="https://example.com/pet2.jpg")
+])
+for i, pred in enumerate(batch_results):
+print(f"Image {i+1} cat confidence: {pred['cat']:.2%}")
 ```
 
+#### Unary-Stream Prediction
 
-#### stream-stream predict call
+_**Model Method Signature (server-side):**_
 
 ```python
-from clarifai.client.model import Model
-model = Model("url", , compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
-            or
-model = Model(model_id='model_id', user_id='user_id', app_id='app_id', , compute_cluster_id = "compute_cluster_id", nodepool_id= "nodepool_id")
+@ModelClass.method
+def generate(self, prompt: Text) -> Stream[Text]:
+```
 
-res = model.s(iter(['test']))
-for i, r in enumerate(res):
-     print(r)
+_**Client Usage:**_
+
+```python
+response_stream = model.generate(
+prompt=Text("Explain quantum computing in simple terms")
+)
+
+for text_chunk in response_stream:
+print(text_chunk.text, end="", flush=True)
+```
+
+#### Stream-Stream Prediction
+
+_**Model Method Signature (server-side):**_
+
+```python
+@ModelClass.method
+def transcribe_audio(self, audio: Stream[Audio]) -> Stream[Text]:
+```
+
+_**Client Usage:**_
+
+```python
+# client-side streaming
+
+for text_chunk in model.transcribe_audio(audio=iter(Audio(bytes=b''))):
+print(text_chunk.text, end="", flush=True)
 ```
 
 
