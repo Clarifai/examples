@@ -323,7 +323,7 @@ Once the model is running locally, you need to configure the `CLARIFAI_API_BASE`
 export CLARIFAI_API_BASE="localhost:{port}"
 ```
 
-Then make `unary-unary`, `unary-stream` and `stream-stream` predict calls to the model based on [](#Step 6: Model Prediction)
+Then make `unary-unary`, `unary-stream` and `stream-stream` predict calls to the model based on [](#step-6-model-prediction)
 
 #### CLI flags
 
