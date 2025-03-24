@@ -34,7 +34,6 @@ This guide will walk you through the process of uploading custom models to the C
       - [Running the Model in a Docker Container](#running-the-model-in-a-docker-container)
       - [Running the Model in a Virtual Environment](#running-the-model-in-a-virtual-environment)
       - [Making Inference Requests to the Running Model](#making-inference-requests-to-the-running-model)
-        - [unary-unary predict call](#unary-unary-predict-call)
       - [CLI flags](#cli-flags)
     - [Step 5: Upload the Model to Clarifai](#step-5-upload-the-model-to-clarifai)
     - [Step 6: Model Prediction](#step-6-model-prediction)
@@ -324,19 +323,7 @@ Once the model is running locally, you need to configure the `CLARIFAI_API_BASE`
 export CLARIFAI_API_BASE="localhost:{port}"
 ```
 
-Then make `unary-unary`, `unary-stream` and `stream-stream` predict calls to the model
-
-##### unary-unary predict call
-
-```python
-from clarifai.client.model import Model
-model = Model(model_id='model_id', user_id='user_id', app_id='app_id') # no need to provide any actual values of `model_id`, `user_id` and `app_id`
-
-image_url = "https://samples.clarifai.com/metro-north.jpg"
-
-# Model Predict
-model_prediction = model.predict_by_url(image_url,)
-```
+Then make `unary-unary`, `unary-stream` and `stream-stream` predict calls to the model based on [](# Step 6: Model Prediction)
 
 #### CLI flags
 
