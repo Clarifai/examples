@@ -1,0 +1,2 @@
+clarifai==11.1.7rc3
+clarifai-grpc>=11.2.5
