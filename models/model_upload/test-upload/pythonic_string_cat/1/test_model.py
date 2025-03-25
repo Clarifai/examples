@@ -1,5 +1,4 @@
 # Runner test your implementation locally
-#
 import os
 import sys
 

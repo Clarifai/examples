@@ -9,21 +9,21 @@ class PythonicStringCat(ModelClass):
     """Load the model here."""
 
   @ModelClass.method
-  def predict(self, text1: str = "") -> str:
+  def predict(self, text: str = "") -> str:
     """This is the method that will be called when the runner is run. It takes in an input and
     returns an output.
     """
 
-    output_text = text1 + "Hello World"
+    output_text = text + "Hello World"
 
     return output_text
 
   @ModelClass.method
-  def generate(self, text1: str = '') -> Stream[str]:
+  def generate(self, text: str = '') -> Stream[str]:
     """Example yielding a whole batch of streamed stuff back."""
 
     for i in range(10):  # fake something iterating generating 10 times.
-      output_text = text1 + f"Generate Hello World {i}"
+      output_text = text + f"Generate Hello World {i}"
       yield output_text
 
   @ModelClass.method
