@@ -37,7 +37,7 @@ class MyRunner(ModelClass):
         # Leave it as None to use full model length (128k) but need more GPU mem.
         'max_model_len': None,
         'gpu_memory_utilization': 0.91,
-        'dtype': 'half',
+        'dtype': 'auto',
         'task': 'auto',
         'kv_cache_dtype': 'auto',
         'tensor_parallel_size': 1,
@@ -119,25 +119,20 @@ class MyRunner(ModelClass):
 
   def test(self):
     """Test the model here."""
+    try:
+      print("Testing predict...")
+      # Test predict
+      print(self.predict(prompt="Hello, how are you?",))
+    except Exception as e:
+      print("Error in predict", e)
+      return False
 
-    # Test predict
-    print(
-        self.predict(
-            prompt="Hello, how are you?",
-            image=None,
-            images=None,
-            chat_history=None,
-            max_tokens=512,
-            temperature=0.7,
-            top_p=0.8))
-
-    # Test generate
-    for each in self.generate(
-        prompt="Hello, how are you?",
-        image=None,
-        images=None,
-        chat_history=None,
-        max_tokens=512,
-        temperature=0.7,
-        top_p=0.8):
-      print(each)
+    try:
+      print("Testing generate...")
+      # Test generate
+      for each in self.generate(prompt="Hello, how are you?",):
+        print(each, end=" ")
+    except Exception as e:
+      print("Error in generate", e)
+      return False
+    return True
