@@ -23,5 +23,4 @@ inference_compute_info:
 checkpoints:
   type: huggingface
   repo_id: google/gemma-3-4b-it
-  hf_token: "token"
   when: runtime
