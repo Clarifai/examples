@@ -4,7 +4,7 @@ model:
   id: "gemma-3-4b-it"
   user_id: "user_id"
   app_id: "app_id"
-  model_type_id: "text-to-text"
+  model_type_id: "multimodal-to-text"
 
 build_info:
   python_version: '3.11'
