@@ -12,10 +12,11 @@ def build_messages(prompt: str, image: Image, images: List[Image], audio: Audio,
   # Add previous conversation history
   if messages:
     openai_messages.extend(messages)
-
+  
+  content = []
   if prompt.strip():
     # Build content array for current message
-    content = [{'type': 'text', 'text': prompt}]
+    content.append({'type': 'text', 'text': prompt})
   # Add single image if present
   if image:
     content.append(_process_image(image))
@@ -37,9 +38,10 @@ def build_messages(prompt: str, image: Image, images: List[Image], audio: Audio,
   if videos:
     for video in videos:
       content.append(_process_video(video))
-
-  # Append complete user message
-  openai_messages.append({'role': 'user', 'content': content})
+  
+  if content:
+    # Append complete user message
+    openai_messages.append({'role': 'user', 'content': content})
 
   return openai_messages
 
@@ -153,7 +155,7 @@ class OpenAIWrapper:
     return response.choices[0].message.content
 
   def generate(self,
-               prompt: str,
+               prompt: str = "",
                image: Image = None,
                images: List[Image] = None,
                audio: Audio = None,

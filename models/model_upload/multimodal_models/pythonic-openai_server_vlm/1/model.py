@@ -35,7 +35,7 @@ class MyRunner(ModelClass):
         'limit_mm_per_prompt': 'image=10',
 
         # Leave it as None to use full model length (128k) but need more GPU mem.
-        'max_model_len': None,
+        'max_model_len': 2048,
         'gpu_memory_utilization': 0.8,
         'dtype': 'auto',
         'task': 'auto',
@@ -119,7 +119,7 @@ class MyRunner(ModelClass):
 
   @ModelClass.method
   def chat(self,
-           messages: List[dict] = None,
+           messages: List[dict],
            max_tokens: int = 512,
            temperature: int = 0.7,
            top_p: float = 0.8) -> Stream[str]:
