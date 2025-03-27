@@ -33,7 +33,7 @@ This guide will walk you through the process of uploading custom models to the C
       - [Testing the Model in a Virtual Environment](#testing-the-model-in-a-virtual-environment)
       - [Running the Model in a Docker Container](#running-the-model-in-a-docker-container)
       - [Running the Model in a Virtual Environment](#running-the-model-in-a-virtual-environment)
-      - [Making Inference Requests to the Running Model](#making-inference-requests-to-the-running-model)
+      - [Making Inference Requests to the Locally Running Model](#making-inference-requests-to-the-locally-running-model)
       - [CLI flags](#cli-flags)
     - [Step 5: Upload the Model to Clarifai](#step-5-upload-the-model-to-clarifai)
     - [Step 6: Model Prediction](#step-6-model-prediction)
@@ -291,6 +291,44 @@ You can test the model within a Docker container or a Python virtual environment
 
 1. ### Testing the Model
 
+To test the model, you need to implement a `test` method in the `model.py` file. This method should call other model methods for validation. When you run the below `test-locally` CLI command, it will execute the `test` method to perform the model testing.
+
+Below is a sample `model.py` file with an example implementation of the `test` method
+
+```python
+from clarifai.runners.models.model_class import ModelClass
+from clarifai.runners.utils.data_types import Stream, Text
+
+
+class MyModel(ModelClass):
+  """A custom runner that adds "Hello World" to the end of the text."""
+
+  def load_model(self):
+    """Load the model here."""
+
+  @ModelClass.method
+  def predict(self, text1: Text = "") -> Text:
+    output_text = text1.text + "Hello World"
+
+    return Text(output_text)
+
+  @ModelClass.method
+  def generate(self, text1: Text = Text("")) -> Stream[Text]:
+    """Example yielding a whole batch of streamed stuff back."""
+
+    for i in range(10):  # fake something iterating generating 10 times.
+      output_text = text1.text + f"Generate Hello World {i}"
+      yield Text(output_text)
+
+  def test(self):
+    res = self.predict(Text("test"))
+    assert res.text == "testHello World"
+
+    res = self.generate(Text("test"))
+    for i, r in enumerate(res):
+      assert r.text == f"testGenerate Hello World {i}"
+```
+
 #### Testing the Model in a Container
 
 ```python
@@ -315,7 +353,7 @@ clarifai model run-locally {model_path} --mode container --port 8000
 clarifai model run-locally {model_path} --mode container --port 8000
 ```
 
-#### Making Inference Requests to the Running Model
+#### Making Inference Requests to the Locally Running Model
 
 Once the model is running locally, you need to configure the `CLARIFAI_API_BASE` environment variable to point to the localhost and the port where the gRPC server is running
 
