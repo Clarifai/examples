@@ -36,7 +36,7 @@ model = Model(model_url="https://clarifai.com/model_user_id/model_app_id/models/
 ```
 
 #### Unary-Unary Prediction
-
+> `chat_history` here must be same as Openai client `messages` object
 ```python
 # Single input prediction
 result = model.predict("Write 2000 word story?")
@@ -54,7 +54,7 @@ for i, pred in enumerate(batch_results):
 #### Unary-Stream Prediction
 
 #### Using `generate` Method
-
+> `chat_history` here must be same as Openai client `messages` object
 ```python
 response_stream = model.generate(text="Write 2000 word story", temperature=0.4, max_tokens=100)
 
@@ -63,7 +63,7 @@ for text_chunk in response_stream:
 ```
 
 #### Using `chat` Method
-
+> `messages` here must be same as Openai client `messages` object
 ```python
 messages=[{
           "role": "user",
