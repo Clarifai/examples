@@ -36,7 +36,7 @@ class MyRunner(ModelClass):
 
         # Leave it as None to use full model length (128k) but need more GPU mem.
         'max_model_len': None,
-        'gpu_memory_utilization': 0.91,
+        'gpu_memory_utilization': 0.8,
         'dtype': 'auto',
         'task': 'auto',
         'kv_cache_dtype': 'auto',
@@ -92,7 +92,7 @@ class MyRunner(ModelClass):
         prompt=prompt,
         image=image,
         images=images,
-        chat_history=chat_history,
+        messages=chat_history,
         max_tokens=max_tokens,
         temperature=temperature,
         top_p=top_p)
@@ -111,12 +111,24 @@ class MyRunner(ModelClass):
         prompt=prompt,
         image=image,
         images=images,
-        chat_history=chat_history,
+        messages=chat_history,
         max_tokens=max_tokens,
         temperature=temperature,
         top_p=top_p):
       yield each
 
+  @ModelClass.method
+  def chat(self,
+           messages: List[dict] = None,
+           max_tokens: int = 512,
+           temperature: int = 0.7,
+           top_p: float = 0.8) -> Stream[str]:
+    """Chat with the model."""
+    for each in self.client.generate(
+        messages=messages, max_tokens=max_tokens, temperature=temperature, top_p=top_p):
+      yield each
+
+  # This method is needed to test the model with the test-locally CLI command.
   def test(self):
     """Test the model here."""
     try:
@@ -125,7 +137,6 @@ class MyRunner(ModelClass):
       print(self.predict(prompt="Hello, how are you?",))
     except Exception as e:
       print("Error in predict", e)
-      return False
 
     try:
       print("Testing generate...")
@@ -134,5 +145,3 @@ class MyRunner(ModelClass):
         print(each, end=" ")
     except Exception as e:
       print("Error in generate", e)
-      return False
-    return True
