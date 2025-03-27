@@ -8,9 +8,9 @@ The client **exactly mirrors** the method signatures defined in your model's **m
 
 | Model Implementation | Client Usage Pattern |
 | --- | --- |
-| **@ModelClass.method def func(...)** | **model.func(...)** |
+| **@ModelClass.method def predict(...)** | **model.predict(...)** |
 | **@ModelClass.method def generate(...)** | **model.generate(...)** |
-| **@ModelClass.method def analyze(...)** | **model.analyze(...)** |
+| **@ModelClass.method def stream(...)** | **model.stream(...)** |
 
 **Key Characteristics:**
 
@@ -40,7 +40,7 @@ model = Model(model_url="https://clarifai.com/model_user_id/model_app_id/models/
 ```python
 # Single input prediction
 result = model.predict("Write 2000 word story?")
-print(f"unary-unary response: {result['cat']:.2%}")
+print(f"unary-unary response: {result}")
 
 # Batch processing (automatically handled)
 batch_results = model.predict([
