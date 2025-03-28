@@ -128,13 +128,13 @@ class MyRunner(ModelClass):
            temperature: float = 0.7,
            top_p: float = 0.8) -> Stream[dict]:
     """Chat with the model."""
-    for each in self.client.chat(
+    for chunk in self.client.chat(
         messages=messages,
         max_tokens=max_tokens,
         temperature=temperature,
         top_p=top_p,
         stream=True):
-      yield each
+      yield chunk.to_dict()
 
   # This method is needed to test the model with the test-locally CLI command.
   def test(self):
