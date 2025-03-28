@@ -1,0 +1,15 @@
+# This is the sample config file for the sample cpu model for testing
+
+model:
+  id: "pythonic_string_cat"
+  user_id: "user_id"
+  app_id: "app_id"
+  model_type_id: "text-to-text"
+
+build_info:
+  python_version: "3.12"
+
+inference_compute_info:
+  cpu_limit: "500m"
+  cpu_memory: "500Mi"
+  num_accelerators: 0
