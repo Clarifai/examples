@@ -88,14 +88,14 @@ class MyRunner(ModelClass):
     """This is the method that will be called when the runner is run. It takes in an input and
     returns an output.
     """
-    return self.client.predict(
+    return self.client.chat(
         prompt=prompt,
         image=image,
         images=images,
         messages=chat_history,
         max_tokens=max_tokens,
         temperature=temperature,
-        top_p=top_p)
+        top_p=top_p).choices[0].message.content
 
   @ModelClass.method
   def generate(self,
@@ -107,25 +107,33 @@ class MyRunner(ModelClass):
                temperature: float = 0.7,
                top_p: float = 0.8) -> Stream[str]:
     """Example yielding a whole batch of streamed stuff back."""
-    for each in self.client.generate(
+    for chunk in self.client.chat(
         prompt=prompt,
         image=image,
         images=images,
         messages=chat_history,
         max_tokens=max_tokens,
         temperature=temperature,
-        top_p=top_p):
-      yield each
+        top_p=top_p,
+        stream=True):
+      if chunk.choices:
+        text = (chunk.choices[0].delta.content
+                if (chunk and chunk.choices[0].delta.content) is not None else '')
+        yield text
 
   @ModelClass.method
   def chat(self,
            messages: List[dict],
            max_tokens: int = 512,
            temperature: float = 0.7,
-           top_p: float = 0.8) -> Stream[str]:
+           top_p: float = 0.8) -> Stream[dict]:
     """Chat with the model."""
-    for each in self.client.generate(
-        messages=messages, max_tokens=max_tokens, temperature=temperature, top_p=top_p):
+    for each in self.client.chat(
+        messages=messages,
+        max_tokens=max_tokens,
+        temperature=temperature,
+        top_p=top_p,
+        stream=True):
       yield each
 
   # This method is needed to test the model with the test-locally CLI command.

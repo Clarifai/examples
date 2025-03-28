@@ -1,5 +1,5 @@
 import base64
-from typing import Dict, Iterator, List
+from typing import Dict, List
 
 from clarifai.runners.utils.data_types import Audio, Image, Video
 
@@ -12,7 +12,7 @@ def build_messages(prompt: str, image: Image, images: List[Image], audio: Audio,
   # Add previous conversation history
   if messages:
     openai_messages.extend(messages)
-  
+
   content = []
   if prompt.strip():
     # Build content array for current message
@@ -38,7 +38,7 @@ def build_messages(prompt: str, image: Image, images: List[Image], audio: Audio,
   if videos:
     for video in videos:
       content.append(_process_video(video))
-  
+
   if content:
     # Append complete user message
     openai_messages.append({'role': 'user', 'content': content})
@@ -129,19 +129,20 @@ class OpenAIWrapper:
   def make_api_url(host: str, port: int, version: str = "v1") -> str:
     return f"http://{host}:{port}/{version}"
 
-  def predict(self,
-              prompt: str = "",
-              image: Image = None,
-              images: List[Image] = None,
-              audio: Audio = None,
-              audios: List[Audio] = None,
-              video: Video = None,
-              videos: List[Video] = None,
-              messages: List[Dict] = None,
-              max_tokens: int = 512,
-              temperature: float = 0.7,
-              top_p: float = 0.8) -> str:
-    """Process a single request through OpenAI API."""
+  def chat(self,
+           prompt: str = "",
+           image: Image = None,
+           images: List[Image] = None,
+           audio: Audio = None,
+           audios: List[Audio] = None,
+           video: Video = None,
+           videos: List[Video] = None,
+           messages: List[Dict] = None,
+           max_tokens: int = 512,
+           temperature: float = 0.7,
+           top_p: float = 0.8,
+           stream=False) -> dict:
+    """Process request through OpenAI API."""
     openai_messages = build_messages(prompt, image, images or [], audio, audios or [], video,
                                      videos or [], messages or [])
     response = self.client.chat.completions.create(
@@ -150,36 +151,6 @@ class OpenAIWrapper:
         temperature=temperature,
         max_tokens=max_tokens,
         top_p=top_p,
-        stream=False)
+        stream=stream)
 
-    return response.choices[0].message.content
-
-  def generate(self,
-               prompt: str = "",
-               image: Image = None,
-               images: List[Image] = None,
-               audio: Audio = None,
-               audios: List[Audio] = None,
-               video: Video = None,
-               videos: List[Video] = None,
-               messages: List[Dict] = None,
-               max_tokens: int = 512,
-               temperature: float = 0.7,
-               top_p: float = 0.8) -> Iterator[str]:
-    """Stream response from OpenAI API."""
-    openai_messages = build_messages(prompt, image, images or [], audio, audios or [], video,
-                                     videos or [], messages or [])
-
-    stream = self.client.chat.completions.create(
-        model=self.model_id,
-        messages=openai_messages,
-        temperature=temperature,
-        max_tokens=max_tokens,
-        top_p=top_p,
-        stream=True)
-
-    for chunk in stream:
-      if chunk.choices:
-        text = (chunk.choices[0].delta.content
-                if (chunk and chunk.choices[0].delta.content) is not None else '')
-        yield text
+    return response
