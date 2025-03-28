@@ -83,7 +83,7 @@ class MyRunner(ModelClass):
               images: List[Image] = None,
               chat_history: List[dict] = None,
               max_tokens: int = 512,
-              temperature: int = 0.7,
+              temperature: float = 0.7,
               top_p: float = 0.8) -> str:
     """This is the method that will be called when the runner is run. It takes in an input and
     returns an output.
@@ -104,7 +104,7 @@ class MyRunner(ModelClass):
                images: List[Image] = None,
                chat_history: List[dict] = None,
                max_tokens: int = 512,
-               temperature: int = 0.7,
+               temperature: float = 0.7,
                top_p: float = 0.8) -> Stream[str]:
     """Example yielding a whole batch of streamed stuff back."""
     for each in self.client.generate(
@@ -121,7 +121,7 @@ class MyRunner(ModelClass):
   def chat(self,
            messages: List[dict],
            max_tokens: int = 512,
-           temperature: int = 0.7,
+           temperature: float = 0.7,
            top_p: float = 0.8) -> Stream[str]:
     """Chat with the model."""
     for each in self.client.generate(
