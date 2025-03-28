@@ -18,5 +18,5 @@ inference_compute_info:
 
 checkpoints:
   type: "huggingface"
-  repo_id: "meta-llama/Llama-3.2-1B-Instruct"
+  repo_id: "unsloth/Llama-3.2-1B-Instruct"
   hf_token: "hf_token"
