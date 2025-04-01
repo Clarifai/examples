@@ -1,15 +1,9 @@
 # This is the sample config file for the llama model.
 
-# model:
-#   id: "pystrcat-2a85be5749b24cc1805be72c565bf850"
-#   user_id: "tstcmptclstrinfrnc-65k9mqe1kzjru"
-#   app_id: "tstcmptclstrinfrnc-p3t3an7av3cyh"
-#   model_type_id: "text-to-text"
-
 model:
-  id: "python-string-cat"
-  user_id: "j1t745f6ga6o"
-  app_id: "application-1742801677"
+  id: "python_string_cat"
+  user_id: "user_id"
+  app_id: "app_id"
   model_type_id: "text-to-text"
 
 build_info:
@@ -19,3 +13,4 @@ inference_compute_info:
   cpu_limit: "500m"
   cpu_memory: "500Mi"
   num_accelerators: 0
+  
