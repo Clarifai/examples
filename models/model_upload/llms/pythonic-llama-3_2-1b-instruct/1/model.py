@@ -10,6 +10,7 @@ import torch
 from clarifai.runners.models.model_class import ModelClass
 from clarifai.runners.utils.data_types import Stream
 from transformers import (AutoModelForCausalLM, AutoTokenizer, TextIteratorStreamer)
+from clarifai_datautils.text.prompt_factory import hf_chat_template
 
 ##################
 
@@ -34,6 +35,7 @@ class MyRunner(ModelClass):
         device_map=self.device,
     )
     self.streamer = TextIteratorStreamer(tokenizer=self.tokenizer,)
+    self.chat_template = None
     # Use downloaded checkpoints.
 
   @ModelClass.method
@@ -93,6 +95,20 @@ class MyRunner(ModelClass):
       yield output
 
     thread.join()
+
+  @ModelClass.method
+  def chat(self,
+            messages: List[dict],
+            max_tokens: int = 512,
+            temperature: float = 0.7,
+            top_p: float = 0.8) -> Stream[dict]:
+    """Chat with the model."""
+    hf_token = os.getenv("hf_token")
+    if self.chat_template is None:
+      hf_messages, self.chat_template = hf_chat_template(model="unsloth/Llama-3.2-1B-Instruct", messages=messages, hf_token=hf_token)
+    else:
+      hf_messages, _ = hf_chat_template(model="unsloth/Llama-3.2-1B-Instruct", messages=messages, chat_template=self.chat_template)
+    return self.generate(prompt=hf_messages, max_tokens=max_tokens, temperature=temperature, top_p=top_p)
 
   # This method is needed to test the model with the test-locally CLI command.
   def test(self):

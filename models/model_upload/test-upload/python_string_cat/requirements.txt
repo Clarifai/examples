@@ -1,1 +1,1 @@
-clarifai
+clarifai==11.1.7
