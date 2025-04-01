@@ -13,5 +13,5 @@ inference_compute_info:
   cpu_limit: "2"
   cpu_memory: "16Gi"
   num_accelerators: 1
-  accelerator_type: ["NVIDIA*"]
+  accelerator_type: ["NVIDIA-*"]
   accelerator_memory: "42Gi"
