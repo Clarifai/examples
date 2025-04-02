@@ -1,0 +1,18 @@
+model:
+  id: "model_id"
+  user_id: "user_id"
+  app_id: "app_id"
+  model_type_id: "visual-detector"
+build_info:
+  python_version: '3.12'
+inference_compute_info:
+  cpu_limit: '500m'
+  cpu_memory: 3Gi
+  num_accelerators: 1
+  accelerator_type:
+  - NVIDIA-*
+  accelerator_memory: 1Gi
+checkpoints:
+  type: huggingface
+  repo_id: omlab/omdet-turbo-swin-tiny-hf
+  hf_token: "hf_token"
