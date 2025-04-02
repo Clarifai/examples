@@ -1,6 +1,6 @@
 # This is the sample config file for the llama model.
 
-model: 
+model:
   id: "python_string_cat"
   user_id: "user_id"
   app_id: "app_id"
@@ -13,3 +13,4 @@ inference_compute_info:
   cpu_limit: "500m"
   cpu_memory: "500Mi"
   num_accelerators: 0
+  
