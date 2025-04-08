@@ -1,9 +1,9 @@
 # This is the sample config file for the llama model.
 
 model:
-  id: "gemma-3-4b-it"
+  id: "fe-gemma-3-4b-it"
   user_id: "user_id"
-  app_id: "app_id"
+  app_id: "user_id"
   model_type_id: "multimodal-to-text"
 
 build_info:
@@ -23,4 +23,5 @@ inference_compute_info:
 checkpoints:
   type: huggingface
   repo_id: google/gemma-3-4b-it
+  hf_token: "hf_token"
   when: runtime

@@ -9,7 +9,7 @@ ninja
 qwen-vl-utils==0.0.8
 timm
 openai
-clarifai==11.1.7rc5
+clarifai==11.1.7rc9
 clarifai-protocol>=0.0.20
 psutil
 
