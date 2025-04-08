@@ -255,16 +255,19 @@ def load_model(self):
 #### Method Decorators
 
 * **@ModelClass.method** registers prediction endpoints
-* Supports three method types via type hints:
+* Supports method types via type hints:
 
 ```python
 # Unary-Unary (Standard request-response)
+@ModelClass.method
 def predict(self, input: Image) -> Text
 
 # Unary-Stream (Server-side streaming)
+@ModelClass.method
 def generate(self, prompt: Text) -> Stream[Text]
 
 # Stream-Stream (Bidirectional streaming)
+@ModelClass.method
 def analyze_video(self, frames: Stream[Image]) -> Stream[str]
 ```
 
@@ -446,15 +449,15 @@ _**unary-unary predict call (Client Usage:)**_
 ```python
 # Single input
 result = model.predict_image(
-image=Image(url="https://example.com/pet1.jpg")
+    image=Image(url="https://example.com/pet1.jpg")
 )
 print(f"Cat confidence: {result['cat']:.2%}")
 
 # Batch processing (automatically handled)
 batch_results = model.predict_image([
-Image(url="https://example.com/pet1.jpg"),
-Image(url="https://example.com/pet2.jpg")
-])
+    {"image": Image(url="https://example.com/pet1.jpg")},
+    {"image": Image(url="https://example.com/pet2.jpg")},
+    ])
 for i, pred in enumerate(batch_results):
 print(f"Image {i+1} cat confidence: {pred['cat']:.2%}")
 ```
@@ -472,11 +475,11 @@ _**Client Usage:**_
 
 ```python
 response_stream = model.generate(
-prompt=Text("Explain quantum computing in simple terms")
+    prompt=Text("Explain quantum computing in simple terms")
 )
 
 for text_chunk in response_stream:
-print(text_chunk.text, end="", flush=True)
+    print(text_chunk.text, end="", flush=True)
 ```
 
 #### Stream-Stream Prediction
@@ -494,7 +497,7 @@ _**Client Usage:**_
 # client-side streaming
 
 for text_chunk in model.transcribe_audio(audio=iter(Audio(bytes=b''))):
-print(text_chunk.text, end="", flush=True)
+    print(text_chunk.text, end="", flush=True)
 ```
 
 
@@ -527,8 +530,8 @@ single_result = model.predict(Text("Positive review"))
 
 # Batch prediction
 batch_results = model.predict([
-  Text("Great product"),
-  Text("Terrible service"),
-  Text("Average experience")
+    {"text": Text("Positive review")},
+    {"text": Text("Positive review")},
+    {"text": Text("Positive review")},
   ])
 ```
