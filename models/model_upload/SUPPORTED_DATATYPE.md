@@ -164,11 +164,11 @@ class RealTimeAnalytics(ModelClass):
   @ModelClass.method
   def monitor_sensors(
     self,
-    sensor_stream: Stream[NamedFields(
+    sensor_stream: Iterator[NamedFields(
     temperature=float,
     pressure=float,
     timestamp=float
-  )]) -> Stream[NamedFields(
+  )]) -> Iterator[NamedFields(
     status=str,
     anomaly_score=float
   )]:

@@ -39,6 +39,10 @@ This guide will walk you through the process of uploading custom models to the C
     - [Step 6: Model Prediction](#step-6-model-prediction)
       - [Prediction Method Structure](#prediction-method-structure)
       - [Initializing the Model Client](#initializing-the-model-client)
+      - [Get Method Signatures of the Model](#get-method-signatures-of-the-model)
+        - [Available Model Methods](#available-model-methods)
+        - [Method Signature](#method-signature)
+        - [Example client script of Model](#example-client-script-of-model)
       - [Unary Prediction](#unary-prediction)
       - [Unary-Stream Prediction](#unary-stream-prediction)
       - [Stream-Stream Prediction](#stream-stream-prediction)
@@ -202,7 +206,8 @@ To define a custom model, you need to create a class that inherits from **ModelC
 
 ```python
 from clarifai.runners.models.model_class import ModelClass
-from clarifai.runners.utils.data_types import Stream, Text
+from clarifai.runners.utils.data_types import Text
+from typing import Iterator
 
 
 class MyModel(ModelClass):
@@ -222,7 +227,7 @@ class MyModel(ModelClass):
     return Text(output_text)
 
   @ModelClass.method
-  def generate(self, text1: Text = Text("")) -> Stream[Text]:
+  def generate(self, text1: Text = Text("")) -> Iterator[Text]:
     """Example yielding a whole batch of streamed stuff back."""
 
     for i in range(10):  # fake something iterating generating 10 times.
@@ -230,7 +235,7 @@ class MyModel(ModelClass):
       yield Text(output_text)
 
   @ModelClass.method
-  def stream(self, input_iterator: Stream[Text]) -> Stream[Text]:
+  def stream(self, input_iterator: Iterator[Text]) -> Iterator[Text]:
     """Example yielding a whole batch of streamed stuff back."""
 
     for i, input in enumerate(input_iterator):
@@ -264,11 +269,11 @@ def predict(self, input: Image) -> Text
 
 # Unary-Stream (Server-side streaming)
 @ModelClass.method
-def generate(self, prompt: Text) -> Stream[Text]
+def generate(self, prompt: Text) -> Iterator[Text]
 
 # Stream-Stream (Bidirectional streaming)
 @ModelClass.method
-def analyze_video(self, frames: Stream[Image]) -> Stream[str]
+def analyze_video(self, frames: Stream[Image]) -> Iterator[str]
 ```
 
 #### [Supported Input and Output Data Types](SUPPORTED_DATATYPE.md)
@@ -300,7 +305,7 @@ Below is a sample `model.py` file with an example implementation of the `test` m
 
 ```python
 from clarifai.runners.models.model_class import ModelClass
-from clarifai.runners.utils.data_types import Stream, Text
+from clarifai.runners.utils.data_types import Text
 
 
 class MyModel(ModelClass):
@@ -316,7 +321,7 @@ class MyModel(ModelClass):
     return Text(output_text)
 
   @ModelClass.method
-  def generate(self, text1: Text = Text("")) -> Stream[Text]:
+  def generate(self, text1: Text = Text("")) -> Iterator[Text]:
     """Example yielding a whole batch of streamed stuff back."""
 
     for i in range(10):  # fake something iterating generating 10 times.
@@ -435,6 +440,34 @@ model = Model(
 ```
 > Make sure to create compute cluster and nodepool before making predict call and if you don't provide `compute_cluster_id` and `nodepool_id` or `deployment_id` while initializing the Model Client, model will use the Clarifai Shared Nodepool.
 
+#### Get Method Signatures of the Model
+Get the method Signature of the model to know how to call the model on client side
+
+##### Available Model Methods
+List all the methods implemented in Model's model.py and are available to use for Model inference
+
+```python
+model_methods = model.available_methods()
+print(model_methods)
+```
+
+##### Method Signature
+Get the method signature of the Model's method, this will be need to find all the method Arguments/parameters and their annotations for Model Inference
+
+```python
+method_name = "predict"
+method_signature = model.method_signature(method_name= method_name)
+print(method_signature)
+```
+
+##### Example client script of Model
+Generate a sample code script for a model
+
+```python
+model_script = model.generate_client_script()
+print(model_script)
+```
+
 #### Unary Prediction
 
 _**Model Method Signature (server-side):**_
@@ -468,7 +501,7 @@ _**Model Method Signature (server-side):**_
 
 ```python
 @ModelClass.method
-def generate(self, prompt: Text) -> Stream[Text]:
+def generate(self, prompt: Text) -> Iterator[Text]:
 ```
 
 _**Client Usage:**_
@@ -488,7 +521,7 @@ _**Model Method Signature (server-side):**_
 
 ```python
 @ModelClass.method
-def transcribe_audio(self, audio: Stream[Audio]) -> Stream[Text]:
+def transcribe_audio(self, audio: Iterator[Audio]) -> Iterator[Text]:
 ```
 
 _**Client Usage:**_
