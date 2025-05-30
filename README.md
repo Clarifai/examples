@@ -34,6 +34,21 @@ dataset = Dataset(user_id="user_id", app_id="app_id", dataset_id="dataset_id")
 dataset.upload_dataset(task="text_clf", split="train", module_dir="path_to_imdb_reviews_module")
 ```
 
+## Compute Orchestration and Agentic Examples
+| Function    | Link    | Description | Link to Docs |
+| ----------- | ----------- | -----------   | -----------   |
+| Basics      | [Basics](basics/basics.ipynb) | Basic Functionalities (create, list, patch, delete) of SDK App, Dataset, Input & Model Classes | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/basics/basics.ipynb) |
+| Compute Orchestration      | [CRUD Operations](ComputeOrchestration/crud_operations.ipynb) | Basic Functionalities (create, list, get, delete) of Compute Orchestration Classes - ComputeCluster, Nodepool, Deployment | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/ComputeOrchestration/crud_operations.ipynb) |
+| Model Predict  | [Predict](models/model_predict/README.md) | Call predict of any model in a [Python native way](models/model_predict/clarifai_llm.py) with our SDK. See many more examples [here](models/model_predict/) | [Docs for Python/Javascript](https://docs.clarifai.com/compute/models/inference/api) |
+|                | [Using OpenAI Client](models/model_predict/openai_llm.py) | Use the openAI client to call openAI-compatible models in Clarifai. See many more examples [here](models/model_predict/).  | [Docs for Pyhon/Typescript](https://docs.clarifai.com/compute/models/inference/open-ai) |
+|                | [Using LiteLLM](models/model_predict/openai_llm.py) | Use Litellm to call openAI-compatible models in Clarifai. See many more examples [here](models/model_predict/) |  |
+|                | [Legacy Models](http://docs.clarifai.com/compute/models/inference/api-legacy/) | Call predict of any model not uploaded to compute orchestration with our SDK | [Docs](http://docs.clarifai.com/compute/models/inference/api-legacy/) |
+| Model Upload  | [Model Upload](https://github.com/clarifai/runners-examples) | Upload custom models, MCP tools, or any python function you want. See our new runner examples repo for compute orchestration with many examples covered! |  |
+| MCP Tools      | [MCP Tool Examples](https://github.com/Clarifai/runners-examples/tree/main/mcp) | Upload custom MCP tools and have them fully hosted in Clarifai to use with any MCP client. |  |
+| Agent Toolkits | [CrewAI Examples](https://github.com/Clarifai/examples/tree/main/agents/CrewAI) | Build agents with CrewAI toolkits on top of Clarifai LLMs and MCP tools. | [Video](https://youtu.be/1XZT2wD4UzQ) |
+|                | [Google ADK](https://github.com/Clarifai/examples/tree/main/agents/Google-ADK)  | Create agetns with Google ADK leveraging LLMs and tools powered by Clarifai | | 
+|                | [LLM + MCP Examples](https://github.com/Clarifai/examples/tree/main/agents/mcp) | Simple python native examples of building agents covering function calls, JSON parsing and more |  |
+
 
 ## SDK Notebooks
 | Function    | Notebook    | Description | Open in Colab |
@@ -45,10 +60,10 @@ dataset.upload_dataset(task="text_clf", split="train", module_dir="path_to_imdb_
 |             | [Input Upload](datasets/upload/input_upload.ipynb) | Upload Functionalities of SDK with different kinds of data (image, text, audio, video ) and annotations (classes, bbox, etc) using Input Class | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/datasets/upload/input_upload.ipynb) |
 |             | [Dataset Upload](datasets/upload/dataset_upload.ipynb) | Upload Functionalities of SDK with different of dataset annotation formats (Clarifai, Cifar10, VOC, etc.) using Dataset Class | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/datasets/upload/dataset_upload.ipynb) |
 |             | [Dataset Export](datasets/export/dataset_export.ipynb) | Export Functionalities of SDK to different of dataset annotation formats (Clarifai, Cifar10, VOC, etc.) using Dataset Class | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/datasets/export/dataset_export.ipynb) |
+| Model Predict  | [Model Predict](models/model_predict.ipynb) | Prediction Functionalities of SDK Model Class for different type of input data | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/models/model_predict.ipynb) |
 |   Workflows   | [Create Workflow](workflows/create_workflow.ipynb) | Different kinds of Workflow Creation examples using SDK | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/workflows/create_workflow.ipynb) |
 |             | [Patch Workflow](workflows/patch_workflow.ipynb) | Modifying a workflow with patch operations using SDK Workflow Class | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/workflows/patch_workflow.ipynb) |
 |             | [Export Workflow](workflows/export_workflow.ipynb) | Exporting Workflow config and create a modified workflow using SDK Workflow Class | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/workflows/export_workflow.ipynb) |
-| Model Predict  | [Model Predict](models/model_predict.ipynb) | Prediction Functionalities of SDK Model Class for different type of input data | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/models/model_predict.ipynb) |
 | Model Training  | [Image Classification Training](models/model_train/image-classification_training.ipynb) | Model Train demo for Visual-Classifier model type with MMClassification_EfficientNet Template | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/models/model_train/image-classification_training.ipynb) |
 |             | [Text Classification Training](models/model_train/text-classification_training.ipynb) | Model Train demo for Text-Classifier model type with HF_GPTNeo_125m_lora template | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/models/model_train/text-classification_training.ipynb) |
 |             | [Image Detection Training](models/model_train/image-detection_training.ipynb) | Model Train demo for Visual-Detector model type with MMDetection template | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/models/model_train/image-detection_training.ipynb) |
@@ -93,11 +108,6 @@ dataset.upload_dataset(task="text_clf", split="train", module_dir="path_to_imdb_
 | Multimodal   | [Data Ingestion ](Data_Utils/Ingestion%20pipelines/)   | [Ready to Use Pipelines](Data_Utils/Ingestion%20pipelines/Ready_to_use_foundational_pipelines.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/Data_Utils/Ingestion%20pipelines/Ready_to_use_foundational_pipelines.ipynb) |
 |     | [Data Ingestion ](Data_Utils/Ingestion%20pipelines/)   | [Multimodal Ingestion](Data_Utils/Ingestion%20pipelines/Multimodal_dataloader.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/Data_Utils/Ingestion%20pipelines/Multimodal_dataloader.ipynb) |
 | | [Data Ingestion ](Data_Utils/Ingestion%20pipelines/) |[Advanced Multimodal Ingestion with summarizer](Data_Utils/Ingestion%20pipelines/Multimodal_ingest_RAG_notebook.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/Data_Utils/Ingestion%20pipelines/Multimodal_ingest_RAG_notebook.ipynb) |
-
-## Model upload examples
-
-There is an exciting new model upload experience now in private preview. We'd love for you to try it out and give us feedback! If you're interested, please sign up for private preview [here](https://forms.gle/MSx7QNxmug2oFZYD6).
-
 
 ## Note
 
