@@ -35,14 +35,14 @@ dataset.upload_dataset(task="text_clf", split="train", module_dir="path_to_imdb_
 ```
 
 ## Compute Orchestration and Agentic Examples
-| Function    | Link    | Description | Open in Colab |
+| Function    | Link    | Description | Link to Docs |
 | ----------- | ----------- | -----------   | -----------   |
 | Basics      | [Basics](basics/basics.ipynb) | Basic Functionalities (create, list, patch, delete) of SDK App, Dataset, Input & Model Classes | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/basics/basics.ipynb) |
 | Compute Orchestration      | [CRUD Operations](ComputeOrchestration/crud_operations.ipynb) | Basic Functionalities (create, list, get, delete) of Compute Orchestration Classes - ComputeCluster, Nodepool, Deployment | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/ComputeOrchestration/crud_operations.ipynb) |
-| Model Predict  | [Predict](models/model_predict.ipynb) | Call predict of any model in a Python native way with our SDK |  |
-|                | [Using OpenAI Client | Use the openAI client to call openAI-compatible models in Clarifai |  |
+| Model Predict  | [Predict](models/model_predict.ipynb) | Call predict of any model in a Python native way with our SDK | [Predict Docs](https://docs.clarifai.com/compute/models/inference/api) |
+|                | [Using OpenAI Client | Use the openAI client to call openAI-compatible models in Clarifai | [OpenAI Compatible](https://docs.clarifai.com/compute/models/inference/open-ai) |
 |                | [Using LiteLLM]() | Use Litellm to call openAI-compatible models in Clarifai |  |
-|                | [Legacy Models](models/model_predict.ipynb) | Call predict of any model not uploaded to compute orchestration with our SDK | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Clarifai/examples/blob/main/models/model_predict.ipynb) |
+|                | [Legacy Models](models/model_predict.ipynb) | Call predict of any model not uploaded to compute orchestration with our SDK | [Docs](http://docs.clarifai.com/compute/models/inference/api-legacy/) |
 |                | [Model Predict Javascript]() | Examples coming soon  |  |
 | Model Upload  | [Model Upload]([models/model_predict.ipynb](https://github.com/clarifai/runners-examples)) | Upload custom models, MCP tools, or any python function you want. See our new runner examples repo for compute orchestration with many examples covered! |  |
 | MCP Tools      | [MCP Tool Examples](https://github.com/Clarifai/runners-examples/tree/main/mcp) | Upload custom MCP tools and have them fully hosted in Clarifai to use with any MCP client. |  |
