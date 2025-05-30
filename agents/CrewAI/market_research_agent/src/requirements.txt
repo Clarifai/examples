@@ -1,0 +1,4 @@
+clarifai==11.4.6
+crewai
+crewai-tools
+openai
