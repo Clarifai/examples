@@ -3,7 +3,6 @@ import json
 import os
 from typing import Any, Dict, List, Optional
 
-from dotenv import load_dotenv
 from openai import AsyncOpenAI
 from fastmcp import Client
 from fastmcp.client.transports import StreamableHttpTransport
