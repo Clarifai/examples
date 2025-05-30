@@ -46,7 +46,7 @@ dataset.upload_dataset(task="text_clf", split="train", module_dir="path_to_imdb_
 |                | [Model Predict Javascript]() | Examples coming soon  |  |
 | Model Upload  | [Model Upload]([models/model_predict.ipynb](https://github.com/clarifai/runners-examples)) | Upload custom models, MCP tools, or any python function you want. See our new runner examples repo for compute orchestration with many examples covered! |  |
 | MCP Tools      | [MCP Tool Examples](https://github.com/Clarifai/runners-examples/tree/main/mcp) | Upload custom MCP tools and have them fully hosted in Clarifai to use with any MCP client. |  |
-| Agent Toolkits | [CrewAI Examples](https://github.com/Clarifai/examples/tree/main/agents/CrewAI) | Build agents with CrewAI toolkits on top of Clarifai LLMs and MCP tools. |  |
+| Agent Toolkits | [CrewAI Examples](https://github.com/Clarifai/examples/tree/main/agents/CrewAI) | Build agents with CrewAI toolkits on top of Clarifai LLMs and MCP tools. | [Video](https://youtu.be/1XZT2wD4UzQ) |
 |                | [Google ADK](https://github.com/Clarifai/examples/tree/main/agents/Google-ADK)  | Create agetns with Google ADK leveraging LLMs and tools powered by Clarifai | | 
 |                | [LLM + MCP Examples](https://github.com/Clarifai/examples/tree/main/agents/mcp) | Simple python native examples of building agents covering function calls, JSON parsing and more |  |
 
