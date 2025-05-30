@@ -21,7 +21,7 @@ This example demonstrates how to create an interactive AI agent using Clarifai's
 
 1. Clone the repository and navigate to this directory:
    ```bash
-   cd agents/mcp/clarifai-llm-toolchain
+   cd agents/mcp/chat-mcp-agent
    ```
 
 2. Create a virtual environment and activate it:
