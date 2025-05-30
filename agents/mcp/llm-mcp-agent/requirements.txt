@@ -1,0 +1,3 @@
+clarifai>=11.4.7
+fastmcp>=2.3.4
+openai>=1.82.0
