@@ -1,13 +1,13 @@
 import asyncio
 import json
 import os
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Union
 
 from dotenv import load_dotenv
 from fastmcp import Client
 from fastmcp.client.transports import StreamableHttpTransport
-from langchain_core.output_parsers import JsonOutputParser
-from openai import OpenAI
+from openai import AsyncOpenAI
+from openai.types.chat import ChatCompletionMessageToolCall
 from clarifai.utils.logging import logger
 
 # Load environment variables
@@ -23,56 +23,141 @@ class LLMClient:
             api_key: The Clarifai Personal Access Token.
         """
         self.api_key = api_key
-        self.client = OpenAI(
+        self.client = AsyncOpenAI(
             base_url="https://api.clarifai.com/v2/ext/openai/v1",
             api_key=api_key,
         )
         # You can choose different models:
         # self.model_url = "https://clarifai.com/gcp/generate/models/gemini-2_5-pro"
-        # self.model_url = "https://clarifai.com/microsoft/text-generation/models/phi-4"
+        # self.model_url = "https://clarifai.com/qwen/qwenLM/models/QwQ-32B-AWQ"
         self.model_url = "https://clarifai.com/openai/chat-completion/models/gpt-4o"
 
-    def get_response(self, messages: List[Dict[str, str]]) -> str:
+    async def get_response(self, messages: List[Dict[str, Any]], tools: Optional[List[Dict[str, Any]]] = None) -> str:
         """Get a response from the LLM.
 
         Args:
             messages: A list of message dictionaries.
+            tools: Optional list of tool definitions.
 
         Returns:
-            The LLM's response as a string.
+            The final response from the LLM.
         """
         logger.debug("LLM Request")
         logger.debug("Messages: %s", messages)
+        if tools:
+            logger.debug("Tools: %s", tools)
 
-        response = self.client.chat.completions.create(
-            model=self.model_url,
-            messages=messages,
-            temperature=0.7,
-        )
-        response_text = response.choices[0].message.content
+        try:
+            response = await self.client.chat.completions.create(
+                model=self.model_url,
+                messages=messages,
+                tools=tools,
+                tool_choice="auto",
+                temperature=0.7,
+            )
 
-        logger.debug("LLM Response")
-        logger.debug(response_text)
-        return response_text
+            assistant_message = response.choices[0].message
+            messages.append(assistant_message)
+            logger.debug("LLM Response")
+            logger.debug(assistant_message)
 
-def format_tool_for_llm(tool: Any) -> str:
-    """Format tool information for LLM.
+            if not assistant_message:
+                logger.error("Empty response message from LLM")
+                return "I apologize, but I received an empty response. Could you please try again?"
+
+            # Handle tool calls if present
+            while assistant_message.tool_calls:
+                logger.debug("Tool calls detected: %s", assistant_message.tool_calls)
+                
+
+                # Process each tool call
+                for tool_call in assistant_message.tool_calls:
+                    # Execute tool call
+                    result = await self.execute_tool_call(tool_call)
+                    # Add tool response to conversation
+                    messages.append({
+                        "role": "tool",
+                        "tool_call_id": tool_call.id,
+                        "content": result,
+                    })
+                    
+                # Get response from LLM with tool results
+                response = await self.client.chat.completions.create(
+                    model=self.model_url,
+                    messages=messages,
+                    tools=tools,
+                    tool_choice="auto",
+                    temperature=0.7,
+                )
+                assistant_message = response.choices[0].message
+                messages.append(assistant_message)
+
+            return assistant_message.content or "I apologize, but I couldn't generate a response. Could you please try again?"
+
+        except Exception as e:
+            logger.error("Error getting LLM response: %s", str(e))
+            return "I apologize, but I encountered an error. Could you please try again?"
+
+    async def execute_tool_call(self, tool_call: ChatCompletionMessageToolCall) -> Optional[str]:
+        """Execute a tool call.
+
+        Args:
+            tool_call: The tool call to execute.
+
+        Returns:
+            The result of the tool execution, or None if it failed.
+        """
+        if not tool_call or not tool_call.function:
+            logger.error("Invalid tool call received")
+            return None
+
+        tool_name = tool_call.function.name
+        try:
+            arguments = json.loads(tool_call.function.arguments)
+        except json.JSONDecodeError as e:
+            logger.error("Error parsing tool arguments: %s", str(e))
+            return None
+
+        for server in self.servers:
+            try:
+                tools = await server.list_tools()
+                if any(tool.name == tool_name for tool in tools):
+                    logger.debug(
+                        "EXECUTING TOOL: %s with args: %s",
+                        tool_name,
+                        arguments
+                    )
+                    result = await server.call_tool(
+                        tool_name,
+                        arguments=arguments
+                    )
+                    if not result or not result[0]:
+                        return None
+                    return str(result[0].text)
+            except Exception as e:
+                logger.error("Error executing tool %s: %s", tool_name, str(e))
+                continue
+
+        logger.error("No server found with tool: %s", tool_name)
+        return None
+
+def format_tool_for_openai(tool: Any) -> Dict[str, Any]:
+    """Format tool information for OpenAI's tool format.
 
     Args:
         tool: The tool object from MCP server.
 
     Returns:
-        A formatted JSON string describing the tool.
+        A dictionary in OpenAI's tool format.
     """
-    args = {}
-    if "properties" in tool.inputSchema:
-        for param_name, param_info in tool.inputSchema["properties"].items():
-            args[param_name] = param_info.get('description', 'No description')
-
-    return json.dumps({
-        "tool": tool.name,
-        "arguments": args
-    })
+    return {
+        "type": "function",
+        "function": {
+            "name": tool.name,
+            "description": tool.description,
+            "parameters": tool.inputSchema,
+        }
+    }
 
 async def get_available_tools(servers: List[Client]) -> List[Any]:
     """Get all available tools from all servers.
@@ -85,55 +170,12 @@ async def get_available_tools(servers: List[Client]) -> List[Any]:
     """
     all_tools = []
     for server in servers:
-        tools = await server.list_tools()
-        all_tools.extend(tools)
+        try:
+            tools = await server.list_tools()
+            all_tools.extend(tools)
+        except Exception as e:
+            logger.error("Error getting tools from server: %s", str(e))
     return all_tools
-
-async def execute_tool_call(
-    servers: List[Client],
-    tool_name: str,
-    arguments: Dict[str, Any]
-) -> Tuple[bool, str]:
-    """Execute a tool call on the appropriate server.
-
-    Args:
-        servers: List of MCP clients.
-        tool_name: Name of the tool to execute.
-        arguments: Arguments for the tool.
-
-    Returns:
-        Tuple of (success, result_message)
-    """
-    for server in servers:
-        tools = await server.list_tools()
-        if any(tool.name == tool_name for tool in tools):
-            try:
-                logger.debug(
-                    "EXECUTING TOOL: %s with args: %s",
-                    tool_name,
-                    arguments
-                )
-                result = await server.call_tool_mcp(tool_name, arguments)
-                result_data = result.model_dump()['content'][0]
-
-                if isinstance(result_data, dict) and "progress" in result_data:
-                    progress = result_data["progress"]
-                    total = result_data["total"]
-                    percentage = (progress / total) * 100
-                    logger.info(
-                        "Progress: %d/%d (%.1f%%)",
-                        progress,
-                        total,
-                        percentage
-                    )
-
-                return True, f"Tool execution result: {result_data}"
-            except Exception as e:
-                error_msg = f"Error executing tool: {str(e)}"
-                logger.error(error_msg)
-                return False, error_msg
-
-    return False, f"No server found with tool: {tool_name}"
 
 class ChatSession:
     """Orchestrates the interaction between user, LLM, and tools."""
@@ -147,63 +189,27 @@ class ChatSession:
         """
         self.servers = servers
         self.llm_client = llm_client
-        self.parser = JsonOutputParser()
-
-    async def process_llm_response(self, llm_response: str) -> str:
-        """Process the LLM response and execute tools if needed.
-
-        Args:
-            llm_response: The response from the LLM.
-
-        Returns:
-            The result of tool execution or the original response.
-        """
-        try:
-            # Try to parse as JSON
-            try:
-                tool_call = self.parser.parse(llm_response)
-                if not isinstance(tool_call, dict) or "tool" not in tool_call or "arguments" not in tool_call:
-                    return llm_response
-            except Exception as e:
-                logger.debug("Response is not a tool call: %s", str(e))
-                return llm_response
-
-            logger.debug("TOOL CALL: %s", tool_call)
-            success, result = await execute_tool_call(
-                self.servers,
-                tool_call["tool"],
-                tool_call["arguments"]
-            )
-            return result
-
-        except Exception as e:
-            logger.error("Error processing LLM response: %s", str(e))
-            return llm_response
+        llm_client.servers = servers  # Make servers available to LLMClient
 
     async def start(self) -> None:
         """Main chat session handler."""
         try:
             logger.info("Starting chat session. Listing tools...")
             all_tools = await get_available_tools(self.servers)
+            if not all_tools:
+                logger.error("No tools available")
+                return
+                
             logger.info("Available tools: %d", len(all_tools))
             
-            tools_description = "\n".join([format_tool_for_llm(tool) for tool in all_tools])
+            # Convert tools to OpenAI format
+            openai_tools = [format_tool_for_openai(tool) for tool in all_tools]
 
             system_message = (
-                "You are a helpful assistant with access to these tools:\n\n"
-                f"{tools_description}\n"
-                "Choose the appropriate tool based on the user's question. "
-                "If no tool is needed, reply directly.\n\n"
-                "IMPORTANT: When you need to use a tool, you must ONLY respond with "
-                "the exact JSON object format below, nothing else:\n"
-                '{"tool": "tool-name", "arguments": {"argument-name": "value"}}\n\n'
-                "After receiving a tool's response:\n"
-                "1. Transform the raw data into a natural, conversational response\n"
-                "2. Keep responses concise but informative\n"
-                "3. Focus on the most relevant information\n"
-                "4. Use appropriate context from the user's question\n"
-                "5. Avoid simply repeating the raw data\n\n"
-                "Please use only the tools that are explicitly defined above."
+                "You are a helpful assistant with access to various tools. "
+                "Use these tools when appropriate to help users with their tasks. "
+                "When using tools, provide clear and concise responses based on the results. "
+                "If no tool is needed, respond directly to the user's query."
             )
 
             messages = [{"role": "system", "content": system_message}]
@@ -215,24 +221,20 @@ class ChatSession:
                         logger.info("Exiting...")
                         break
 
-                    messages.append({"role": "user", "content": user_input})
-                    llm_response = self.llm_client.get_response(messages)
-                    logger.info("Assistant: %s", llm_response)
+                    if not user_input:
+                        continue
 
-                    tool_result = await self.process_llm_response(llm_response)
-                    if tool_result != llm_response:
-                        messages.append({"role": "assistant", "content": tool_result})
-                        final_response = self.llm_client.get_response(messages)
-                        logger.info("Final response: %s", final_response)
-                        messages[-1]['content'] = f"{llm_response}\n\n{final_response}"
-                    else:
-                        messages.append({"role": "assistant", "content": llm_response})
+                    messages.append({"role": "user", "content": user_input})
+                    response = await self.llm_client.get_response(messages, openai_tools)
+                    logger.info("Assistant: %s", response)
+                    messages.append({"role": "assistant", "content": response})
 
                 except KeyboardInterrupt:
                     logger.info("Exiting...")
                     break
                 except Exception as e:
                     logger.error("Error in chat loop: %s", str(e))
+                    messages.append({"role": "assistant", "content": "I apologize, but I encountered an error. Could you please try again?"})
                     continue
 
         except Exception as e:

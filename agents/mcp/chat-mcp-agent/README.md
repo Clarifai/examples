@@ -11,6 +11,8 @@ This example demonstrates how to create an interactive AI agent using Clarifai's
 - Interactive chat interface
 - Support for multiple MCP servers
 - Clean and modular tool execution architecture
+- Automatic handling of chained tool calls
+- Proper message history management
 
 ## Prerequisites
 
@@ -57,9 +59,10 @@ The script will:
 
 ```
 You: What is 2+9?
-Assistant: {"tool": "calculate_sum", "arguments": {"a": 2, "b": 9}}
-Tool execution result: 11
-Final response: The sum of 2 and 9 is 11.
+Assistant: The sum of 2 and 9 is 11.
+
+You: What is 1+2+3?
+Assistant: The sum of 1, 2, and 3 is 6.
 
 You: exit
 Exiting...
@@ -67,24 +70,35 @@ Exiting...
 
 ## Architecture
 
-The example consists of three main components:
+The example consists of two main components:
 
 1. **LLMClient**: Manages communication with Clarifai's LLM models
    - Supports multiple model options (GPT-4o, Gemini, Phi-4)
    - Handles message formatting and response parsing
+   - Manages tool calls and responses
    - Configurable temperature and other parameters
+   - Automatic handling of chained tool calls
+   - Proper message history management
 
 2. **ChatSession**: Orchestrates the interaction between user, LLM, and tools
    - Manages conversation history
-   - Processes LLM responses
+   - Processes user input
    - Formats responses for natural conversation
-   - Handles user input and session state
+   - Handles session state and cleanup
 
-3. **Tool Management Functions**:
-   - `get_available_tools()`: Discovers and lists available tools from all servers
-   - `execute_tool_call()`: Handles tool execution with proper error handling
-   - `format_tool_for_llm()`: Formats tool information for LLM consumption
-   - Pure functions for better testability and maintainability
+## Key Features
+
+### Tool Handling
+- Automatic detection and execution of tool calls
+- Support for chained tool calls (e.g., multiple calculations)
+- Proper message history management for tool calls and responses
+- Robust error handling for tool execution
+
+### Message Flow
+- Clean message history management
+- Proper formatting of tool calls and responses
+- Natural language responses after tool execution
+- Support for complex multi-step operations
 
 
 ## Configuration
