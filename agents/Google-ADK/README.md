@@ -59,10 +59,10 @@ MODEL = LiteLlm(model="openai/gcp/generate/models/gemini-2_5-flash",
 
 You can explore available models on the [Clarifai Community](https://clarifai.com/explore) platform. Some popular models include:
 
-- GPT-4: `openai/chat-completion/models/gpt-4o`
+- GPT-4o: `openai/chat-completion/models/gpt-4o`
 - Gemini 2.5 Flash: `gcp/generate/models/gemini-2_5-flash`
-- Llama 2: `meta/Llama-2/models/llama2-70b-chat`
-- Mixtral: `mistralai/Mixtral-8x7B/models/mixtral-8x7b-instruct`
+- Gemma-3-4b-it: `gcp/generate/models/gemma-3-4b-it`
+- Phi4: `microsoft/text-generation/models/phi-4`
 
 ## Example Agent Implementation
 
