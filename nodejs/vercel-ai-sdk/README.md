@@ -39,5 +39,3 @@ or use a `.env` file to setup your environment variables.
 
 - The example uses Clarifai's GPT-4o model by default, but you can easily switch to other models
 - Make sure your Clarifai PAT has the necessary permissions
-- The script uses async/await for better performance
-- Tool responses are processed to provide natural language output
