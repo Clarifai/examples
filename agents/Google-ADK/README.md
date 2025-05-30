@@ -50,7 +50,7 @@ from google.adk.models.lite_llm import LiteLlm
 
 # Configure the chat model with Clarifai endpoint
 
-MODEL = LiteLlm(model="openai/gcp/generate/models/gemini-2_5-flash",
+MODEL = LiteLlm(model="openai/deepseek-ai/deepseek-chat/models/DeepSeek-R1-Distill-Qwen-7B",
                       base_url="https://api.clarifai.com/v2/ext/openai/v1")
 
 ```
