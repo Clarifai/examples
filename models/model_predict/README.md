@@ -1,3 +1,4 @@
+![image](https://github.com/user-attachments/assets/b22c9807-f5e7-49eb-b00d-598e400781af)
 # Model Inference Examples
 
 This directory contains examples of how to perform model inference using different SDKs and model types. The examples demonstrate both streaming and non-streaming modes, as well as tool calling capabilities.
@@ -37,6 +38,8 @@ export CLARIFAI_PAT=your_pat_here
 - `clarifai_llm.py`: Basic inference
 - `clarifai_llm_stream.py`: Streaming inference
 - `clarifai_llm_tools.py`: Tool calling example
+- `clarifai_llm_async_predict.py`: Asynchronous predict example
+- `clarifai_llm_async_generate.py`: Asynchronous generate example
 
 #### OpenAI Client
 - `openai_llm.py`: Basic inference
@@ -174,6 +177,35 @@ response = litellm.completion(
     messages=[{"role": "user", "content": "What's the weather in Tokyo?"}],
     tools=tools
 )
+```
+### Async inference
+```python
+# Example block to call async_predict from notebook cells
+from clarifai.client.model import Model
+
+async def main():
+    model = Model(url="https://clarifai.com/qwen/qwenLM/models/QwQ-32B-AWQ")
+    response = await model.async_predict(prompt= "what is the value of pi?",
+                                         max_tokens=100)
+    return response
+
+await main()
+``` 
+
+```python
+# Example block to call async_generate from notebook cells
+from clarifai.client.model import Model
+
+async def main():
+    model = Model(url="https://clarifai.com/qwen/qwenLM/models/QwQ-32B-AWQ")
+    response = await model.async_generate(prompt= "what is the value of pi?",
+                                         max_tokens=100)
+    return response
+
+# iterate the response over async generator
+response = await main()
+for res in response:
+    print(res)
 ```
 
 ## Notes
