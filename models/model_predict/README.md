@@ -38,8 +38,8 @@ export CLARIFAI_PAT=your_pat_here
 - `clarifai_llm.py`: Basic inference
 - `clarifai_llm_stream.py`: Streaming inference
 - `clarifai_llm_tools.py`: Tool calling example
-- `clarifai_llm_async_predict`: Asynchronous predict example
-- `clarifai_llm_async_generate`: Asynchronous generate example
+- `clarifai_llm_async_predict.py`: Asynchronous predict example
+- `clarifai_llm_async_generate.py`: Asynchronous generate example
 
 #### OpenAI Client
 - `openai_llm.py`: Basic inference

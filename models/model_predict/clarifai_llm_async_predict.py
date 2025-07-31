@@ -2,6 +2,7 @@ import os
 import asyncio
 from clarifai.client.model import Model
 
+#set clarifai PAT in environment using clarifai login
 async def main():
     #Initialize the model with the appropriate URL
     model = Model(url="https://clarifai.com/openai/chat-completion/models/o4-mini")
@@ -12,7 +13,5 @@ async def main():
 
 # Run the main function and print the result
 if __name__ == "__main__":
-    if not os.getenv("CLARIFAI_PAT"):
-        print("Please set your CLARIFAI_PAT environment variable")
-        exit(1)
+    
     print(asyncio.run(main()))
