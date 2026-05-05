@@ -11,8 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ai-sdk/openai-compatible": "^0.2.14",
-    "ai": "^4.3.16",
+    "@ai-sdk/openai-compatible": "^1.0.39",
+    "ai": "^5.0.52",
     "zod": "^3.25.42"
   }
 }
