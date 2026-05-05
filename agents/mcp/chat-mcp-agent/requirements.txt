@@ -1,4 +1,3 @@
 clarifai>=11.4.8
-langchain-core==0.3.52
-fastmcp>=2.3.4
+fastmcp>=3.2.4
 openai>=1.82.0
