@@ -69,7 +69,7 @@ class MultiFolderDetectionDataLoader(ClarifaiDataLoader):
     image_filename = os.path.basename(image_path)
     id_str = os.path.splitext(image_filename)[0].replace(' ', '_').replace('-', '_')
     id_str = ''.join(ch if ch.isalnum() or ch in {'-', '_'} else '_' for ch in id_str)
-    id_str = id_str.strip('_')
+    id_str = id_str.strip('_')[:16]
 
     return VisualDetectionFeatures(image_path, concept_ids, annots, id=id_str)
 
